@@ -1,41 +1,69 @@
-import { useEffect, useState } from 'react';
-import { useAuthentication } from '../hooks/useAuthentication';
-import { NavLink } from 'react-router-dom';
+import { useEffect, useState, useCallback } from 'react';
+import { useAuthenticationSimple } from '../hooks/useAuthenticationSimple';
+import { useAuthValue } from '../contexts/AuthContext';
+import { NavLink, useNavigate } from 'react-router-dom';
 import Logo from '/logo.png';
 export default function Signup() {
+  // Form state
   const [displayName, setDisplayName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [error, setError] = useState('');
+  const [rememberMe, setRememberMe] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [validationError, setValidationError] = useState<string>('');
 
-  const { createUser, error: authError, loading } = useAuthentication();
+  // Hooks
+  const { signup, error: authError, isLoading, clearError } = useAuthenticationSimple();
+  const { user } = useAuthValue();
+  const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
+  // Handle form submission with remember me functionality
+  const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
+    
+    if (isSubmitting || isLoading) return;
+    
+    setIsSubmitting(true);
+    clearError();
 
+    // Client-side validation
     if (password !== confirmPassword) {
-      setError('Passwords do not match.');
+      setValidationError('As senhas não coincidem.');
+      setIsSubmitting(false);
       return;
     }
 
-    const user = {
-      displayName,
-      email,
-      password,
-    };
+    setValidationError('');
 
-    const res = await createUser(user);
-
-    console.log(res);
-  };
-
-  useEffect(() => {
-    if (authError) {
-      setError(authError);
+    try {
+      const credentials = {
+        displayName: displayName.trim(),
+        email,
+        password
+      };
+      
+      const user = await signup(credentials, { rememberMe });
+      
+      if (user) {
+        // Signup successful - navigation will be handled by useEffect
+      }
+    } catch (error) {
+      console.error('Signup submission error:', error);
+    } finally {
+      setIsSubmitting(false);
     }
-  }, [authError]);
+  }, [displayName, email, password, confirmPassword, rememberMe, signup, isSubmitting, isLoading, clearError]);
+
+  // Handle navigation after successful authentication
+  useEffect(() => {
+    if (user && !isLoading && !isSubmitting) {
+      navigate('/submissions', { replace: true });
+    }
+  }, [user, navigate, isLoading, isSubmitting]);
+
+  // Prevent form submission if already submitting
+  const isFormDisabled = isSubmitting || isLoading;
 
   return (
     <section className="bg-gray-50 dark:bg-gray-900">
@@ -59,11 +87,12 @@ export default function Signup() {
               >
                 Your name
                 <input
-                  type="name"
+                  type="text"
                   name="name"
                   id="name"
+                  autoComplete="name"
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="name@company.com"
+                  placeholder="Your full name"
                   required
                   onChange={(e) => setDisplayName(e.target.value)}
                   value={displayName}
@@ -78,6 +107,7 @@ export default function Signup() {
                   type="email"
                   name="email"
                   id="email"
+                  autoComplete="email"
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   placeholder="name@company.com"
                   required
@@ -95,6 +125,7 @@ export default function Signup() {
                   type="password"
                   name="password"
                   id="password"
+                  autoComplete="new-password"
                   placeholder="••••••••"
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   required
@@ -109,9 +140,10 @@ export default function Signup() {
               >
                 Confirm password
                 <input
-                  type="confirm-password"
+                  type="password"
                   name="confirm-password"
                   id="confirm-password"
+                  autoComplete="new-password"
                   placeholder="••••••••"
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   required
@@ -145,20 +177,43 @@ export default function Signup() {
                   </label>
                 </div>
               </div>
-              {!loading && (
-                <button
-                  type="submit"
-                  className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-                >
-                  Create an account
-                </button>
+
+              <div className="flex items-start">
+                <div className="flex items-center h-5">
+                  <input
+                    id="remember"
+                    aria-describedby="remember"
+                    type="checkbox"
+                    className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800"
+                    checked={rememberMe}
+                    onChange={(e) => setRememberMe(e.target.checked)}
+                  />
+                </div>
+                <div className="ml-3 text-sm">
+                  <label
+                    htmlFor="remember"
+                    className="font-light text-gray-500 dark:text-gray-300"
+                  >
+                    Manter-me conectado
+                  </label>
+                </div>
+              </div>
+
+              <button
+                type="submit"
+                className={`w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 transition-opacity ${
+                  isFormDisabled ? 'opacity-50 cursor-not-allowed' : 'hover:opacity-90'
+                }`}
+                disabled={isFormDisabled}
+              >
+                {isFormDisabled ? 'Criando conta...' : 'Criar conta'}
+              </button>
+              
+              {(authError || validationError) && (
+                <div className="p-3 text-sm text-red-800 bg-red-100 border border-red-200 rounded-lg dark:bg-red-800/20 dark:text-red-400 dark:border-red-800" role="alert">
+                  {authError || validationError}
+                </div>
               )}
-              {loading && (
-                <button className="btn" disabled>
-                  Aguarde...
-                </button>
-              )}
-              {error && <p className="error">{error}</p>}
 
               <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                 Already have an account?{' '}

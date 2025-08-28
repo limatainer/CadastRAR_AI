@@ -5,12 +5,12 @@ import { useUpdateDocument } from '../hooks/useUpdateDocument';
 
 export default function Edit() {
   const { id } = useParams();
-  const { document: post } = useFetchDocument('posts', id);
+  const { document: post } = useFetchDocument('posts', id || '');
 
   const [title, setTitle] = useState('');
   const [image, setImage] = useState('');
   const [body, setBody] = useState('');
-  const [tags, setTags] = useState([]);
+  const [tags, setTags] = useState('');
   const [formError, setFormError] = useState('');
 
   useEffect(() => {
@@ -18,7 +18,7 @@ export default function Edit() {
       setTitle(post.title);
       setImage(post.image);
       setBody(post.body);
-      const textTags = post.tags.join(', ');
+      const textTags = post.tags?.join(', ') || '';
       setTags(textTags);
     }
   }, [post]);
@@ -26,7 +26,7 @@ export default function Edit() {
   const navigate = useNavigate();
   const { updateDocument, response } = useUpdateDocument('posts');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setFormError('');
 

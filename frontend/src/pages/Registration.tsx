@@ -7,14 +7,14 @@ export default function Registration() {
   const [title, setTitle] = useState('');
   const [image, setImage] = useState('');
   const [body, setBody] = useState('');
-  const [tags, setTags] = useState([]);
+  const [tags, setTags] = useState('');
   const [formError, setFormError] = useState('');
 
   const { user } = useAuthValue();
   const navigate = useNavigate();
   const { insertDocument, response } = useInsertDocument('posts');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setFormError('');
 
@@ -42,8 +42,8 @@ export default function Registration() {
       image,
       body,
       tags: tagsArray,
-      uid: user.uid,
-      createdBy: user.displayName,
+      uid: user?.uid,
+      createdBy: user?.displayName,
     });
 
     // Redirect to submissions page
