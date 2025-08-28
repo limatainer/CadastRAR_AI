@@ -1,9 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { useState, useEffect } from 'react';
 
-import { onAuthStateChanged } from 'firebase/auth';
-
-import { useAuthentication } from './hooks/useAuthentication';
+import { useAuthenticationSimple } from './hooks/useAuthenticationSimple';
 import { AuthProvider } from './contexts/AuthContext';
 
 import Footer from './components/Footer';
@@ -19,30 +16,16 @@ import Registration from './pages/Registration';
 import Edit from './pages/Edit';
 import Details from './pages/Details';
 
-const useAuthState = (auth) => {
-  const [user, setUser] = useState(undefined);
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setUser(user || null);
-    });
-
-    return () => unsubscribe();
-  }, [auth]);
-
-  return { user, loading: user === undefined };
-};
 
 const App = () => {
-  const { auth } = useAuthentication();
-  const { user, loading } = useAuthState(auth);
+  const { user, isLoading } = useAuthenticationSimple();
 
-  if (loading) {
+  if (isLoading) {
     return <p>Carregando...</p>;
   }
 
   return (
-    <AuthProvider value={{ user }}>
+    <AuthProvider value={{ user: user || null }}>
       <BrowserRouter>
         <Navbar />
         <Routes>
@@ -64,11 +47,11 @@ const App = () => {
           <Route path="/posts/:id" element={<Details />} />
           <Route
             path="/login"
-            element={!user ? <Login /> : <Navigate to="/" />}
+            element={!user ? <Login /> : <Navigate to="/submissions" />}
           />
           <Route
             path="/register"
-            element={!user ? <Signup /> : <Navigate to="/" />}
+            element={!user ? <Signup /> : <Navigate to="/submissions" />}
           />
         </Routes>
         <Footer />

@@ -8,7 +8,7 @@ import { useState } from 'react';
 
 export default function Submissions() {
   const { user } = useAuthValue();
-  const uid = user.uid;
+  const uid = user?.uid;
   const {
     documents: posts,
     error,
@@ -20,7 +20,7 @@ export default function Submissions() {
 
   const [query, setQuery] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
     if (query) {

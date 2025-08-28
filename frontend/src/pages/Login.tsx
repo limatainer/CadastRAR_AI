@@ -1,39 +1,69 @@
-import { useEffect, useState } from 'react';
-import { useAuthentication } from '../hooks/useAuthentication';
-import { NavLink } from 'react-router-dom';
+import { useEffect, useState, useCallback } from 'react';
+import { useAuthenticationSimple } from '../hooks/useAuthenticationSimple';
+import { useAuthValue } from '../contexts/AuthContext';
+import { NavLink, useNavigate } from 'react-router-dom';
 
 import Logo from '/logo.png';
 
 export default function Login() {
+  // Form state
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
-  const { login, error: authError, loading } = useAuthentication();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  
+  // Hooks
+  const { login, error: authError, isLoading, clearError } = useAuthenticationSimple();
+  const { user } = useAuthValue();
+  const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
+  // Handle form submission with remember me functionality
+  const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
+    
+    if (isSubmitting || isLoading) return;
+    
+    setIsSubmitting(true);
+    clearError();
 
-    const user = { email, password };
-    const res = await login(user);
-    if (res && res.success) {
-      if (rememberMe) {
-        localStorage.setItem('user', JSON.stringify(res.user));
-      } else {
-        sessionStorage.setItem('user', JSON.stringify(res.user));
+    try {
+      const credentials = { email, password };
+      const user = await login(credentials, { rememberMe });
+      
+      if (user) {
+        // Login successful - navigation will be handled by useEffect
       }
-    } else {
-      setError(res.error);
+    } catch (error) {
+      console.error('Login submission error:', error);
+    } finally {
+      setIsSubmitting(false);
     }
-    console.log(res);
-  };
+  }, [email, password, rememberMe, login, isSubmitting, isLoading, clearError]);
 
+  // Handle navigation after successful authentication
   useEffect(() => {
-    if (authError) {
-      setError(authError);
+    if (user && !isLoading && !isSubmitting) {
+      navigate('/submissions', { replace: true });
     }
-  }, [authError]);
+  }, [user, navigate, isLoading, isSubmitting]);
+
+  // Clear form errors when user starts typing
+  const handleEmailChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(e.target.value);
+    if (authError) clearError();
+  }, [authError, clearError]);
+
+  const handlePasswordChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setPassword(e.target.value);
+    if (authError) clearError();
+  }, [authError, clearError]);
+
+  const handleRememberMeChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setRememberMe(e.target.checked);
+  }, []);
+
+  // Prevent form submission if already submitting
+  const isFormDisabled = isSubmitting || isLoading;
 
   return (
     <section className="bg-gray-50 dark:bg-gray-900 min-h-screen flex items-center justify-center px-6 py-8">
@@ -63,9 +93,10 @@ export default function Login() {
                 type="email"
                 name="email"
                 id="email"
+                autoComplete="email"
                 className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder="name@company.com"
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={handleEmailChange}
                 value={email}
                 required
               />
@@ -81,9 +112,10 @@ export default function Login() {
                 type="password"
                 name="password"
                 id="password"
+                autoComplete="current-password"
                 placeholder="••••••••"
                 className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={handlePasswordChange}
                 value={password}
                 required
               />
@@ -97,7 +129,7 @@ export default function Login() {
                     type="checkbox"
                     className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800"
                     checked={rememberMe}
-                    onChange={(e) => setRememberMe(e.target.checked)}
+                    onChange={handleRememberMeChange}
                   />
                 </div>
                 <div className="ml-3 text-sm">
@@ -118,14 +150,18 @@ export default function Login() {
             </div>
             <button
               type="submit"
-              className={`w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 ${
-                loading ? 'opacity-50 cursor-not-allowed' : ''
+              className={`w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 transition-opacity ${
+                isFormDisabled ? 'opacity-50 cursor-not-allowed' : 'hover:opacity-90'
               }`}
-              disabled={loading}
+              disabled={isFormDisabled}
             >
-              {loading ? 'Please wait...' : 'Sign in'}
+              {isFormDisabled ? 'Entrando...' : 'Entrar'}
             </button>
-            {error && <p className="text-red-500 text-sm">{error}</p>}
+            {authError && (
+              <div className="p-3 text-sm text-red-800 bg-red-100 border border-red-200 rounded-lg dark:bg-red-800/20 dark:text-red-400 dark:border-red-800" role="alert">
+                {authError}
+              </div>
+            )}
             <p className="text-sm font-light text-gray-500 dark:text-gray-400">
               Don’t have an account yet?{' '}
               <NavLink

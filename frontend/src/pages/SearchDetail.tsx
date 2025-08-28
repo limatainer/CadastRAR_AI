@@ -1,7 +1,11 @@
-/* eslint-disable react/prop-types */
 import { Link } from 'react-router-dom';
+import { FirestoreDocument } from '../types/common';
 
-export default function SearchDetail({ post }) {
+interface SearchDetailProps {
+  post: FirestoreDocument;
+}
+
+export default function SearchDetail({ post }: SearchDetailProps) {
   return (
     <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 mb-4">
       <div className="flex items-center mb-4">
@@ -19,7 +23,7 @@ export default function SearchDetail({ post }) {
           por: {post.createdBy}
         </p>
         <div className="flex flex-wrap gap-2">
-          {post.tags.map((tag) => (
+          {post.tags.map((tag: string) => (
             <p
               key={tag}
               className="inline-block bg-blue-100 dark:bg-blue-700 text-blue-800 dark:text-blue-200 px-3 py-1 rounded-full text-sm font-medium"

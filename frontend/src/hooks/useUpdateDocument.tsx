@@ -38,18 +38,14 @@ export const useUpdateDocument = (docCollection) => {
     try {
       const docRef = await doc(db, docCollection, uid);
 
-      console.log(docRef);
-
       const updatedDocument = await updateDoc(docRef, data);
-
-      console.log(updateDocument);
 
       checkCancelBeforeDispatch({
         type: "UPDATED_DOC",
         payload: updatedDocument,
       });
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      console.error('Update document error:', error);
       checkCancelBeforeDispatch({ type: "ERROR", payload: error.message });
     }
   };
