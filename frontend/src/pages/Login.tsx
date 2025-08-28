@@ -1,7 +1,8 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useRef } from 'react';
 import { useAuthenticationSimple } from '../hooks/useAuthenticationSimple';
 import { useAuthValue } from '../contexts/AuthContext';
 import { NavLink, useNavigate } from 'react-router-dom';
+import { clearPasswordFromMemory } from '../utils/passwordSecurity';
 
 import Logo from '/logo.png';
 
@@ -11,6 +12,7 @@ export default function Login() {
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const passwordRef = useRef<string>('');
   
   // Hooks
   const { login, error: authError, isLoading, clearError } = useAuthenticationSimple();
@@ -31,6 +33,8 @@ export default function Login() {
       const user = await login(credentials, { rememberMe });
       
       if (user) {
+        // Clear password from memory
+        clearPasswordFromMemory(passwordRef);
         // Login successful - navigation will be handled by useEffect
       }
     } catch (error) {
@@ -54,7 +58,9 @@ export default function Login() {
   }, [authError, clearError]);
 
   const handlePasswordChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    setPassword(e.target.value);
+    const newPassword = e.target.value;
+    setPassword(newPassword);
+    passwordRef.current = newPassword;
     if (authError) clearError();
   }, [authError, clearError]);
 

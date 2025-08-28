@@ -1,8 +1,10 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useRef } from 'react';
 import { useAuthenticationSimple } from '../hooks/useAuthenticationSimple';
 import { useAuthValue } from '../contexts/AuthContext';
 import { NavLink, useNavigate } from 'react-router-dom';
 import Logo from '/logo.png';
+import PasswordStrengthMeter from '../components/PasswordStrengthMeter';
+import { validatePasswordSecurity, clearPasswordFromMemory } from '../utils/passwordSecurity';
 export default function Signup() {
   // Form state
   const [displayName, setDisplayName] = useState('');
@@ -12,6 +14,8 @@ export default function Signup() {
   const [rememberMe, setRememberMe] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [validationError, setValidationError] = useState<string>('');
+  const [securityErrors, setSecurityErrors] = useState<string[]>([]);
+  const passwordRef = useRef<string>('');
 
   // Hooks
   const { signup, error: authError, isLoading, clearError } = useAuthenticationSimple();
@@ -34,7 +38,16 @@ export default function Signup() {
       return;
     }
 
+    // Security validation
+    const passwordSecurityErrors = validatePasswordSecurity(password, email);
+    if (passwordSecurityErrors.length > 0) {
+      setSecurityErrors(passwordSecurityErrors);
+      setIsSubmitting(false);
+      return;
+    }
+
     setValidationError('');
+    setSecurityErrors([]);
 
     try {
       const credentials = {
@@ -46,6 +59,8 @@ export default function Signup() {
       const user = await signup(credentials, { rememberMe });
       
       if (user) {
+        // Clear password from memory
+        clearPasswordFromMemory(passwordRef);
         // Signup successful - navigation will be handled by useEffect
       }
     } catch (error) {
@@ -129,10 +144,20 @@ export default function Signup() {
                   placeholder="••••••••"
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   required
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={(e) => {
+                    const newPassword = e.target.value;
+                    setPassword(newPassword);
+                    passwordRef.current = newPassword;
+                    // Clear security errors when user starts typing
+                    if (securityErrors.length > 0) {
+                      setSecurityErrors([]);
+                    }
+                  }}
                   value={password}
                 />
               </label>
+              
+              <PasswordStrengthMeter password={password} />
 
               <label
                 htmlFor="confirm-password"
@@ -209,9 +234,12 @@ export default function Signup() {
                 {isFormDisabled ? 'Criando conta...' : 'Criar conta'}
               </button>
               
-              {(authError || validationError) && (
+              {(authError || validationError || securityErrors.length > 0) && (
                 <div className="p-3 text-sm text-red-800 bg-red-100 border border-red-200 rounded-lg dark:bg-red-800/20 dark:text-red-400 dark:border-red-800" role="alert">
                   {authError || validationError}
+                  {securityErrors.map((error, index) => (
+                    <div key={index} className="mt-1">{error}</div>
+                  ))}
                 </div>
               )}
 
