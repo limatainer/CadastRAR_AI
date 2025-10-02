@@ -14,7 +14,7 @@ export const generateUserDescription = async (name: string, tags: string[]): Pro
   }
 
   try {
-    const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
+    const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
 
     const prompt = `Generate a professional and concise user profile description (2-3 sentences) for a person named "${name}" with the following interests/tags: ${tags.join(', ')}.
 
