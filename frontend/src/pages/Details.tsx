@@ -39,11 +39,11 @@ export default function Details() {
     setGeneratingPDF(type);
     try {
       if (type === 'id') {
-        await generateIDCard(post);
+        await generateIDCard(post as any);
       } else if (type === 'certificate') {
-        await generateCertificate(post);
+        await generateCertificate(post as any);
       } else {
-        await generateProfileSheet(post);
+        await generateProfileSheet(post as any);
       }
     } catch (error) {
       console.error('Error generating PDF:', error);

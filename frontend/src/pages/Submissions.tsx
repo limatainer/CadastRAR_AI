@@ -11,6 +11,7 @@ import {
   PlusIcon
 } from '@heroicons/react/24/outline';
 import EmailVerificationBanner from '../components/EmailVerificationBanner';
+import { Timestamp } from 'firebase/firestore';
 
 export default function Submissions() {
   const { user } = useAuthValue();
@@ -170,7 +171,7 @@ export default function Submissions() {
                           </div>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                          {post.createdAt ? new Date(post.createdAt.seconds * 1000).toLocaleDateString() : 'Unknown'}
+                          {post.createdAt ? new Date(post.createdAt instanceof Timestamp ? post.createdAt.seconds * 1000 : post.createdAt).toLocaleDateString() : 'Unknown'}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
                           <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400">
@@ -224,7 +225,7 @@ export default function Submissions() {
                       </span>
                     </div>
                     <p className="text-xs text-gray-500 dark:text-gray-400 mb-3">
-                      Created: {post.createdAt ? new Date(post.createdAt.seconds * 1000).toLocaleDateString() : 'Unknown'}
+                      Created: {post.createdAt ? new Date(post.createdAt instanceof Timestamp ? post.createdAt.seconds * 1000 : post.createdAt).toLocaleDateString() : 'Unknown'}
                     </p>
                     <div className="flex space-x-2">
                       <Link
