@@ -3,13 +3,14 @@ import { useAuthValue } from '../contexts/AuthContext';
 import { useFetchDocuments } from '../hooks/useFetchDocuments';
 import { useDeleteDocument } from '../hooks/useDeleteDocument';
 import { useState } from 'react';
-import { 
-  MagnifyingGlassIcon, 
-  EyeIcon, 
-  PencilIcon, 
+import {
+  MagnifyingGlassIcon,
+  EyeIcon,
+  PencilIcon,
   TrashIcon,
-  PlusIcon 
+  PlusIcon
 } from '@heroicons/react/24/outline';
+import EmailVerificationBanner from '../components/EmailVerificationBanner';
 
 export default function Submissions() {
   const { user } = useAuthValue();
@@ -43,7 +44,7 @@ export default function Submissions() {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      {/* Header Section */}
+      <EmailVerificationBanner />
       <div className="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="md:flex md:items-center md:justify-between">

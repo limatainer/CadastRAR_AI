@@ -1,15 +1,18 @@
 import { useFetchDocument } from '../hooks/useFetchDocument';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { 
-  ArrowLeftIcon, 
-  PencilIcon, 
+import { useState } from 'react';
+import {
+  ArrowLeftIcon,
+  PencilIcon,
   TrashIcon,
   CalendarIcon,
   TagIcon,
-  UserIcon
+  UserIcon,
+  DocumentArrowDownIcon
 } from '@heroicons/react/24/outline';
 import { useAuthValue } from '../contexts/AuthContext';
 import { useDeleteDocument } from '../hooks/useDeleteDocument';
+import { generateIDCard, generateCertificate, generateProfileSheet } from '../utils/pdfGenerator';
 
 export default function Details() {
   const { id } = useParams();
@@ -17,6 +20,7 @@ export default function Details() {
   const { user } = useAuthValue();
   const { document: post, loading, error } = useFetchDocument('posts', id);
   const { deleteDocument } = useDeleteDocument('posts');
+  const [generatingPDF, setGeneratingPDF] = useState<string | null>(null);
 
   const handleDelete = async () => {
     if (window.confirm(`Are you sure you want to delete "${post?.title}"?`)) {
@@ -26,6 +30,26 @@ export default function Details() {
       } catch (error) {
         console.error('Error deleting document:', error);
       }
+    }
+  };
+
+  const handleGeneratePDF = async (type: 'id' | 'certificate' | 'profile') => {
+    if (!post) return;
+
+    setGeneratingPDF(type);
+    try {
+      if (type === 'id') {
+        await generateIDCard(post);
+      } else if (type === 'certificate') {
+        await generateCertificate(post);
+      } else {
+        await generateProfileSheet(post);
+      }
+    } catch (error) {
+      console.error('Error generating PDF:', error);
+      alert('Failed to generate PDF. Please try again.');
+    } finally {
+      setGeneratingPDF(null);
     }
   };
 
@@ -206,13 +230,52 @@ export default function Details() {
               </div>
             </div>
 
+            {/* Document Generation Section */}
+            <div className="border-t border-gray-200 dark:border-gray-700 px-6 py-6 sm:px-8 bg-gradient-to-r from-purple-50 to-blue-50 dark:from-purple-900/10 dark:to-blue-900/10">
+              <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                Generate Documents
+              </h2>
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                Export this user's information as a PDF document
+              </p>
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <button
+                  onClick={() => handleGeneratePDF('id')}
+                  disabled={generatingPDF !== null}
+                  className="inline-flex items-center justify-center px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
+                >
+                  <DocumentArrowDownIcon className="h-5 w-5 mr-2" />
+                  {generatingPDF === 'id' ? 'Generating...' : 'ID Card'}
+                </button>
+
+                <button
+                  onClick={() => handleGeneratePDF('certificate')}
+                  disabled={generatingPDF !== null}
+                  className="inline-flex items-center justify-center px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
+                >
+                  <DocumentArrowDownIcon className="h-5 w-5 mr-2" />
+                  {generatingPDF === 'certificate' ? 'Generating...' : 'Certificate'}
+                </button>
+
+                <button
+                  onClick={() => handleGeneratePDF('profile')}
+                  disabled={generatingPDF !== null}
+                  className="inline-flex items-center justify-center px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
+                >
+                  <DocumentArrowDownIcon className="h-5 w-5 mr-2" />
+                  {generatingPDF === 'profile' ? 'Generating...' : 'Profile Sheet'}
+                </button>
+              </div>
+            </div>
+
             {/* Tags Section */}
             {post.tags && post.tags.length > 0 && (
               <div className="border-t border-gray-200 dark:border-gray-700 px-6 py-6 sm:px-8">
                 <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
                   Tags
                 </h2>
-                
+
                 <div className="flex flex-wrap gap-2">
                   {post.tags.map((tag, index) => (
                     <span

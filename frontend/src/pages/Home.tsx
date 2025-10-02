@@ -45,30 +45,29 @@ export default function Home() {
           </NavLink>
           {/* Hero */}
           <h1 className="mb-4 text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white">
-            Streamlining Data Management and Document Generation with AI
+            Smart User Management with AI-Powered Tools
           </h1>
           <p className="mb-8 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 xl:px-48 dark:text-gray-400">
-            Our platform offers advanced solutions for registering individuals
-            and managing databases, utilizing artificial intelligence to
-            generate personalized and automated documents with the provided
-            data.
+            Register and manage user profiles with AI-generated descriptions,
+            automatic document generation, secure authentication, and powerful
+            search capabilities - all in one streamlined platform.
           </p>
 
           <div className="flex flex-col mb-8 lg:mb-16 space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">
-            <a
-              href="#"
+            <NavLink
+              to="/about"
               className="inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-900"
             >
               Learn more
               <FaArrowRightLong className="ml-2" />
-            </a>
-            <a
-              href="#"
+            </NavLink>
+            <NavLink
+              to="/register"
               className="inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-gray-900 rounded-lg border border-gray-300 hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 dark:text-white dark:border-gray-700 dark:hover:bg-gray-700 dark:focus:ring-gray-800"
             >
               <MdOutlineAddCircleOutline className="mr-2" />
-              Watch video
-            </a>
+              Get Started
+            </NavLink>
           </div>
           <div className="px-4 mx-auto text-center md:max-w-screen-md lg:max-w-screen-lg lg:px-36">
             <span className="font-semibold text-gray-400 uppercase">
@@ -88,14 +87,13 @@ export default function Home() {
         <div className="gap-8 items-center py-8 px-4 mx-auto max-w-screen-xl xl:gap-16 md:grid md:grid-cols-2 sm:py-16 lg:px-6">
           <div className="mt-4 md:mt-0">
             <h2 className="mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white">
-              Let's Create Tools and Ideas to Streamline Data Management and
-              Document Generation
+              AI-Enhanced User Management
             </h2>
             <p className="mb-6 font-light text-gray-500 md:text-lg dark:text-gray-400">
-              Our technology ensures efficiency and accuracy, allowing you to
-              focus on the growth and success of your business by providing
-              advanced solutions for registering individuals and managing
-              databases with AI-powered document generation.
+              Leverage AI to auto-generate professional user descriptions, create
+              ID cards, certificates, and profile documents instantly. Our platform
+              combines smart automation with secure authentication and powerful search
+              capabilities to streamline your workflow.
             </p>
 
             <NavLink to="/register" className="btn">

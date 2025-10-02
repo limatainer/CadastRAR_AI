@@ -1,7 +1,3 @@
-/**
- * Simple Authentication Hook - Working version with Remember Me
- */
-
 import { useState, useEffect, useCallback } from 'react';
 import {
   createUserWithEmailAndPassword,
@@ -12,10 +8,13 @@ import {
   browserLocalPersistence,
   browserSessionPersistence,
   onAuthStateChanged,
-  User
+  sendEmailVerification,
+  User,
+  AuthError
 } from 'firebase/auth';
+import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
 
-import { auth } from '../firebase/config';
+import { auth, db } from '../firebase/config';
 
 interface LoginCredentials {
   email: string;
@@ -35,11 +34,10 @@ export const useAuthenticationSimple = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Firebase Auth state listener - this is critical for proper auth state
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
       setUser(firebaseUser);
-      setIsLoading(false); // Always set loading to false once we know auth state
+      setIsLoading(false);
     });
 
     return () => unsubscribe();
@@ -50,21 +48,19 @@ export const useAuthenticationSimple = () => {
   }, []);
 
   const login = useCallback(async (
-    credentials: LoginCredentials, 
+    credentials: LoginCredentials,
     options: LoginOptions = {}
   ): Promise<User | null> => {
     setIsLoading(true);
     setError(null);
 
     try {
-      // Set persistence based on remember me
       if (options.rememberMe) {
         await setPersistence(auth, browserLocalPersistence);
       } else {
         await setPersistence(auth, browserSessionPersistence);
       }
 
-      // Sign in
       const userCredential = await signInWithEmailAndPassword(
         auth,
         credentials.email,
@@ -72,17 +68,18 @@ export const useAuthenticationSimple = () => {
       );
 
       return userCredential.user;
-    } catch (error: any) {
-      let errorMessage = 'Ocorreu um erro, por favor tente mais tarde.';
-      
+    } catch (err) {
+      const error = err as AuthError;
+      let errorMessage = 'An error occurred, please try again later.';
+
       if (error.code === 'auth/user-not-found') {
-        errorMessage = 'Usuário não encontrado.';
+        errorMessage = 'User not found.';
       } else if (error.code === 'auth/wrong-password' || error.code === 'auth/invalid-credential') {
-        errorMessage = 'Email ou senha incorretos.';
+        errorMessage = 'Incorrect email or password.';
       } else if (error.code === 'auth/invalid-email') {
-        errorMessage = 'Email inválido.';
+        errorMessage = 'Invalid email.';
       }
-      
+
       setError(errorMessage);
       return null;
     } finally {
@@ -98,37 +95,46 @@ export const useAuthenticationSimple = () => {
     setError(null);
 
     try {
-      // Set persistence based on remember me
       if (options.rememberMe) {
         await setPersistence(auth, browserLocalPersistence);
       } else {
         await setPersistence(auth, browserSessionPersistence);
       }
 
-      // Create user
       const userCredential = await createUserWithEmailAndPassword(
         auth,
         credentials.email,
         credentials.password
       );
 
-      // Update profile
       await updateProfile(userCredential.user, {
         displayName: credentials.displayName
       });
 
+      await setDoc(doc(db, 'users', userCredential.user.uid), {
+        displayName: credentials.displayName,
+        email: credentials.email,
+        termsAccepted: true,
+        termsAcceptedAt: serverTimestamp(),
+        createdAt: serverTimestamp(),
+        emailVerified: false
+      });
+
+      await sendEmailVerification(userCredential.user);
+
       return userCredential.user;
-    } catch (error: any) {
-      let errorMessage = 'Ocorreu um erro, por favor tente mais tarde.';
-      
+    } catch (err) {
+      const error = err as AuthError;
+      let errorMessage = 'An error occurred, please try again later.';
+
       if (error.code === 'auth/email-already-in-use') {
-        errorMessage = 'E-mail já cadastrado.';
+        errorMessage = 'Email already registered.';
       } else if (error.code === 'auth/weak-password') {
-        errorMessage = 'A senha precisa conter pelo menos 6 caracteres.';
+        errorMessage = 'Password must be at least 6 characters.';
       } else if (error.code === 'auth/invalid-email') {
-        errorMessage = 'Email inválido.';
+        errorMessage = 'Invalid email.';
       }
-      
+
       setError(errorMessage);
       return null;
     } finally {
@@ -142,28 +148,42 @@ export const useAuthenticationSimple = () => {
 
     try {
       await signOut(auth);
-    } catch (error: any) {
+    } catch (err) {
+      const error = err as AuthError;
       console.error('Logout error:', error);
-      setError('Erro ao fazer logout.');
+      setError('Error logging out.');
     } finally {
       setIsLoading(false);
     }
   }, []);
 
+  const resendVerificationEmail = useCallback(async (): Promise<boolean> => {
+    if (!user) {
+      setError('No user logged in.');
+      return false;
+    }
+
+    try {
+      await sendEmailVerification(user);
+      return true;
+    } catch (err) {
+      const error = err as AuthError;
+      console.error('Resend verification error:', error);
+      setError('Error sending verification email.');
+      return false;
+    }
+  }, [user]);
+
   return {
-    // State
     user,
     isLoading,
     error,
     isAuthenticated: Boolean(user),
-    
-    // Actions
     login,
     signup,
     logout,
     clearError,
-    
-    // Firebase auth instance (for compatibility)
+    resendVerificationEmail,
     auth
   };
 };
