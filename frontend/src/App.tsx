@@ -9,11 +9,14 @@ import Search from './components/Search';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
+import ForgotPassword from './pages/ForgotPassword';
 import About from './pages/About';
 import Submissions from './pages/Submissions';
 import Registration from './pages/Registration';
 import Edit from './pages/Edit';
 import Details from './pages/Details';
+import Terms from './pages/Terms';
+import Privacy from './pages/Privacy';
 
 const App = () => {
   const { user, isLoading } = useAuthenticationSimple();
@@ -60,6 +63,12 @@ const App = () => {
                 path="/register"
                 element={!user ? <Signup /> : <Navigate to="/submissions" />}
               />
+              <Route
+                path="/forgot-password"
+                element={!user ? <ForgotPassword /> : <Navigate to="/submissions" />}
+              />
+              <Route path="/terms" element={<Terms />} />
+              <Route path="/privacy" element={<Privacy />} />
             </Routes>
           </main>
           <Footer />

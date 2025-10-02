@@ -7,35 +7,30 @@ import { clearPasswordFromMemory } from '../utils/passwordSecurity';
 import Logo from '/logo.png';
 
 export default function Login() {
-  // Form state
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const passwordRef = useRef<string>('');
-  
-  // Hooks
+
   const { login, error: authError, isLoading, clearError } = useAuthenticationSimple();
   const { user } = useAuthValue();
   const navigate = useNavigate();
 
-  // Handle form submission with remember me functionality
   const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (isSubmitting || isLoading) return;
-    
+
     setIsSubmitting(true);
     clearError();
 
     try {
       const credentials = { email, password };
       const user = await login(credentials, { rememberMe });
-      
+
       if (user) {
-        // Clear password from memory
         clearPasswordFromMemory(passwordRef);
-        // Login successful - navigation will be handled by useEffect
       }
     } catch (error) {
       console.error('Login submission error:', error);
@@ -44,14 +39,12 @@ export default function Login() {
     }
   }, [email, password, rememberMe, login, isSubmitting, isLoading, clearError]);
 
-  // Handle navigation after successful authentication
   useEffect(() => {
     if (user && !isLoading && !isSubmitting) {
       navigate('/submissions', { replace: true });
     }
   }, [user, navigate, isLoading, isSubmitting]);
 
-  // Clear form errors when user starts typing
   const handleEmailChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
     if (authError) clearError();
@@ -68,7 +61,6 @@ export default function Login() {
     setRememberMe(e.target.checked);
   }, []);
 
-  // Prevent form submission if already submitting
   const isFormDisabled = isSubmitting || isLoading;
 
   return (
@@ -161,7 +153,7 @@ export default function Login() {
               }`}
               disabled={isFormDisabled}
             >
-              {isFormDisabled ? 'Entrando...' : 'Entrar'}
+              {isFormDisabled ? 'Signing in...' : 'Sign in'}
             </button>
             {authError && (
               <div className="p-3 text-sm text-red-800 bg-red-100 border border-red-200 rounded-lg dark:bg-red-800/20 dark:text-red-400 dark:border-red-800" role="alert">

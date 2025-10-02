@@ -1,8 +1,5 @@
-// hooks
 import { useFetchDocuments } from '../hooks/useFetchDocuments';
 import { useQuery } from '../hooks/useQuery';
-
-// components
 import { Link } from 'react-router-dom';
 import SearchDetail from '../pages/SearchDetail';
 

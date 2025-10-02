@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { useInsertDocument } from '../hooks/useInsertDocument';
 import { useNavigate } from 'react-router-dom';
 import { useAuthValue } from '../contexts/AuthContext';
+import { generateUserDescription, isGeminiConfigured } from '../services/gemini';
+import { SparklesIcon } from '@heroicons/react/24/outline';
 
 export default function Registration() {
   const [title, setTitle] = useState('');
@@ -9,27 +11,50 @@ export default function Registration() {
   const [body, setBody] = useState('');
   const [tags, setTags] = useState('');
   const [formError, setFormError] = useState('');
+  const [isGenerating, setIsGenerating] = useState(false);
 
   const { user } = useAuthValue();
   const navigate = useNavigate();
   const { insertDocument, response } = useInsertDocument('posts');
 
+  const handleGenerateDescription = async () => {
+    if (!title || !tags) {
+      setFormError('Please enter a name and at least one tag before generating description');
+      return;
+    }
+
+    if (!isGeminiConfigured()) {
+      setFormError('AI feature not configured. Please add VITE_GEMINI_API_KEY to your .env file');
+      return;
+    }
+
+    setIsGenerating(true);
+    setFormError('');
+
+    try {
+      const tagsArray = tags.split(',').map((tag) => tag.trim());
+      const description = await generateUserDescription(title, tagsArray);
+      setBody(description);
+    } catch (error) {
+      setFormError(error instanceof Error ? error.message : 'Failed to generate description');
+    } finally {
+      setIsGenerating(false);
+    }
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setFormError('');
 
-    // Validate image URL
     try {
       new URL(image);
     } catch (error) {
-      setFormError('Image needs to be a URL.');
+      setFormError(`The image must be a valid URL. ${error}`);
       return;
     }
 
-    // Create tags array
     const tagsArray = tags.split(',').map((tag) => tag.trim().toLowerCase());
 
-    // Check values
     if (!title || !image || !tags || !body) {
       setFormError('All fields are required');
       return;
@@ -46,7 +71,6 @@ export default function Registration() {
       createdBy: user?.displayName,
     });
 
-    // Redirect to submissions page
     navigate('/submissions');
   };
 
@@ -89,16 +113,35 @@ export default function Registration() {
           />
         </div>
         <div className="mb-4">
-          <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-            Details:
-          </label>
+          <div className="flex justify-between items-center mb-2">
+            <label className="text-sm font-medium text-gray-900 dark:text-white">
+              Details:
+            </label>
+            {isGeminiConfigured() && (
+              <button
+                type="button"
+                onClick={handleGenerateDescription}
+                disabled={isGenerating || !title || !tags}
+                className="inline-flex items-center px-3 py-1 text-xs font-medium text-white bg-purple-600 hover:bg-purple-700 rounded-md disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              >
+                <SparklesIcon className="w-4 h-4 mr-1" />
+                {isGenerating ? 'Generating...' : 'Generate with AI'}
+              </button>
+            )}
+          </div>
           <textarea
             required
-            placeholder="Person description"
+            placeholder="Person description (or use AI to generate)"
             onChange={(e) => setBody(e.target.value)}
             value={body}
+            rows={4}
             className="w-full px-3 py-2 border rounded-md bg-gray-100 dark:bg-gray-700 dark:text-white"
           ></textarea>
+          {isGeminiConfigured() && (
+            <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+              Tip: Fill in name and tags, then click "Generate with AI" for an auto-generated description
+            </p>
+          )}
         </div>
         <div className="mb-4">
           <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">

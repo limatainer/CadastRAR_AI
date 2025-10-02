@@ -6,7 +6,6 @@ import Logo from '/logo.png';
 import PasswordStrengthMeter from '../components/PasswordStrengthMeter';
 import { validatePasswordSecurity, clearPasswordFromMemory } from '../utils/passwordSecurity';
 export default function Signup() {
-  // Form state
   const [displayName, setDisplayName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -17,28 +16,24 @@ export default function Signup() {
   const [securityErrors, setSecurityErrors] = useState<string[]>([]);
   const passwordRef = useRef<string>('');
 
-  // Hooks
   const { signup, error: authError, isLoading, clearError } = useAuthenticationSimple();
   const { user } = useAuthValue();
   const navigate = useNavigate();
 
-  // Handle form submission with remember me functionality
   const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (isSubmitting || isLoading) return;
-    
+
     setIsSubmitting(true);
     clearError();
 
-    // Client-side validation
     if (password !== confirmPassword) {
-      setValidationError('As senhas não coincidem.');
+      setValidationError('Passwords do not match.');
       setIsSubmitting(false);
       return;
     }
 
-    // Security validation
     const passwordSecurityErrors = validatePasswordSecurity(password, email);
     if (passwordSecurityErrors.length > 0) {
       setSecurityErrors(passwordSecurityErrors);
@@ -55,13 +50,11 @@ export default function Signup() {
         email,
         password
       };
-      
+
       const user = await signup(credentials, { rememberMe });
-      
+
       if (user) {
-        // Clear password from memory
         clearPasswordFromMemory(passwordRef);
-        // Signup successful - navigation will be handled by useEffect
       }
     } catch (error) {
       console.error('Signup submission error:', error);
@@ -70,14 +63,12 @@ export default function Signup() {
     }
   }, [displayName, email, password, confirmPassword, rememberMe, signup, isSubmitting, isLoading, clearError]);
 
-  // Handle navigation after successful authentication
   useEffect(() => {
     if (user && !isLoading && !isSubmitting) {
       navigate('/submissions', { replace: true });
     }
   }, [user, navigate, isLoading, isSubmitting]);
 
-  // Prevent form submission if already submitting
   const isFormDisabled = isSubmitting || isLoading;
 
   return (
@@ -148,7 +139,6 @@ export default function Signup() {
                     const newPassword = e.target.value;
                     setPassword(newPassword);
                     passwordRef.current = newPassword;
-                    // Clear security errors when user starts typing
                     if (securityErrors.length > 0) {
                       setSecurityErrors([]);
                     }
@@ -156,7 +146,7 @@ export default function Signup() {
                   value={password}
                 />
               </label>
-              
+
               <PasswordStrengthMeter password={password} />
 
               <label
@@ -193,12 +183,21 @@ export default function Signup() {
                     className="font-light text-gray-500 dark:text-gray-300"
                   >
                     I accept the{' '}
-                    <a
+                    <NavLink
+                      to="/terms"
+                      target="_blank"
                       className="font-medium text-primary-600 hover:underline dark:text-primary-500"
-                      href="#"
                     >
                       Terms and Conditions
-                    </a>
+                    </NavLink>
+                    {' '}and{' '}
+                    <NavLink
+                      to="/privacy"
+                      target="_blank"
+                      className="font-medium text-primary-600 hover:underline dark:text-primary-500"
+                    >
+                      Privacy Policy
+                    </NavLink>
                   </label>
                 </div>
               </div>
@@ -219,21 +218,20 @@ export default function Signup() {
                     htmlFor="remember"
                     className="font-light text-gray-500 dark:text-gray-300"
                   >
-                    Manter-me conectado
+                    Keep me connected
                   </label>
                 </div>
               </div>
 
               <button
                 type="submit"
-                className={`w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 transition-opacity ${
-                  isFormDisabled ? 'opacity-50 cursor-not-allowed' : 'hover:opacity-90'
-                }`}
+                className={`w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 transition-opacity ${isFormDisabled ? 'opacity-50 cursor-not-allowed' : 'hover:opacity-90'
+                  }`}
                 disabled={isFormDisabled}
               >
-                {isFormDisabled ? 'Criando conta...' : 'Criar conta'}
+                {isFormDisabled ? 'Creating account...' : 'Create account'}
               </button>
-              
+
               {(authError || validationError || securityErrors.length > 0) && (
                 <div className="p-3 text-sm text-red-800 bg-red-100 border border-red-200 rounded-lg dark:bg-red-800/20 dark:text-red-400 dark:border-red-800" role="alert">
                   {authError || validationError}

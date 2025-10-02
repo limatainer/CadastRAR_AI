@@ -1,6 +1,4 @@
-/**
- * Common Application Types
- */
+import { Timestamp } from 'firebase/firestore';
 
 export interface Post {
   id: string;
@@ -10,10 +8,10 @@ export interface Post {
   tags: string[];
   createdBy: string;
   uid?: string;
-  createdAt?: Date | any; // Firestore timestamp
+  createdAt?: Date | Timestamp;
 }
 
 export interface FirestoreDocument extends Partial<Post> {
   id: string;
-  [key: string]: any; // For other Firestore fields
+  [key: string]: unknown;
 }

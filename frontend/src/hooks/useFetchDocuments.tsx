@@ -15,7 +15,6 @@ export const useFetchDocuments = (docCollection: string, search: string | null =
   const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
-    // Don't fetch if uid is required but not available (user logged out)
     if (!uid && docCollection === 'posts' && !search) {
       setDocuments([]);
       setLoading(false);
