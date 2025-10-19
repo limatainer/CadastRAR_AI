@@ -1,13 +1,13 @@
 import { NavLink } from 'react-router-dom';
-import { 
-  UserGroupIcon, 
-  LightBulbIcon, 
+import {
+  UserGroupIcon,
+  LightBulbIcon,
   RocketLaunchIcon,
   EnvelopeIcon,
   ChevronRightIcon,
   SparklesIcon
 } from '@heroicons/react/24/outline';
-import { 
+import {
   CheckBadgeIcon,
   HeartIcon,
   GlobeAltIcon
@@ -41,21 +41,21 @@ export default function About() {
 
   const teamMembers = [
     {
-      name: 'Lima Codes',
+      name: 'Mariana Lima',
       role: 'Founder & Lead Developer',
-      image: 'https://ui-avatars.com/api/?name=Lima+Codes&background=8b5cf6&color=fff&size=200',
+      image: 'https://ui-avatars.com/api/?name=Mariana+Lima&background=8b5cf6&color=fff&size=200',
       bio: 'Passionate about creating innovative solutions for modern businesses.'
     },
     {
-      name: 'Maria Silva',
+      name: 'Lima',
       role: 'UX/UI Designer',
-      image: 'https://ui-avatars.com/api/?name=Maria+Silva&background=06b6d4&color=fff&size=200',
+      image: 'https://ui-avatars.com/api/?name=Lima&background=06b6d4&color=fff&size=200',
       bio: 'Crafting beautiful and intuitive user experiences.'
     },
     {
-      name: 'João Santos',
+      name: 'Sven Heimann',
       role: 'Backend Engineer',
-      image: 'https://ui-avatars.com/api/?name=João+Santos&background=10b981&color=fff&size=200',
+      image: 'https://ui-avatars.com/api/?name=Sven+Heimann&background=10b981&color=fff&size=200',
       bio: 'Building robust and scalable backend systems.'
     }
   ];
@@ -66,23 +66,23 @@ export default function About() {
       <section className="relative overflow-hidden ">
         {/* Background Pattern */}
         <div className="absolute inset-0 hero-pattern opacity-20"></div>
-        
+
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 lg:py-32">
           <div className="text-center">
             <div className="inline-flex items-center px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full  text-sm font-medium mb-6">
               <SparklesIcon className="h-4 w-4 mr-2" />
               Revolutionizing Data Management
             </div>
-            
+
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold  mb-6 tracking-tight">
               About <span className="bg-gradient-to-r from-gray-300 to-primary-600 bg-clip-text text-transparent">CadastRAR</span>
             </h1>
-            
+
             <p className="text-xl lg:text-2xl  max-w-4xl mx-auto mb-8 leading-relaxed">
-              We are committed to revolutionizing data management and document generation through 
+              We are committed to revolutionizing data management and document generation through
               <span className="font-semibold "> AI-driven solutions</span> that empower businesses worldwide.
             </p>
-            
+
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <NavLink
                 to="/posts/create"
@@ -91,7 +91,7 @@ export default function About() {
                 Get Started
                 <ChevronRightIcon className="h-5 w-5 ml-2" />
               </NavLink>
-              
+
               <NavLink
                 to="/submissions"
                 className="inline-flex items-center px-8 py-3 border-2 border-white text-white font-semibold rounded-lg hover:bg-white hover:text-gray-600 transition-all duration-200"
@@ -133,13 +133,13 @@ export default function About() {
                 <RocketLaunchIcon className="h-4 w-4 mr-2" />
                 Our Mission
               </div>
-              
+
               <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-6">
                 Empowering businesses with cutting-edge technology
               </h2>
-              
+
               <p className="text-lg text-gray-600 dark:text-gray-300 mb-8 leading-relaxed">
-                To simplify data management and enhance operational efficiency through innovative, 
+                To simplify data management and enhance operational efficiency through innovative,
                 user-friendly solutions that scale with your business needs.
               </p>
 
@@ -187,11 +187,11 @@ export default function About() {
               <UserGroupIcon className="h-4 w-4 mr-2" />
               Our Team
             </div>
-            
+
             <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-4">
               Meet the minds behind CadastRAR
             </h2>
-            
+
             <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
               Our team consists of passionate individuals dedicated to innovation and excellence in technology.
             </p>
@@ -211,15 +211,15 @@ export default function About() {
                       <CheckBadgeIcon className="h-5 w-5 text-white" />
                     </div>
                   </div>
-                  
+
                   <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
                     {member.name}
                   </h3>
-                  
+
                   <p className="text-gray-600 dark:text-gray-400 font-medium mb-4">
                     {member.role}
                   </p>
-                  
+
                   <p className="text-gray-600 dark:text-gray-300 text-sm">
                     {member.bio}
                   </p>
@@ -236,11 +236,11 @@ export default function About() {
           <h2 className="text-3xl lg:text-4xl font-bold text-white mb-4">
             Ready to get started?
           </h2>
-          
+
           <p className="text-xl text-gray-100 mb-8">
             Join thousands of users who trust CadastRAR for their data management needs.
           </p>
-          
+
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <NavLink
               to="/register"
@@ -249,7 +249,7 @@ export default function About() {
               <UserGroupIcon className="h-5 w-5 mr-2" />
               Create Account
             </NavLink>
-            
+
             <a
               href="https://lima-theta.vercel.app"
               target="_blank"

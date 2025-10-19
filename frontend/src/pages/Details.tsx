@@ -12,6 +12,7 @@ import {
 } from '@heroicons/react/24/outline';
 import { useAuthValue } from '../contexts/AuthContext';
 import { useDeleteDocument } from '../hooks/useDeleteDocument';
+
 import { generateIDCard, generateCertificate, generateProfileSheet } from '../utils/pdfGenerator';
 
 export default function Details() {
@@ -131,7 +132,7 @@ export default function Details() {
               <ArrowLeftIcon className="h-4 w-4 mr-2" />
               Back to Submissions
             </Link>
-            
+
             {isOwner && (
               <div className="flex space-x-2">
                 <Link
@@ -182,7 +183,7 @@ export default function Details() {
                 <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-2">
                   {post.title}
                 </h1>
-                
+
                 {/* Metadata */}
                 <div className="flex flex-col sm:flex-row items-center sm:items-start space-y-2 sm:space-y-0 sm:space-x-6 text-sm text-gray-500 dark:text-gray-400">
                   {post.createdAt && (
@@ -197,7 +198,7 @@ export default function Details() {
                       </span>
                     </div>
                   )}
-                  
+
                   {post.tags && post.tags.length > 0 && (
                     <div className="flex items-center">
                       <TagIcon className="h-4 w-4 mr-1.5" />
@@ -216,7 +217,7 @@ export default function Details() {
               <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
                 User Details
               </h2>
-              
+
               <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4">
                 {post.body ? (
                   <p className="text-gray-700 dark:text-gray-300 leading-relaxed whitespace-pre-wrap">
@@ -236,7 +237,7 @@ export default function Details() {
                 Generate Documents
               </h2>
               <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
-                Export this user's information as a PDF document
+                Export this user&apos;s information as a PDF document
               </p>
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -296,7 +297,7 @@ export default function Details() {
                 <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
                   Actions
                 </h2>
-                
+
                 <div className="flex space-x-3">
                   <Link
                     to={`/posts/edit/${post.id}`}
