@@ -25,4 +25,6 @@ claude
 *.ntvs*
 *.njsproj
 *.sln
-*.sw?yarn.lock
+*.sw?
+
+yarn.lock
