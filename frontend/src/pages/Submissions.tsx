@@ -12,6 +12,8 @@ import {
 } from '@heroicons/react/24/outline';
 import EmailVerificationBanner from '../components/EmailVerificationBanner';
 import { Timestamp } from 'firebase/firestore';
+import { AnimatePresence, motion } from 'motion/react';
+import { fadeUp, stagger } from '../lib/motion';
 
 export default function Submissions() {
   const { user } = useAuthValue();
@@ -113,7 +115,12 @@ export default function Submissions() {
 
         {/* Empty State */}
         {posts && posts.length === 0 && !loading && (
-          <div className="text-center py-12">
+          <motion.div
+            className="text-center py-12"
+            initial={{ opacity: 0, scale: 0.96 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.3 }}
+          >
             <div className="mx-auto h-24 w-24 text-gray-400">
               <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -132,7 +139,7 @@ export default function Submissions() {
                 Register New User
               </Link>
             </div>
-          </div>
+          </motion.div>
         )}
 
         {/* Data Table */}
@@ -162,9 +169,21 @@ export default function Submissions() {
                       </th>
                     </tr>
                   </thead>
-                  <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                  <motion.tbody
+                    className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700"
+                    variants={stagger}
+                    initial="hidden"
+                    animate="visible"
+                  >
+                    <AnimatePresence initial={false}>
                     {posts.map((post) => (
-                      <tr key={post.id} className="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-150">
+                      <motion.tr
+                        key={post.id}
+                        layout
+                        variants={fadeUp}
+                        exit={{ opacity: 0, x: -24, transition: { duration: 0.2 } }}
+                        className="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-150"
+                      >
                         <td className="px-6 py-4 whitespace-nowrap">
                           <div className="text-sm font-medium text-gray-900 dark:text-white">
                             {post.title}
@@ -196,26 +215,40 @@ export default function Submissions() {
                               <PencilIcon className="h-4 w-4 mr-1" />
                               Edit
                             </Link>
-                            <button
+                            <motion.button
+                              whileTap={{ scale: 0.95 }}
                               onClick={() => handleDelete(post.id, post.title)}
                               className="inline-flex items-center px-3 py-1 border border-red-300 dark:border-red-600 rounded-md text-xs font-medium text-red-700 dark:text-red-400 bg-white dark:bg-gray-700 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors duration-150"
                               title="Delete user"
                             >
                               <TrashIcon className="h-4 w-4 mr-1" />
                               Delete
-                            </button>
+                            </motion.button>
                           </div>
                         </td>
-                      </tr>
+                      </motion.tr>
                     ))}
-                  </tbody>
+                    </AnimatePresence>
+                  </motion.tbody>
                 </table>
               </div>
 
               {/* Mobile Cards */}
-              <div className="md:hidden space-y-4">
+              <motion.div
+                className="md:hidden space-y-4"
+                variants={stagger}
+                initial="hidden"
+                animate="visible"
+              >
+                <AnimatePresence initial={false}>
                 {posts.map((post) => (
-                  <div key={post.id} className="border border-gray-200 dark:border-gray-600 rounded-lg p-4">
+                  <motion.div
+                    key={post.id}
+                    layout
+                    variants={fadeUp}
+                    exit={{ opacity: 0, x: -24, transition: { duration: 0.2 } }}
+                    className="border border-gray-200 dark:border-gray-600 rounded-lg p-4"
+                  >
                     <div className="flex justify-between items-start mb-3">
                       <h4 className="text-sm font-medium text-gray-900 dark:text-white">
                         {post.title}
@@ -250,9 +283,10 @@ export default function Submissions() {
                         Delete
                       </button>
                     </div>
-                  </div>
+                  </motion.div>
                 ))}
-              </div>
+                </AnimatePresence>
+              </motion.div>
             </div>
           </div>
         )}

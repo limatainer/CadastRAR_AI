@@ -1,5 +1,6 @@
 /* eslint-disable react/no-unescaped-entities */
 import { NavLink } from 'react-router-dom';
+import { motion } from 'motion/react';
 
 import { FaArrowRightLong } from 'react-icons/fa6';
 import {
@@ -7,15 +8,27 @@ import {
   MdOutlineAddCircleOutline,
 } from 'react-icons/md';
 import { SiProbot, SiFastly } from 'react-icons/si';
+import { fadeUp, stagger } from '../lib/motion';
+
+const MotionNavLink = motion.create(NavLink);
+const press = { whileHover: { scale: 1.05 }, whileTap: { scale: 0.95 } };
+
 export default function Home() {
   return (
     <div className="flex flex-col min-h-screen">
       {/* Header */}
       <header className="bg-white dark:bg-gray-900">
-        <div className="py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-16 lg:px-12">
+        <motion.div
+          className="py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-16 lg:px-12"
+          variants={stagger}
+          initial="hidden"
+          animate="visible"
+        >
           {/* News */}
-          <NavLink
+          <MotionNavLink
             to="/about"
+            variants={fadeUp}
+            {...press}
             className="inline-flex justify-between items-center py-1 px-1 pr-4 
             mb-7 text-sm text-gray-700 bg-gray-100 rounded-full dark:bg-gray-800
              dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700"
@@ -42,50 +55,79 @@ export default function Home() {
                 clipRule="evenodd"
               ></path>
             </svg>
-          </NavLink>
+          </MotionNavLink>
           {/* Hero */}
-          <h1 className="mb-4 text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white">
+          <motion.h1
+            variants={fadeUp}
+            className="mb-4 text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white"
+          >
             Smart User Management with AI-Powered Tools
-          </h1>
-          <p className="mb-8 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 xl:px-48 dark:text-gray-400">
+          </motion.h1>
+          <motion.p
+            variants={fadeUp}
+            className="mb-8 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 xl:px-48 dark:text-gray-400"
+          >
             Register and manage user profiles with AI-generated descriptions,
             automatic document generation, secure authentication, and powerful
             search capabilities - all in one streamlined platform.
-          </p>
+          </motion.p>
 
-          <div className="flex flex-col mb-8 lg:mb-16 space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">
-            <NavLink
+          <motion.div
+            variants={fadeUp}
+            className="flex flex-col mb-8 lg:mb-16 space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4"
+          >
+            <MotionNavLink
               to="/about"
+              {...press}
               className="inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-900"
             >
               Learn more
               <FaArrowRightLong className="ml-2" />
-            </NavLink>
-            <NavLink
+            </MotionNavLink>
+            <MotionNavLink
               to="/register"
+              {...press}
               className="inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-gray-900 rounded-lg border border-gray-300 hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 dark:text-white dark:border-gray-700 dark:hover:bg-gray-700 dark:focus:ring-gray-800"
             >
               <MdOutlineAddCircleOutline className="mr-2" />
               Get Started
-            </NavLink>
-          </div>
-          <div className="px-4 mx-auto text-center md:max-w-screen-md lg:max-w-screen-lg lg:px-36">
+            </MotionNavLink>
+          </motion.div>
+          <motion.div
+            variants={fadeUp}
+            className="px-4 mx-auto text-center md:max-w-screen-md lg:max-w-screen-lg lg:px-36"
+          >
             <span className="font-semibold text-gray-400 uppercase">
               SIMPLY FAST
             </span>
-            <div className="flex flex-wrap justify-center items-center mt-8 text-gray-500 sm:justify-between">
-              <MdOutlineAppRegistration className="icons" />
-              <SiProbot className="icons" />
-
-              <SiFastly className="icons" />
-            </div>
-          </div>
-        </div>
+            <motion.div
+              className="flex flex-wrap justify-center items-center mt-8 text-gray-500 sm:justify-between"
+              variants={stagger}
+            >
+              {[MdOutlineAppRegistration, SiProbot, SiFastly].map((Icon, i) => (
+                <motion.span
+                  key={i}
+                  variants={fadeUp}
+                  whileHover={{ scale: 1.15, y: -4 }}
+                  transition={{ type: 'spring', stiffness: 400, damping: 15 }}
+                >
+                  <Icon className="icons" />
+                </motion.span>
+              ))}
+            </motion.div>
+          </motion.div>
+        </motion.div>
       </header>
       {/* Section */}
       <section className="bg-white dark:bg-gray-900">
-        <div className="gap-8 items-center py-8 px-4 mx-auto max-w-screen-xl xl:gap-16 md:grid md:grid-cols-2 sm:py-16 lg:px-6">
-          <div className="mt-4 md:mt-0">
+        <motion.div
+          className="gap-8 items-center py-8 px-4 mx-auto max-w-screen-xl xl:gap-16 md:grid md:grid-cols-2 sm:py-16 lg:px-6"
+          variants={stagger}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.25 }}
+        >
+          <motion.div variants={fadeUp} className="mt-4 md:mt-0">
             <h2 className="mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white">
               AI-Enhanced User Management
             </h2>
@@ -96,22 +138,28 @@ export default function Home() {
               capabilities to streamline your workflow.
             </p>
 
-            <NavLink to="/register" className="btn">
+            <MotionNavLink
+              to="/register"
+              className="btn"
+              {...press}
+            >
               Get started
               <FaArrowRightLong className="ml-2" />
-            </NavLink>
-          </div>
-          <img
+            </MotionNavLink>
+          </motion.div>
+          <motion.img
+            variants={fadeUp}
             className="w-full dark:hidden"
             src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/cta/cta-dashboard-mockup.svg"
             alt="dashboard image"
           />
-          <img
+          <motion.img
+            variants={fadeUp}
             className="w-full hidden dark:block"
             src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/cta/cta-dashboard-mockup-dark.svg"
             alt="dashboard image"
           />
-        </div>
+        </motion.div>
       </section>
     </div>
   );

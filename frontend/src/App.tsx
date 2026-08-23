@@ -1,6 +1,8 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { AnimatePresence, MotionConfig, motion } from 'motion/react';
 import { useAuthenticationSimple } from './hooks/useAuthenticationSimple';
 import { AuthProvider } from './contexts/AuthContext';
+import { page } from './lib/motion';
 
 import Footer from './components/Footer';
 import Navbar from './components/Navbar';
@@ -18,6 +20,59 @@ import Details from './pages/Details';
 import Terms from './pages/Terms';
 import Privacy from './pages/Privacy';
 
+const AnimatedRoutes = ({
+  user,
+}: {
+  user: ReturnType<typeof useAuthenticationSimple>['user'];
+}) => {
+  const location = useLocation();
+
+  return (
+    <AnimatePresence mode="wait">
+      <motion.div
+        key={location.pathname}
+        variants={page}
+        initial="hidden"
+        animate="visible"
+        exit="exit"
+      >
+        <Routes location={location}>
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route
+            path="/submissions"
+            element={user ? <Submissions /> : <Navigate to="/login" />}
+          />
+          <Route path="/search" element={<Search />} />
+          <Route
+            path="/posts/create"
+            element={user ? <Registration /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/posts/edit/:id"
+            element={user ? <Edit /> : <Navigate to="/login" />}
+          />
+          <Route path="/posts/:id" element={<Details />} />
+          <Route
+            path="/login"
+            element={!user ? <Login /> : <Navigate to="/submissions" />}
+          />
+          <Route
+            path="/register"
+            element={!user ? <Signup /> : <Navigate to="/submissions" />}
+          />
+          <Route
+            path="/forgot-password"
+            element={!user ? <ForgotPassword /> : <Navigate to="/submissions" />}
+          />
+          <Route path="/terms" element={<Terms />} />
+          <Route path="/privacy" element={<Privacy />} />
+        </Routes>
+      </motion.div>
+    </AnimatePresence>
+  );
+};
+
 const App = () => {
   const { user, isLoading } = useAuthenticationSimple();
 
@@ -33,48 +88,19 @@ const App = () => {
   }
 
   return (
-    <AuthProvider value={{ user: user || null }}>
-      <BrowserRouter>
-        <div className="flex flex-col min-h-screen">
-          <Navbar />
-          <main className="flex-1">
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/about" element={<About />} />
-              <Route
-                path="/submissions"
-                element={user ? <Submissions /> : <Navigate to="/login" />}
-              />
-              <Route path="/search" element={<Search />} />
-              <Route
-                path="/posts/create"
-                element={user ? <Registration /> : <Navigate to="/login" />}
-              />
-              <Route
-                path="/posts/edit/:id"
-                element={user ? <Edit /> : <Navigate to="/login" />}
-              />
-              <Route path="/posts/:id" element={<Details />} />
-              <Route
-                path="/login"
-                element={!user ? <Login /> : <Navigate to="/submissions" />}
-              />
-              <Route
-                path="/register"
-                element={!user ? <Signup /> : <Navigate to="/submissions" />}
-              />
-              <Route
-                path="/forgot-password"
-                element={!user ? <ForgotPassword /> : <Navigate to="/submissions" />}
-              />
-              <Route path="/terms" element={<Terms />} />
-              <Route path="/privacy" element={<Privacy />} />
-            </Routes>
-          </main>
-          <Footer />
-        </div>
-      </BrowserRouter>
-    </AuthProvider>
+    <MotionConfig reducedMotion="user">
+      <AuthProvider value={{ user: user || null }}>
+        <BrowserRouter>
+          <div className="flex flex-col min-h-screen">
+            <Navbar />
+            <main className="flex-1">
+              <AnimatedRoutes user={user} />
+            </main>
+            <Footer />
+          </div>
+        </BrowserRouter>
+      </AuthProvider>
+    </MotionConfig>
   );
 };
 
