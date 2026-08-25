@@ -34,7 +34,7 @@ const createAndCaptureElement = async (
       scale: 2,
       useCORS: true,
       allowTaint: true,
-      backgroundColor: '#ffffff'
+      backgroundColor: '#ffffff',
     });
 
     const imgData = canvas.toDataURL('image/jpeg', 0.95);
@@ -111,7 +111,10 @@ export const generateIDCard = async (userData: UserData): Promise<void> => {
             font-size: 18px;
             color: #6b7280;
           ">
-            ${userData.tags.slice(0, 3).map(tag => `#${tag}`).join(' ')}
+            ${userData.tags
+              .slice(0, 3)
+              .map((tag) => `#${tag}`)
+              .join(' ')}
           </p>
 
           <p style="
@@ -131,7 +134,7 @@ export const generateIDCard = async (userData: UserData): Promise<void> => {
   const pdf = new jsPDF({
     orientation: 'landscape',
     unit: 'mm',
-    format: [85.6, 53.98]
+    format: [85.6, 53.98],
   });
 
   pdf.addImage(imgData, 'JPEG', 0, 0, 85.6, 53.98);
@@ -143,7 +146,7 @@ export const generateCertificate = async (userData: UserData): Promise<void> => 
     ? new Date(userData.createdAt.seconds * 1000).toLocaleDateString('en-US', {
         year: 'numeric',
         month: 'long',
-        day: 'numeric'
+        day: 'numeric',
       })
     : 'N/A';
 
@@ -223,7 +226,9 @@ export const generateCertificate = async (userData: UserData): Promise<void> => 
           has been successfully registered in the CadastRAR system
         </p>
 
-        ${userData.tags.length > 0 ? `
+        ${
+          userData.tags.length > 0
+            ? `
           <p style="
             font-size: 22px;
             color: #6b7280;
@@ -231,7 +236,9 @@ export const generateCertificate = async (userData: UserData): Promise<void> => 
           ">
             <strong>Specializations:</strong> ${userData.tags.join(', ')}
           </p>
-        ` : ''}
+        `
+            : ''
+        }
 
         <p style="
           font-size: 18px;
@@ -275,7 +282,7 @@ export const generateCertificate = async (userData: UserData): Promise<void> => 
   const pdf = new jsPDF({
     orientation: 'landscape',
     unit: 'mm',
-    format: 'a4'
+    format: 'a4',
   });
 
   pdf.addImage(imgData, 'JPEG', 0, 0, 297, 210);
@@ -287,7 +294,7 @@ export const generateProfileSheet = async (userData: UserData): Promise<void> =>
     ? new Date(userData.createdAt.seconds * 1000).toLocaleDateString('en-US', {
         year: 'numeric',
         month: 'long',
-        day: 'numeric'
+        day: 'numeric',
       })
     : 'N/A';
 
@@ -355,7 +362,7 @@ export const generateProfileSheet = async (userData: UserData): Promise<void> =>
               font-size: 20px;
               color: #6b7280;
             ">
-              ${userData.tags.map(tag => `#${tag}`).join(' ')}
+              ${userData.tags.map((tag) => `#${tag}`).join(' ')}
             </p>
           </div>
         </div>
@@ -397,7 +404,9 @@ export const generateProfileSheet = async (userData: UserData): Promise<void> =>
             flex-wrap: wrap;
             gap: 12px;
           ">
-            ${userData.tags.map(tag => `
+            ${userData.tags
+              .map(
+                (tag) => `
               <span style="
                 background: rgb(243, 232, 255);
                 color: rgb(107, 33, 168);
@@ -409,7 +418,9 @@ export const generateProfileSheet = async (userData: UserData): Promise<void> =>
               ">
                 #${tag}
               </span>
-            `).join('')}
+            `
+              )
+              .join('')}
           </div>
         </div>
 
@@ -471,7 +482,7 @@ export const generateProfileSheet = async (userData: UserData): Promise<void> =>
   const pdf = new jsPDF({
     orientation: 'portrait',
     unit: 'mm',
-    format: 'a4'
+    format: 'a4',
   });
 
   pdf.addImage(imgData, 'JPEG', 0, 0, 210, 297);

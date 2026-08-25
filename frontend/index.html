@@ -1,10 +1,40 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/logo.png" />
+    <link rel="icon" type="image/png" href="/favicon-32x32.png" />
+    <link rel="apple-touch-icon" href="/favicon-32x32.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>CadastRAR</title>
+    <meta name="description" content="CadastRAR — register people with AI-assisted descriptions and export ID cards, certificates, and profile sheets as PDF. Try free for 7 days." />
+    <meta name="theme-color" content="#0a0b0d" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#f8fafc" media="(prefers-color-scheme: light)" />
+
+    <meta property="og:title" content="CadastRAR — AI-Assisted Record Registration & PDF Export" />
+    <meta property="og:description" content="Register people with AI-assisted descriptions and export ID cards, certificates, and profile sheets as PDF. Try free for 7 days." />
+    <meta property="og:image" content="/og-image.png" />
+    <meta property="og:url" content="https://cadastrar.vercel.app" />
+    <meta property="og:type" content="website" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="CadastRAR — AI-Assisted Record Registration & PDF Export" />
+    <meta name="twitter:description" content="Register people with AI-assisted descriptions and export ID cards, certificates, and profile sheets as PDF. Try free for 7 days." />
+    <meta name="twitter:image" content="/og-image.png" />
+
+    <title>CadastRAR — Register People, Export Documents</title>
+
+    <script>
+      (function() {
+        var stored = localStorage.getItem('theme');
+        var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        var theme = stored === 'dark' || (stored === null && prefersDark) ? 'dark' : 'light';
+        if (theme === 'dark') {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+        }
+        document.documentElement.setAttribute('data-theme', theme);
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>

@@ -2,18 +2,187 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+:root {
+  /* Light — corporate trust, warm indigo */
+  --bg: #f9fafb;
+  --surface: #ffffff;
+  --surface-alt: #f3f4f6;
+  --border-hairline: #e5e7eb;
+  --border: #d1d5db;
+  --fg: #111827;
+  --fg-muted: #6b7280;
+  --fg-subtle: #9ca3af;
+  --accent: #4f46e5;
+  --accent-fg: #ffffff;
+  --accent-hover: #4338ca;
+  --accent-subtle: #eef2ff;
+  --orb-1: rgba(79, 70, 229, 0.12);
+  --orb-2: rgba(139, 92, 246, 0.10);
+  --orb-3: rgba(99, 102, 241, 0.08);
+  --vignette-color: rgba(249, 250, 251, 0.6);
+  --radius: 0.5rem;
+}
+
+.dark {
+  /* Dark — deep slate indigo */
+  --bg: #0f172a;
+  --surface: #1e293b;
+  --surface-alt: #334155;
+  --border-hairline: #334155;
+  --border: #475569;
+  --fg: #f1f5f9;
+  --fg-muted: #94a3b8;
+  --fg-subtle: #64748b;
+  --accent: #818cf8;
+  --accent-fg: #ffffff;
+  --accent-hover: #6366f1;
+  --accent-subtle: rgba(129, 140, 248, 0.1);
+  --orb-1: rgba(99, 102, 241, 0.15);
+  --orb-2: rgba(139, 92, 246, 0.12);
+  --orb-3: rgba(79, 70, 229, 0.10);
+  --vignette-color: rgba(15, 23, 42, 0.7);
+  --radius: 0.5rem;
+}
+
+@layer base {
+  body {
+    @apply bg-[var(--bg)] text-[var(--fg)] antialiased;
+    line-height: 1.5;
+    font-family: 'Geist', system-ui, sans-serif;
+  }
+}
+
+/* Font faces — self-hosted, font-display swap */
+@font-face {
+  font-family: 'Geist';
+  src: url('/fonts/Geist-Variable.woff2') format('woff2');
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'GeistMono';
+  src: url('/fonts/GeistMono-Variable.woff2') format('woff2');
+  font-weight: 100 900;
+  font-display: swap;
+}
+
 @layer components {
   .btn {
-    @apply inline-flex justify-center items-center py-2 px-3 text-base font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-900;
+    @apply inline-flex justify-center items-center font-medium text-center rounded-[var(--radius)] transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2;
+    background-color: var(--accent);
+    color: var(--accent-fg);
+    border: 1px solid transparent;
   }
+  .btn:hover {
+    background-color: var(--accent-hover);
+  }
+  .btn-ghost {
+    @apply inline-flex justify-center items-center font-medium text-center rounded-[var(--radius)] border border-[var(--border)] transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2;
+    color: var(--fg);
+    background: transparent;
+  }
+  .btn-ghost:hover {
+    background-color: color-mix(in srgb, var(--fg) 8%, transparent);
+  }
+  .btn-outline {
+    @apply inline-flex justify-center items-center font-medium text-center rounded-[var(--radius)] border transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2;
+    border-color: var(--accent);
+    color: var(--accent-fg);
+    background-color: transparent;
+  }
+  .btn-outline:hover {
+    background-color: var(--accent);
+    color: var(--accent-fg);
+  }
+
   .txtComments {
-    @apply mb-6 font-light text-gray-500 md:text-lg dark:text-gray-400;
+    @apply mb-6 font-light text-[var(--fg-muted)] md:text-lg;
   }
   .icons {
-    @apply text-5xl mr-5 mb-5 lg:mb-0 hover:text-gray-800 dark:hover:text-gray-400;
+    @apply text-5xl mr-5 mb-5 lg:mb-0 transition-colors duration-200;
+    color: var(--fg-muted);
+  }
+  .icons:hover {
+    color: var(--accent);
   }
   .hero-pattern {
     background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
     background-size: 60px 60px;
   }
+}
+
+/* Cinematic gradient mesh — works in both light and dark */
+.gradient-mesh {
+  position: relative;
+  overflow: hidden;
+}
+.gradient-mesh::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 70% 50% at 15% 50%, var(--orb-1) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 60% at 85% 30%, var(--orb-2) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 40% at 50% 90%, var(--orb-3) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+.gradient-mesh > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Noise grain overlay — cinematic texture */
+.noise-overlay::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  opacity: 0.035;
+  pointer-events: none;
+  z-index: 9999;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 200px 200px;
+}
+
+/* Vignette — draws eye to center (use as child div) */
+.vignette-frame {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, transparent 50%, var(--vignette-color) 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Hairline dividers */
+.border-hairline {
+  border-color: var(--border-hairline);
+  border-width: 1px;
+}
+.border-hairline-t {
+  border-top-color: var(--border-hairline);
+  border-top-width: 1px;
+}
+.border-hairline-b {
+  border-bottom-color: var(--border-hairline);
+  border-bottom-width: 1px;
+}
+.border-hairline-x {
+  border-left-color: var(--border-hairline);
+  border-right-color: var(--border-hairline);
+  border-left-width: 1px;
+  border-right-width: 1px;
+}
+.border-hairline-y {
+  border-top-color: var(--border-hairline);
+  border-bottom-color: var(--border-hairline);
+  border-top-width: 1px;
+  border-bottom-width: 1px;
 }

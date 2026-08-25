@@ -10,20 +10,18 @@ export default function Search() {
   const { documents: posts } = useFetchDocuments('posts', search);
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900 p-4">
-      <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-6">
-        Search Results: {search}
-      </h1>
-      <div className="w-full max-w-3xl bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-[var(--surface-alt)] p-4">
+      <h1 className="text-3xl font-bold text-[var(--fg)] mb-6">Search Results: {search}</h1>
+      <div className="w-full max-w-3xl bg-[var(--surface)] rounded-lg shadow-md p-6">
         {posts && posts.length === 0 && (
           <div className="text-center">
-            <p className="text-lg text-gray-700 dark:text-gray-300 mb-4">
+            <p className="text-lg text-[var(--fg)] mb-4">
               Could not find any match for this search
             </p>
             <Link
               to="/submissions"
-              className="inline-block py-2 px-4 bg-blue-600 hover:bg-blue-700
-               text-white rounded-lg font-medium shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
+              className="inline-block py-2 px-4 bg-[var(--accent)] hover:bg-[var(--accent-hover)]
+               text-[var(--accent-fg)] rounded-[var(--radius)] font-medium shadow-sm focus:outline-none focus:ring-2 focus:ring-[var(--accent)]  "
             >
               Back
             </Link>

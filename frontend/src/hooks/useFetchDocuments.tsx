@@ -1,15 +1,13 @@
 import { useState, useEffect } from 'react';
 import { db } from '../firebase/config';
-import {
-  collection,
-  query,
-  orderBy,
-  onSnapshot,
-  where,
-} from 'firebase/firestore';
+import { collection, query, orderBy, onSnapshot, where } from 'firebase/firestore';
 import { FirestoreDocument } from '../types/common';
 
-export const useFetchDocuments = (docCollection: string, search: string | null = null, uid: string | null = null) => {
+export const useFetchDocuments = (
+  docCollection: string,
+  search: string | null = null,
+  uid: string | null = null
+) => {
   const [documents, setDocuments] = useState<FirestoreDocument[] | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
@@ -36,11 +34,7 @@ export const useFetchDocuments = (docCollection: string, search: string | null =
           orderBy('createdAt', 'desc')
         );
       } else if (uid) {
-        q = query(
-          collectionRef,
-          where('uid', '==', uid),
-          orderBy('createdAt', 'desc')
-        );
+        q = query(collectionRef, where('uid', '==', uid), orderBy('createdAt', 'desc'));
       } else {
         q = query(collectionRef, orderBy('createdAt', 'desc'));
       }

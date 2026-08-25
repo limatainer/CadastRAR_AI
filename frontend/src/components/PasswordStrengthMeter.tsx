@@ -1,8 +1,9 @@
 import { useMemo } from 'react';
-import { 
-  validatePasswordStrength, 
-  getPasswordStrengthLabel, 
-  getPasswordStrengthColor 
+import { CheckIcon } from '@heroicons/react/24/solid';
+import {
+  validatePasswordStrength,
+  getPasswordStrengthLabel,
+  getPasswordStrengthColor,
 } from '../utils/passwordSecurity';
 
 interface PasswordStrengthMeterProps {
@@ -10,7 +11,10 @@ interface PasswordStrengthMeterProps {
   className?: string;
 }
 
-export default function PasswordStrengthMeter({ password, className = '' }: PasswordStrengthMeterProps) {
+export default function PasswordStrengthMeter({
+  password,
+  className = '',
+}: PasswordStrengthMeterProps) {
   const strength = useMemo(() => validatePasswordStrength(password), [password]);
 
   if (!password) return null;
@@ -22,13 +26,16 @@ export default function PasswordStrengthMeter({ password, className = '' }: Pass
   return (
     <div className={`mt-2 ${className}`}>
       {/* Strength bar */}
-      <div className="w-full bg-gray-200 rounded-full h-2 dark:bg-gray-700">
+      <div className="w-full border border-[var(--border)] rounded-full h-2 bg-[var(--surface-alt)] bg-[var(--surface-alt)]">
         <div
           className={`h-2 rounded-full transition-all duration-300 ${
-            strength.score <= 1 ? 'bg-red-600' :
-            strength.score <= 2 ? 'bg-orange-500' :
-            strength.score <= 3 ? 'bg-yellow-500' :
-            'bg-green-600'
+            strength.score <= 1
+              ? 'bg-[var(--accent)]'
+              : strength.score <= 2
+                ? 'bg-orange-500'
+                : strength.score <= 3
+                  ? 'bg-yellow-500'
+                  : 'bg-[var(--accent-hover)]'
           }`}
           style={{ width: `${strengthPercentage}%` }}
         />
@@ -36,17 +43,13 @@ export default function PasswordStrengthMeter({ password, className = '' }: Pass
 
       {/* Strength label */}
       <div className="flex justify-between items-center mt-1">
-        <span className={`text-sm font-medium ${strengthColor}`}>
-          Strength: {strengthLabel}
-        </span>
-        <span className="text-xs text-gray-500 dark:text-gray-400">
-          {strength.score}/4
-        </span>
+        <span className={`text-sm font-medium ${strengthColor}`}>Strength: {strengthLabel}</span>
+        <span className="text-xs text-[var(--fg-muted)]">{strength.score}/4</span>
       </div>
 
       {/* Feedback */}
       {strength.feedback.length > 0 && (
-        <div className="mt-2 text-xs text-gray-600 dark:text-gray-400">
+        <div className="mt-2 text-xs text-[var(--fg-muted)]">
           <ul className="list-disc list-inside space-y-1">
             {strength.feedback.map((feedback, index) => (
               <li key={index}>{feedback}</li>
@@ -57,10 +60,8 @@ export default function PasswordStrengthMeter({ password, className = '' }: Pass
 
       {/* Valid indicator */}
       {strength.isValid && (
-        <div className="mt-1 flex items-center text-xs text-green-600">
-          <svg className="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
-            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-          </svg>
+        <div className="mt-1 flex items-center text-xs text-[var(--accent-fg)]">
+          <CheckIcon className="w-3 h-3 mr-1" />
           Secure password
         </div>
       )}
