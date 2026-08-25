@@ -1,8 +1,8 @@
 import { useEffect, useState, useCallback, useRef } from 'react';
-import { useAuthenticationSimple } from '../hooks/useAuthenticationSimple';
-import { useAuthValue } from '../contexts/AuthContext';
+import { useAuthenticationSimple } from '@/hooks/useAuthenticationSimple';
+import { useAuthValue } from '@/contexts/AuthContext';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { clearPasswordFromMemory } from '../utils/passwordSecurity';
+import { clearPasswordFromMemory } from '@/utils/passwordSecurity';
 
 import Logo from '/logo.png';
 
@@ -17,27 +17,30 @@ export default function Login() {
   const { user } = useAuthValue();
   const navigate = useNavigate();
 
-  const handleSubmit = useCallback(async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = useCallback(
+    async (e: React.FormEvent) => {
+      e.preventDefault();
 
-    if (isSubmitting || isLoading) return;
+      if (isSubmitting || isLoading) return;
 
-    setIsSubmitting(true);
-    clearError();
+      setIsSubmitting(true);
+      clearError();
 
-    try {
-      const credentials = { email, password };
-      const user = await login(credentials, { rememberMe });
+      try {
+        const credentials = { email, password };
+        const user = await login(credentials, { rememberMe });
 
-      if (user) {
-        clearPasswordFromMemory(passwordRef);
+        if (user) {
+          clearPasswordFromMemory(passwordRef);
+        }
+      } catch (error) {
+        console.error('Login submission error:', error);
+      } finally {
+        setIsSubmitting(false);
       }
-    } catch (error) {
-      console.error('Login submission error:', error);
-    } finally {
-      setIsSubmitting(false);
-    }
-  }, [email, password, rememberMe, login, isSubmitting, isLoading, clearError]);
+    },
+    [email, password, rememberMe, login, isSubmitting, isLoading, clearError]
+  );
 
   useEffect(() => {
     if (user && !isLoading && !isSubmitting) {
@@ -45,17 +48,23 @@ export default function Login() {
     }
   }, [user, navigate, isLoading, isSubmitting]);
 
-  const handleEmailChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(e.target.value);
-    if (authError) clearError();
-  }, [authError, clearError]);
+  const handleEmailChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setEmail(e.target.value);
+      if (authError) clearError();
+    },
+    [authError, clearError]
+  );
 
-  const handlePasswordChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    const newPassword = e.target.value;
-    setPassword(newPassword);
-    passwordRef.current = newPassword;
-    if (authError) clearError();
-  }, [authError, clearError]);
+  const handlePasswordChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const newPassword = e.target.value;
+      setPassword(newPassword);
+      passwordRef.current = newPassword;
+      if (authError) clearError();
+    },
+    [authError, clearError]
+  );
 
   const handleRememberMeChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setRememberMe(e.target.checked);
@@ -64,27 +73,25 @@ export default function Login() {
   const isFormDisabled = isSubmitting || isLoading;
 
   return (
-    <section className="bg-gray-50 dark:bg-gray-900 min-h-screen flex items-center justify-center px-6 py-8">
-      <div className="max-w-md w-full bg-white rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+    <section className="min-h-screen bg-[var(--bg)] flex items-center justify-center px-6 py-8">
+      <div className="max-w-md w-full bg-[var(--surface)] rounded-[var(--radius)] shadow border border-[var(--border)]">
         <div className="p-6 space-y-6">
           <header className="text-center">
             <NavLink
               to="/"
-              className="flex items-center justify-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white"
+              className="flex items-center justify-center mb-6 text-2xl font-semibold text-[var(--fg)]"
             >
-              Welcome Back
-              <img className="w-16 h-16 mr-2" src={Logo} alt="logo" />
+              <img className="w-16 h-16 mr-2" src={Logo} alt="CadastRAR" />
+              CadastRAR
             </NavLink>
-            <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
+            <h1 className="text-xl font-bold leading-tight tracking-tight text-[var(--fg)] md:text-2xl">
               Sign in to continue
             </h1>
           </header>
           <form className="space-y-6" onSubmit={handleSubmit}>
+            <input type="text" name="website" className="hidden" tabIndex={-1} autoComplete="off" />
             <div>
-              <label
-                htmlFor="email"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >
+              <label htmlFor="email" className="block mb-2 text-sm font-medium text-[var(--fg)]">
                 Your email
               </label>
               <input
@@ -92,18 +99,15 @@ export default function Login() {
                 name="email"
                 id="email"
                 autoComplete="email"
-                className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="name@company.com"
+                className="w-full bg-[var(--surface-alt)] border border-[var(--border)] text-[var(--fg)] sm:text-sm rounded-[var(--radius)] focus:ring-[var(--accent)] focus:border-[var(--accent)] block p-2.5"
+                placeholder="name@mail.com"
                 onChange={handleEmailChange}
                 value={email}
                 required
               />
             </div>
             <div>
-              <label
-                htmlFor="password"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >
+              <label htmlFor="password" className="block mb-2 text-sm font-medium text-[var(--fg)]">
                 Password
               </label>
               <input
@@ -111,8 +115,8 @@ export default function Login() {
                 name="password"
                 id="password"
                 autoComplete="current-password"
-                placeholder="••••••••"
-                className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                placeholder="strong password"
+                className="w-full bg-[var(--surface-alt)] border border-[var(--border)] text-[var(--fg)] sm:text-sm rounded-[var(--radius)] focus:ring-[var(--accent)] focus:border-[var(--accent)] block p-2.5"
                 onChange={handlePasswordChange}
                 value={password}
                 required
@@ -125,47 +129,43 @@ export default function Login() {
                     id="remember"
                     aria-describedby="remember"
                     type="checkbox"
-                    className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800"
+                    className="w-4 h-4 border border-[var(--border)] rounded bg-[var(--surface-alt)] focus:ring-[var(--accent)]"
                     checked={rememberMe}
                     onChange={handleRememberMeChange}
                   />
                 </div>
                 <div className="ml-3 text-sm">
-                  <label
-                    htmlFor="remember"
-                    className="text-gray-500 dark:text-gray-300"
-                  >
+                  <label htmlFor="remember" className="text-[var(--fg-muted)]">
                     Remember me
                   </label>
                 </div>
               </div>
               <NavLink
                 to="/forgot-password"
-                className="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500"
+                className="text-sm font-medium text-[var(--accent)] hover:underline"
               >
                 Forgot password?
               </NavLink>
             </div>
             <button
               type="submit"
-              className={`w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 transition-opacity ${
-                isFormDisabled ? 'opacity-50 cursor-not-allowed' : 'hover:opacity-90'
-              }`}
+              className={`btn w-full py-2.5 text-sm font-medium ${isFormDisabled ? 'opacity-50 cursor-not-allowed' : ''
+                }`}
               disabled={isFormDisabled}
             >
               {isFormDisabled ? 'Signing in...' : 'Sign in'}
             </button>
             {authError && (
-              <div className="p-3 text-sm text-red-800 bg-red-100 border border-red-200 rounded-lg dark:bg-red-800/20 dark:text-red-400 dark:border-red-800" role="alert">
+              <div
+                className="p-3 text-sm text-[var(--accent-fg)] bg-[var(--accent)]/10 border border-[var(--accent)]/20 rounded-[var(--radius)]"
+                role="alert"
+              >
                 {authError}
               </div>
             )}
-            <p className="text-sm font-light text-gray-500 dark:text-gray-400">
-              Don’t have an account yet?{' '}
-              <NavLink
-                to="/register"
-                className="font-medium text-primary-600 hover:underline dark:text-primary-500"
-              >
+            <p className="text-sm font-light text-[var(--fg-muted)]">
+              Don &apos;t have an account yet?{' '}
+              <NavLink to="/register" className="font-medium text-[var(--accent)] hover:underline">
                 Sign up
               </NavLink>
             </p>

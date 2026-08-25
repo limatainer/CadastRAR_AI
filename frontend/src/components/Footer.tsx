@@ -1,32 +1,30 @@
 export default function Footer() {
   return (
-    <footer className="bg-black text-white py-4">
-      <div className="container mx-auto flex flex-col md:flex-row justify-between items-center">
-        <div className="text-sm">© 2024 LimaCodes . All rights reserved.</div>
+    <footer className="bg-[var(--surface)] border-t border-[var(--border-hairline)] text-[var(--fg)] py-6">
+      <div className="container mx-auto flex flex-col md:flex-row justify-between items-center px-4">
+        <div className="text-sm text-[var(--fg-muted)]">
+          &copy; {new Date().getFullYear()} LimaCodes. All rights reserved.
+        </div>
         <div className="flex space-x-6 mt-4 md:mt-0">
           <a
-            href="#"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:text-primary-500"
+            href="/privacy"
+            className="text-[var(--fg-muted)] hover:text-[var(--fg)] transition-colors"
           >
             Privacy Policy
           </a>
           <a
-            target="_blank"
-            rel="noopener noreferrer"
-            href="#"
-            className="hover:text-primary-500"
+            href="/terms"
+            className="text-[var(--fg-muted)] hover:text-[var(--fg)] transition-colors"
           >
             Terms of Service
           </a>
           <a
+            href="https://marianalima.tech"
             target="_blank"
             rel="noopener noreferrer"
-            href="https://lima-theta.vercel.app"
-            className="hover:text-primary-500"
+            className="text-[var(--fg-muted)] hover:text-[var(--fg)] transition-colors"
           >
-            Contact Us
+            Contact
           </a>
         </div>
       </div>

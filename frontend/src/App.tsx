@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-route
 import { AnimatePresence, MotionConfig, motion } from 'motion/react';
 import { useAuthenticationSimple } from './hooks/useAuthenticationSimple';
 import { AuthProvider } from './contexts/AuthContext';
+import { useEntitlement } from './hooks/useEntitlement';
 import { page } from './lib/motion';
 
 import Footer from './components/Footer';
@@ -19,13 +20,24 @@ import Edit from './pages/Edit';
 import Details from './pages/Details';
 import Terms from './pages/Terms';
 import Privacy from './pages/Privacy';
+import Upgrade from './pages/Upgrade';
 
 const AnimatedRoutes = ({
   user,
+  entitlement,
 }: {
   user: ReturnType<typeof useAuthenticationSimple>['user'];
+  entitlement: ReturnType<typeof useEntitlement>;
 }) => {
   const location = useLocation();
+
+  const createElement = (el: React.ReactNode, requireAuth: boolean, requirePaid: boolean) => {
+    if (requireAuth && !user) return <Navigate to="/login" replace />;
+    if (requirePaid && user && entitlement.status !== 'paid' && entitlement.status !== 'loading') {
+      return <Navigate to="/upgrade" replace />;
+    }
+    return el;
+  };
 
   return (
     <AnimatePresence mode="wait">
@@ -40,30 +52,27 @@ const AnimatedRoutes = ({
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route
-            path="/submissions"
-            element={user ? <Submissions /> : <Navigate to="/login" />}
+            path="/upgrade"
+            element={
+              user ? <Upgrade entitlement={entitlement} /> : <Navigate to="/login" replace />
+            }
           />
+          <Route path="/submissions" element={createElement(<Submissions />, true, false)} />
           <Route path="/search" element={<Search />} />
-          <Route
-            path="/posts/create"
-            element={user ? <Registration /> : <Navigate to="/login" />}
-          />
-          <Route
-            path="/posts/edit/:id"
-            element={user ? <Edit /> : <Navigate to="/login" />}
-          />
+          <Route path="/posts/create" element={createElement(<Registration />, true, true)} />
+          <Route path="/posts/edit/:id" element={createElement(<Edit />, true, true)} />
           <Route path="/posts/:id" element={<Details />} />
           <Route
             path="/login"
-            element={!user ? <Login /> : <Navigate to="/submissions" />}
+            element={!user ? <Login /> : <Navigate to="/submissions" replace />}
           />
           <Route
             path="/register"
-            element={!user ? <Signup /> : <Navigate to="/submissions" />}
+            element={!user ? <Signup /> : <Navigate to="/submissions" replace />}
           />
           <Route
             path="/forgot-password"
-            element={!user ? <ForgotPassword /> : <Navigate to="/submissions" />}
+            element={!user ? <ForgotPassword /> : <Navigate to="/submissions" replace />}
           />
           <Route path="/terms" element={<Terms />} />
           <Route path="/privacy" element={<Privacy />} />
@@ -75,13 +84,14 @@ const AnimatedRoutes = ({
 
 const App = () => {
   const { user, isLoading } = useAuthenticationSimple();
+  const entitlement = useEntitlement(user?.uid ?? null);
 
-  if (isLoading) {
+  if (isLoading || entitlement.status === 'loading') {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
+      <div className="min-h-screen flex items-center justify-center bg-[var(--bg)]">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600 dark:text-gray-400">Loading application...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[var(--accent)] mx-auto"></div>
+          <p className="mt-4 text-[var(--fg-muted)]">Loading application...</p>
         </div>
       </div>
     );
@@ -92,9 +102,9 @@ const App = () => {
       <AuthProvider value={{ user: user || null }}>
         <BrowserRouter>
           <div className="flex flex-col min-h-screen">
-            <Navbar />
+            <Navbar entitlement={entitlement} />
             <main className="flex-1">
-              <AnimatedRoutes user={user} />
+              <AnimatedRoutes user={user} entitlement={entitlement} />
             </main>
             <Footer />
           </div>

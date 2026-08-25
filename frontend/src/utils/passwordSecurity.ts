@@ -23,7 +23,7 @@ export const validatePasswordStrength = (password: string): PasswordStrength => 
   if (/\d/.test(password)) score += 0.5;
   else feedback.push('Include numbers');
 
-  if (/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password)) score += 0.5;
+  if (/[!@#$%^&*()_+\-=\x5B\x5D{};':"\\|,.<>?]/.test(password)) score += 0.5;
   else feedback.push('Include special symbols');
 
   if (password.length >= 12) score += 0.5;
@@ -44,7 +44,7 @@ export const validatePasswordStrength = (password: string): PasswordStrength => 
   return {
     score,
     feedback,
-    isValid: score >= 3 && password.length >= 8
+    isValid: score >= 3 && password.length >= 8,
   };
 };
 
@@ -56,17 +56,16 @@ export const getPasswordStrengthLabel = (score: number): string => {
 };
 
 export const getPasswordStrengthColor = (score: number): string => {
-  if (score <= 1) return 'text-red-600';
+  if (score <= 1) return 'text-[var(--accent-fg)]';
   if (score <= 2) return 'text-orange-500';
   if (score <= 3) return 'text-yellow-500';
-  return 'text-green-600';
+  return 'text-[var(--accent-fg)]';
 };
 
 export const clearPasswordFromMemory = (passwordRef: React.MutableRefObject<string>) => {
   if (passwordRef.current) {
-    passwordRef.current = Array.from(
-      { length: passwordRef.current.length },
-      () => Math.random().toString(36).charAt(0)
+    passwordRef.current = Array.from({ length: passwordRef.current.length }, () =>
+      Math.random().toString(36).charAt(0)
     ).join('');
 
     passwordRef.current = '';
@@ -81,11 +80,19 @@ export const validatePasswordSecurity = (password: string, email?: string): stri
   }
 
   const weakPasswords = [
-    '123456', 'password', '123456789', '12345678', '12345',
-    '1234567', 'admin', 'qwerty', 'abc123', 'password123'
+    '123456',
+    'password',
+    '123456789',
+    '12345678',
+    '12345',
+    '1234567',
+    'admin',
+    'qwerty',
+    'abc123',
+    'password123',
   ];
 
-  if (weakPasswords.some(weak => password.toLowerCase().includes(weak))) {
+  if (weakPasswords.some((weak) => password.toLowerCase().includes(weak))) {
     errors.push('Password too common, choose something more unique');
   }
 

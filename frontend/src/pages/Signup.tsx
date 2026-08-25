@@ -1,10 +1,11 @@
 import { useEffect, useState, useCallback, useRef } from 'react';
-import { useAuthenticationSimple } from '../hooks/useAuthenticationSimple';
-import { useAuthValue } from '../contexts/AuthContext';
+import { useAuthenticationSimple } from '@/hooks/useAuthenticationSimple';
+import { useAuthValue } from '@/contexts/AuthContext';
 import { NavLink, useNavigate } from 'react-router-dom';
 import Logo from '/logo.png';
-import PasswordStrengthMeter from '../components/PasswordStrengthMeter';
-import { validatePasswordSecurity, clearPasswordFromMemory } from '../utils/passwordSecurity';
+import PasswordStrengthMeter from '@/components/PasswordStrengthMeter';
+import { validatePasswordSecurity, clearPasswordFromMemory } from '@/utils/passwordSecurity';
+
 export default function Signup() {
   const [displayName, setDisplayName] = useState('');
   const [email, setEmail] = useState('');
@@ -20,48 +21,61 @@ export default function Signup() {
   const { user } = useAuthValue();
   const navigate = useNavigate();
 
-  const handleSubmit = useCallback(async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = useCallback(
+    async (e: React.FormEvent) => {
+      e.preventDefault();
 
-    if (isSubmitting || isLoading) return;
+      if (isSubmitting || isLoading) return;
 
-    setIsSubmitting(true);
-    clearError();
+      setIsSubmitting(true);
+      clearError();
 
-    if (password !== confirmPassword) {
-      setValidationError('Passwords do not match.');
-      setIsSubmitting(false);
-      return;
-    }
-
-    const passwordSecurityErrors = validatePasswordSecurity(password, email);
-    if (passwordSecurityErrors.length > 0) {
-      setSecurityErrors(passwordSecurityErrors);
-      setIsSubmitting(false);
-      return;
-    }
-
-    setValidationError('');
-    setSecurityErrors([]);
-
-    try {
-      const credentials = {
-        displayName: displayName.trim(),
-        email,
-        password
-      };
-
-      const user = await signup(credentials, { rememberMe });
-
-      if (user) {
-        clearPasswordFromMemory(passwordRef);
+      if (password !== confirmPassword) {
+        setValidationError('Passwords do not match.');
+        setIsSubmitting(false);
+        return;
       }
-    } catch (error) {
-      console.error('Signup submission error:', error);
-    } finally {
-      setIsSubmitting(false);
-    }
-  }, [displayName, email, password, confirmPassword, rememberMe, signup, isSubmitting, isLoading, clearError]);
+
+      const passwordSecurityErrors = validatePasswordSecurity(password, email);
+      if (passwordSecurityErrors.length > 0) {
+        setSecurityErrors(passwordSecurityErrors);
+        setIsSubmitting(false);
+        return;
+      }
+
+      setValidationError('');
+      setSecurityErrors([]);
+
+      try {
+        const credentials = {
+          displayName: displayName.trim(),
+          email,
+          password,
+        };
+
+        const user = await signup(credentials, { rememberMe });
+
+        if (user) {
+          clearPasswordFromMemory(passwordRef);
+        }
+      } catch (error) {
+        console.error('Signup submission error:', error);
+      } finally {
+        setIsSubmitting(false);
+      }
+    },
+    [
+      displayName,
+      email,
+      password,
+      confirmPassword,
+      rememberMe,
+      signup,
+      isSubmitting,
+      isLoading,
+      clearError,
+    ]
+  );
 
   useEffect(() => {
     if (user && !isLoading && !isSubmitting) {
@@ -72,68 +86,74 @@ export default function Signup() {
   const isFormDisabled = isSubmitting || isLoading;
 
   return (
-    <section className="bg-gray-50 dark:bg-gray-900">
+    <section className="min-h-screen bg-[var(--bg)]">
       <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-        <NavLink
-          to="/"
-          className="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white"
-        >
-          <img className="w-16 h-16 mr-2" src={Logo} alt="logo" />
-          Welcome to CadastRAR
+        <NavLink to="/" className="flex items-center mb-6 text-2xl font-semibold text-[var(--fg)]">
+          <img className="w-16 h-16 mr-2" src={Logo} alt="CadastRAR" />
+          CadastRAR
         </NavLink>
-        <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+        <div className="w-full bg-[var(--surface)] rounded-[var(--radius)] shadow border border-[var(--border)] md:mt-0 sm:max-w-md xl:p-0">
           <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-            <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
+            <h1 className="text-xl font-bold leading-tight tracking-tight text-[var(--fg)] md:text-2xl">
               Create an account
             </h1>
             <form className="space-y-4 md:space-y-6" onSubmit={handleSubmit}>
-              <label
-                htmlFor="name"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >
-                Your name
+              <input
+                type="text"
+                name="website"
+                className="hidden"
+                tabIndex={-1}
+                autoComplete="off"
+              />
+
+              <div>
+                <label htmlFor="name" className="block mb-2 text-sm font-medium text-[var(--fg)]">
+                  Your name
+                </label>
                 <input
                   type="text"
                   name="name"
                   id="name"
                   autoComplete="name"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  className="w-full bg-[var(--surface-alt)] border border-[var(--border)] text-[var(--fg)] sm:text-sm rounded-[var(--radius)] focus:ring-[var(--accent)] focus:border-[var(--accent)] block p-2.5"
                   placeholder="Your full name"
                   required
                   onChange={(e) => setDisplayName(e.target.value)}
                   value={displayName}
                 />
-              </label>
-              <label
-                htmlFor="email"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >
-                Your email
+              </div>
+
+              <div>
+                <label htmlFor="email" className="block mb-2 text-sm font-medium text-[var(--fg)]">
+                  Your email
+                </label>
                 <input
                   type="email"
                   name="email"
                   id="email"
                   autoComplete="email"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  className="w-full bg-[var(--surface-alt)] border border-[var(--border)] text-[var(--fg)] sm:text-sm rounded-[var(--radius)] focus:ring-[var(--accent)] focus:border-[var(--accent)] block p-2.5"
                   placeholder="name@company.com"
                   required
                   onChange={(e) => setEmail(e.target.value)}
                   value={email}
                 />
-              </label>
+              </div>
 
-              <label
-                htmlFor="password"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >
-                Password
+              <div>
+                <label
+                  htmlFor="password"
+                  className="block mb-2 text-sm font-medium text-[var(--fg)]"
+                >
+                  Password
+                </label>
                 <input
                   type="password"
                   name="password"
                   id="password"
                   autoComplete="new-password"
-                  placeholder="••••••••"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  placeholder="Password"
+                  className="w-full bg-[var(--surface-alt)] border border-[var(--border)] text-[var(--fg)] sm:text-sm rounded-[var(--radius)] focus:ring-[var(--accent)] focus:border-[var(--accent)] block p-2.5"
                   required
                   onChange={(e) => {
                     const newPassword = e.target.value;
@@ -145,56 +165,52 @@ export default function Signup() {
                   }}
                   value={password}
                 />
-              </label>
+              </div>
 
               <PasswordStrengthMeter password={password} />
 
-              <label
-                htmlFor="confirm-password"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >
-                Confirm password
+              <div>
+                <label
+                  htmlFor="confirm-password"
+                  className="block mb-2 text-sm font-medium text-[var(--fg)]"
+                >
+                  Confirm password
+                </label>
                 <input
                   type="password"
                   name="confirm-password"
                   id="confirm-password"
                   autoComplete="new-password"
-                  placeholder="••••••••"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  placeholder="Confirm Password"
+                  className="w-full bg-[var(--surface-alt)] border border-[var(--border)] text-[var(--fg)] sm:text-sm rounded-[var(--radius)] focus:ring-[var(--accent)] focus:border-[var(--accent)] block p-2.5"
                   required
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   value={confirmPassword}
                 />
-              </label>
+              </div>
 
               <div className="flex items-start">
                 <div className="flex items-center h-5">
                   <input
                     id="terms"
-                    aria-describedby="terms"
                     type="checkbox"
-                    className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800"
+                    className="w-4 h-4 border border-[var(--border)] rounded bg-[var(--surface-alt)] focus:ring-[var(--accent)]"
                     required
                   />
                 </div>
                 <div className="ml-3 text-sm">
-                  <label
-                    htmlFor="terms"
-                    className="font-light text-gray-500 dark:text-gray-300"
-                  >
+                  <label htmlFor="terms" className="text-[var(--fg-muted)]">
                     I accept the{' '}
                     <NavLink
                       to="/terms"
-                      target="_blank"
-                      className="font-medium text-primary-600 hover:underline dark:text-primary-500"
+                      className="font-medium text-[var(--accent)] hover:underline"
                     >
                       Terms and Conditions
-                    </NavLink>
-                    {' '}and{' '}
+                    </NavLink>{' '}
+                    and{' '}
                     <NavLink
                       to="/privacy"
-                      target="_blank"
-                      className="font-medium text-primary-600 hover:underline dark:text-primary-500"
+                      className="font-medium text-[var(--accent)] hover:underline"
                     >
                       Privacy Policy
                     </NavLink>
@@ -206,18 +222,14 @@ export default function Signup() {
                 <div className="flex items-center h-5">
                   <input
                     id="remember"
-                    aria-describedby="remember"
                     type="checkbox"
-                    className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800"
+                    className="w-4 h-4 border border-[var(--border)] rounded bg-[var(--surface-alt)] focus:ring-[var(--accent)]"
                     checked={rememberMe}
                     onChange={(e) => setRememberMe(e.target.checked)}
                   />
                 </div>
                 <div className="ml-3 text-sm">
-                  <label
-                    htmlFor="remember"
-                    className="font-light text-gray-500 dark:text-gray-300"
-                  >
+                  <label htmlFor="remember" className="text-[var(--fg-muted)]">
                     Keep me connected
                   </label>
                 </div>
@@ -225,28 +237,38 @@ export default function Signup() {
 
               <button
                 type="submit"
-                className={`w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 transition-opacity ${isFormDisabled ? 'opacity-50 cursor-not-allowed' : 'hover:opacity-90'
-                  }`}
+                className={`btn w-full py-2.5 text-sm font-medium ${isFormDisabled ? 'opacity-50 cursor-not-allowed' : ''}`}
                 disabled={isFormDisabled}
               >
                 {isFormDisabled ? 'Creating account...' : 'Create account'}
               </button>
 
-              {(authError || validationError || securityErrors.length > 0) && (
-                <div className="p-3 text-sm text-red-800 bg-red-100 border border-red-200 rounded-lg dark:bg-red-800/20 dark:text-red-400 dark:border-red-800" role="alert">
-                  {authError || validationError}
+              {authError && (
+                <div
+                  className="p-3 text-sm text-[var(--accent-fg)] bg-[var(--accent)]/10 border border-[var(--accent)]/20 rounded-[var(--radius)]"
+                  role="alert"
+                >
+                  {authError}
                   {securityErrors.map((error, index) => (
-                    <div key={index} className="mt-1">{error}</div>
+                    <div key={index} className="mt-1">
+                      {error}
+                    </div>
                   ))}
                 </div>
               )}
 
-              <p className="text-sm font-light text-gray-500 dark:text-gray-400">
-                Already have an account?{' '}
-                <NavLink
-                  to="/login"
-                  className="font-medium text-primary-600 hover:underline dark:text-primary-500"
+              {validationError && (
+                <div
+                  className="p-3 text-sm text-[var(--accent-fg)] bg-[var(--accent)]/10 border border-[var(--accent)]/20 rounded-[var(--radius)]"
+                  role="alert"
                 >
+                  {validationError}
+                </div>
+              )}
+
+              <p className="text-sm font-light text-[var(--fg-muted)]">
+                Already have an account?{' '}
+                <NavLink to="/login" className="font-medium text-[var(--accent)] hover:underline">
                   Login here
                 </NavLink>
               </p>
