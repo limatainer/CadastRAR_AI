@@ -163,7 +163,7 @@ export default function Registration() {
           </button>
         )}
         {(response.error || formError) && (
-          <p className="mt-4 text-[var(--accent-fg)]">{response.error || formError}</p>
+          <p className="mt-4 text-[var(--accent)]">{response.error || formError}</p>
         )}
       </form>
     </div>

@@ -18,7 +18,7 @@ export default function SearchDetail({ post }: SearchDetailProps) {
           {post.tags.map((tag: string) => (
             <p
               key={tag}
-              className="inline-block bg-[var(--accent)]/10 text-[var(--accent-fg)] px-3 py-1 rounded-full text-sm font-medium"
+              className="inline-block bg-[var(--accent)]/10 text-[var(--accent)] px-3 py-1 rounded-full text-sm font-medium"
             >
               <span>#</span>
               {tag}

@@ -101,9 +101,12 @@ const App = () => {
     <MotionConfig reducedMotion="user">
       <AuthProvider value={{ user: user || null }}>
         <BrowserRouter>
+          <a href="#main" className="skip-link">
+            Skip to content
+          </a>
           <div className="flex flex-col min-h-screen">
             <Navbar entitlement={entitlement} />
-            <main className="flex-1">
+            <main id="main" className="flex-1">
               <AnimatedRoutes user={user} entitlement={entitlement} />
             </main>
             <Footer />

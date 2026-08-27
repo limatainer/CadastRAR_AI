@@ -60,9 +60,9 @@ export default function PasswordStrengthMeter({
 
       {/* Valid indicator */}
       {strength.isValid && (
-        <div className="mt-1 flex items-center text-xs text-[var(--accent-fg)]">
-          <CheckIcon className="w-3 h-3 mr-1" />
-          Secure password
+        <div className="mt-1 flex items-center text-xs text-[var(--success)]">
+        <CheckIcon className="w-3 h-3 mr-1" />
+        Secure password
         </div>
       )}
     </div>

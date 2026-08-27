@@ -1,13 +1,23 @@
+import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import { motion } from 'motion/react';
+import { motion, AnimatePresence } from 'motion/react';
 import { useAuthenticationSimple } from '@/hooks/useAuthenticationSimple';
 import { useAuthValue } from '@/contexts/useAuthValue';
 import { useThemeValue } from '@/contexts/useThemeValue';
 import { Entitlement } from '@/hooks/useEntitlement';
-import { SunIcon, MoonIcon, ArrowLeftEndOnRectangleIcon } from '@heroicons/react/24/outline';
+import {
+  SunIcon,
+  MoonIcon,
+  ArrowLeftEndOnRectangleIcon,
+  Bars3Icon,
+  XMarkIcon,
+} from '@heroicons/react/24/outline';
 import Logo from '/logo.png';
 
-const linkBase = 'relative px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200';
+const linkBase =
+  'relative px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2';
+const navLinkClasses =
+  'block rounded-md px-4 py-2.5 text-base font-medium text-[var(--fg-muted)] hover:text-[var(--fg)] hover:bg-[var(--surface-2)] transition-colors cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2';
 
 const NavItem = ({ to, children }: { to: string; children: React.ReactNode }) => (
   <NavLink
@@ -35,12 +45,15 @@ export default function Navbar({ entitlement }: { entitlement: Entitlement }) {
   const { logout } = useAuthenticationSimple();
   const { user } = useAuthValue();
   const { theme, toggle } = useThemeValue();
+  const [open, setOpen] = useState(false);
+
+  const close = () => setOpen(false);
 
   return (
-    <nav className="bg-[var(--surface)] border-b border-[var(--border-hairline)] sticky top-0 z-50">
+    <nav className="glass sticky top-0 z-50 border-b border-[var(--glass-border)]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          <NavLink className="flex items-center space-x-2" to="/">
+          <NavLink className="flex items-center space-x-2 focus-ring rounded-md" to="/">
             <motion.img
               className="w-10 h-10"
               src={Logo}
@@ -71,7 +84,7 @@ export default function Navbar({ entitlement }: { entitlement: Entitlement }) {
             </div>
             <button
               onClick={toggle}
-              className="p-2 rounded-md hover:bg-[var(--border-hairline)] transition-colors"
+              className="p-2 rounded-md hover:bg-[var(--surface-2)] transition-colors cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
               aria-label="Toggle theme"
             >
               {theme === 'dark' ? (
@@ -83,16 +96,63 @@ export default function Navbar({ entitlement }: { entitlement: Entitlement }) {
             {user && (
               <button
                 onClick={logout}
-                className="p-2 rounded-md text-[var(--fg-muted)] hover:text-[var(--fg)] hover:bg-[var(--border-hairline)] transition-colors ml-1"
+                className="p-2 rounded-md text-[var(--fg-muted)] hover:text-[var(--fg)] hover:bg-[var(--surface-2)] transition-colors ml-1 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
                 aria-label="Logout"
                 title="Logout"
               >
                 <ArrowLeftEndOnRectangleIcon className="w-5 h-5" />
               </button>
             )}
+            <button
+              onClick={() => setOpen((v) => !v)}
+              className="sm:hidden p-2 rounded-md hover:bg-[var(--surface-2)] transition-colors cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+              aria-label="Open menu"
+              aria-expanded={open}
+            >
+              {open ? (
+                <XMarkIcon className="w-6 h-6 text-[var(--fg)]" />
+              ) : (
+                <Bars3Icon className="w-6 h-6 text-[var(--fg)]" />
+              )}
+            </button>
           </div>
         </div>
       </div>
+
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.2, ease: 'easeOut' }}
+            className="sm:hidden overflow-hidden border-t border-[var(--glass-border)]"
+          >
+            <div className="px-4 py-3 space-y-1 bg-[var(--surface)]">
+              <NavLink to="/" onClick={close} className={navLinkClasses}>
+                Home
+              </NavLink>
+              {user ? (
+                <NavLink to="/submissions" onClick={close} className={navLinkClasses}>
+                  My Records
+                </NavLink>
+              ) : (
+                <>
+                  <NavLink to="/login" onClick={close} className={navLinkClasses}>
+                    Login
+                  </NavLink>
+                  <NavLink to="/register" onClick={close} className={navLinkClasses}>
+                    Sign Up
+                  </NavLink>
+                </>
+              )}
+              <NavLink to="/about" onClick={close} className={navLinkClasses}>
+                How it works
+              </NavLink>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </nav>
   );
 }

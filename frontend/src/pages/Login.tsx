@@ -158,7 +158,7 @@ export default function Login() {
             </button>
             {authError && (
               <div
-                className="p-3 text-sm text-[var(--accent-fg)] bg-[var(--accent)]/10 border border-[var(--accent)]/20 rounded-[var(--radius)]"
+                className="p-3 text-sm text-[var(--accent)] bg-[var(--accent)]/10 border border-[var(--accent)]/20 rounded-[var(--radius)]"
                 role="alert"
               >
                 {authError}
