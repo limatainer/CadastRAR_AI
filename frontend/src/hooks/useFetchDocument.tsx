@@ -16,9 +16,9 @@ export const useFetchDocument = (docCollection: string, id: string) => {
         const docSnap = await getDoc(docRef);
 
         setDocument(docSnap.data());
-      } catch (error: any) {
+      } catch (error) {
         console.error('Fetch document error:', error);
-        setError(error.message);
+        setError(error instanceof Error ? error.message : 'Could not load that record.');
       }
 
       setLoading(false);

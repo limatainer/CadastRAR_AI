@@ -8,6 +8,7 @@ import { page } from './lib/motion';
 import Footer from './components/Footer';
 import Navbar from './components/Navbar';
 import Search from './components/Search';
+import Spinner from './components/Spinner';
 
 import Home from './pages/Home';
 import Login from './pages/Login';
@@ -88,11 +89,8 @@ const App = () => {
 
   if (isLoading || entitlement.status === 'loading') {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[var(--bg)]">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[var(--accent)] mx-auto"></div>
-          <p className="mt-4 text-[var(--fg-muted)]">Loading application...</p>
-        </div>
+      <div className="page-center min-h-screen bg-[var(--bg)]">
+        <Spinner label="Loading application" />
       </div>
     );
   }

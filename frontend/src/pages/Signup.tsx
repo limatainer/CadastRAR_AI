@@ -86,15 +86,15 @@ export default function Signup() {
   const isFormDisabled = isSubmitting || isLoading;
 
   return (
-    <section className="min-h-screen bg-[var(--bg)]">
+    <section className="bg-[var(--bg)]">
       <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-        <NavLink to="/" className="flex items-center mb-6 text-2xl font-semibold text-[var(--fg)]">
+        <NavLink to="/" className="flex items-center mb-6 font-display text-2xl font-semibold text-[var(--fg)]">
           <img className="w-16 h-16 mr-2" src={Logo} alt="CadastRAR" />
           CadastRAR
         </NavLink>
-        <div className="w-full bg-[var(--surface)] rounded-[var(--radius)] shadow border border-[var(--border)] md:mt-0 sm:max-w-md xl:p-0">
+        <div className="w-full surface-card md:mt-0 sm:max-w-md xl:p-0">
           <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-            <h1 className="text-xl font-bold leading-tight tracking-tight text-[var(--fg)] md:text-2xl">
+            <h1 className="font-display text-2xl font-semibold leading-tight tracking-display text-[var(--fg)] md:text-2xl">
               Create an account
             </h1>
             <form className="space-y-4 md:space-y-6" onSubmit={handleSubmit}>
@@ -115,7 +115,7 @@ export default function Signup() {
                   name="name"
                   id="name"
                   autoComplete="name"
-                  className="w-full bg-[var(--surface-alt)] border border-[var(--border)] text-[var(--fg)] sm:text-sm rounded-[var(--radius)] focus:ring-[var(--accent)] focus:border-[var(--accent)] block p-2.5"
+                  className="input"
                   placeholder="Your full name"
                   required
                   onChange={(e) => setDisplayName(e.target.value)}
@@ -132,7 +132,7 @@ export default function Signup() {
                   name="email"
                   id="email"
                   autoComplete="email"
-                  className="w-full bg-[var(--surface-alt)] border border-[var(--border)] text-[var(--fg)] sm:text-sm rounded-[var(--radius)] focus:ring-[var(--accent)] focus:border-[var(--accent)] block p-2.5"
+                  className="input"
                   placeholder="name@company.com"
                   required
                   onChange={(e) => setEmail(e.target.value)}
@@ -153,7 +153,7 @@ export default function Signup() {
                   id="password"
                   autoComplete="new-password"
                   placeholder="Password"
-                  className="w-full bg-[var(--surface-alt)] border border-[var(--border)] text-[var(--fg)] sm:text-sm rounded-[var(--radius)] focus:ring-[var(--accent)] focus:border-[var(--accent)] block p-2.5"
+                  className="input"
                   required
                   onChange={(e) => {
                     const newPassword = e.target.value;
@@ -182,7 +182,7 @@ export default function Signup() {
                   id="confirm-password"
                   autoComplete="new-password"
                   placeholder="Confirm Password"
-                  className="w-full bg-[var(--surface-alt)] border border-[var(--border)] text-[var(--fg)] sm:text-sm rounded-[var(--radius)] focus:ring-[var(--accent)] focus:border-[var(--accent)] block p-2.5"
+                  className="input"
                   required
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   value={confirmPassword}
@@ -194,7 +194,7 @@ export default function Signup() {
                   <input
                     id="terms"
                     type="checkbox"
-                    className="w-4 h-4 border border-[var(--border)] rounded bg-[var(--surface-alt)] focus:ring-[var(--accent)]"
+                    className="h-4 w-4 rounded border-[var(--border)] bg-[var(--surface)] accent-[var(--accent)] focus:ring-[var(--accent)]"
                     required
                   />
                 </div>
@@ -223,7 +223,7 @@ export default function Signup() {
                   <input
                     id="remember"
                     type="checkbox"
-                    className="w-4 h-4 border border-[var(--border)] rounded bg-[var(--surface-alt)] focus:ring-[var(--accent)]"
+                    className="h-4 w-4 rounded border-[var(--border)] bg-[var(--surface)] accent-[var(--accent)] focus:ring-[var(--accent)]"
                     checked={rememberMe}
                     onChange={(e) => setRememberMe(e.target.checked)}
                   />
@@ -245,7 +245,7 @@ export default function Signup() {
 
               {authError && (
                 <div
-                  className="p-3 text-sm text-[var(--accent)] bg-[var(--accent)]/10 border border-[var(--accent)]/20 rounded-[var(--radius)]"
+                  className="rounded-[var(--radius)] border border-[var(--danger)] bg-[var(--danger-subtle)] p-3 text-sm text-[var(--danger)]"
                   role="alert"
                 >
                   {authError}
@@ -259,7 +259,7 @@ export default function Signup() {
 
               {validationError && (
                 <div
-                  className="p-3 text-sm text-[var(--accent)] bg-[var(--accent)]/10 border border-[var(--accent)]/20 rounded-[var(--radius)]"
+                  className="rounded-[var(--radius)] border border-[var(--danger)] bg-[var(--danger-subtle)] p-3 text-sm text-[var(--danger)]"
                   role="alert"
                 >
                   {validationError}

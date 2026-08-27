@@ -3,7 +3,7 @@ import { ChevronLeftIcon } from '@heroicons/react/24/outline';
 
 export default function Privacy() {
   return (
-    <div className="min-h-screen bg-[var(--bg)]">
+    <div className="bg-[var(--bg)]">
       <div className="max-w-4xl mx-auto px-4 py-12 sm:px-6 lg:px-8">
         <div className="bg-[var(--surface)] rounded-[var(--radius)] shadow border border-[var(--border)] p-8">
           <div className="mb-8">
@@ -14,7 +14,7 @@ export default function Privacy() {
               <ChevronLeftIcon className="w-5 h-5" />
               Back to Home
             </NavLink>
-            <h1 className="text-4xl font-extrabold text-[var(--fg)] mb-2">Privacy Policy</h1>
+            <h1 className="font-display text-4xl font-semibold tracking-display text-[var(--fg)] mb-2">Privacy Policy</h1>
             <p className="text-[var(--fg-muted)] txtComments">
               Last updated: {new Date().toLocaleDateString()}
             </p>
@@ -22,7 +22,7 @@ export default function Privacy() {
 
           <div className="space-y-6 text-[var(--fg-muted)]">
             <section>
-              <h2 className="text-2xl font-semibold text-[var(--fg)] mb-3">
+              <h2 className="font-display text-2xl font-semibold text-[var(--fg)] mb-3">
                 1. Information We Collect
               </h2>
               <p>
@@ -34,7 +34,7 @@ export default function Privacy() {
             </section>
 
             <section>
-              <h2 className="text-2xl font-semibold text-[var(--fg)] mb-3">
+              <h2 className="font-display text-2xl font-semibold text-[var(--fg)] mb-3">
                 2. How We Use Your Data
               </h2>
               <p>
@@ -45,7 +45,7 @@ export default function Privacy() {
             </section>
 
             <section>
-              <h2 className="text-2xl font-semibold text-[var(--fg)] mb-3">3. Data Storage</h2>
+              <h2 className="font-display text-2xl font-semibold text-[var(--fg)] mb-3">3. Data Storage</h2>
               <p>
                 All data is stored in Google Firebase Firestore. Access is controlled by Firestore
                 security rules that restrict each user to their own documents. You own the data you
@@ -54,7 +54,7 @@ export default function Privacy() {
             </section>
 
             <section>
-              <h2 className="text-2xl font-semibold text-[var(--fg)] mb-3">4. Authentication</h2>
+              <h2 className="font-display text-2xl font-semibold text-[var(--fg)] mb-3">4. Authentication</h2>
               <p>
                 We use Firebase Authentication with email and password. Passwords are hashed and
                 never stored in plaintext. We do not log passwords.
@@ -62,7 +62,7 @@ export default function Privacy() {
             </section>
 
             <section>
-              <h2 className="text-2xl font-semibold text-[var(--fg)] mb-3">5. AI Assistance</h2>
+              <h2 className="font-display text-2xl font-semibold text-[var(--fg)] mb-3">5. AI Assistance</h2>
               <p>
                 The AI bio feature makes a single call to Google Gemini using an API key stored on
                 the client. Your record data (name and description) is sent to Google for this
@@ -71,7 +71,7 @@ export default function Privacy() {
             </section>
 
             <section>
-              <h2 className="text-2xl font-semibold text-[var(--fg)] mb-3">6. Analytics</h2>
+              <h2 className="font-display text-2xl font-semibold text-[var(--fg)] mb-3">6. Analytics</h2>
               <p>
                 We do not use analytics, tracking pixels, cookies for tracking, or third-party
                 profiling. The &ldquo;theme&rdquo; setting is stored in your browser&rsquo;s
@@ -80,7 +80,7 @@ export default function Privacy() {
             </section>
 
             <section>
-              <h2 className="text-2xl font-semibold text-[var(--fg)] mb-3">7. Your Rights</h2>
+              <h2 className="font-display text-2xl font-semibold text-[var(--fg)] mb-3">7. Your Rights</h2>
               <p>
                 You have the right to access, correct, or delete your personal data. You can delete
                 your records at any time. To delete your entire account, contact us at{' '}
@@ -92,7 +92,7 @@ export default function Privacy() {
             </section>
 
             <section>
-              <h2 className="text-2xl font-semibold text-[var(--fg)] mb-3">
+              <h2 className="font-display text-2xl font-semibold text-[var(--fg)] mb-3">
                 8. Children&rsquo;s Privacy
               </h2>
               <p>
@@ -102,7 +102,7 @@ export default function Privacy() {
             </section>
 
             <section>
-              <h2 className="text-2xl font-semibold text-[var(--fg)] mb-3">
+              <h2 className="font-display text-2xl font-semibold text-[var(--fg)] mb-3">
                 9. Changes to This Policy
               </h2>
               <p>
@@ -112,7 +112,7 @@ export default function Privacy() {
             </section>
 
             <section>
-              <h2 className="text-2xl font-semibold text-[var(--fg)] mb-3">10. Contact</h2>
+              <h2 className="font-display text-2xl font-semibold text-[var(--fg)] mb-3">10. Contact</h2>
               <p>
                 Questions about this policy? Contact:{' '}
                 <a href="mailto:support@cadastrar.vercel.app" className="text-[var(--accent)]">

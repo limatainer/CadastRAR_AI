@@ -17,11 +17,11 @@ export default function EmailVerificationBanner() {
 
     const success = await resendVerificationEmail();
 
-    if (!success) {
-      setMessage('Error sending email. Please try again later.');
-    }
-    setMessage('Verification email sent! Check your inbox.');
-
+    setMessage(
+      success
+        ? 'Verification email sent! Check your inbox.'
+        : 'Error sending email. Please try again later.'
+    );
     setIsSending(false);
   };
 

@@ -60,7 +60,14 @@ export default function Footer() {
       </div>
 
       <div className="container mx-auto px-4 mt-8 pt-6 border-t border-[var(--border-hairline)] text-sm text-[var(--fg-muted)]">
-        &copy; {new Date().getFullYear()} LimaCodes. All rights reserved.
+        <a
+          href="https://marianalima.tech"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="cursor-pointer hover:text-[var(--fg)] hover:underline transition-colors focus-ring rounded"
+        >
+          &copy; {new Date().getFullYear()} LimaCodes (Mariana Lima). All rights reserved.
+        </a>
       </div>
     </footer>
   );

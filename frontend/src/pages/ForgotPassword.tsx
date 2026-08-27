@@ -53,13 +53,13 @@ export default function ForgotPassword() {
 
   if (isSubmitted) {
     return (
-      <section className="min-h-screen bg-[var(--bg)] flex items-center justify-center px-6 py-8">
-        <div className="max-w-md w-full bg-[var(--surface)] rounded-[var(--radius)] shadow border border-[var(--border)]">
+      <section className="page-center">
+        <div className="max-w-md w-full surface-card">
           <div className="p-6 space-y-6 text-center">
             <div className="w-16 h-16 rounded-full bg-[var(--accent)]/20 flex items-center justify-center mx-auto">
               <EnvelopeIcon className="w-8 h-8 text-[var(--accent)]" />
             </div>
-            <h1 className="text-2xl font-bold text-[var(--fg)]">Check your email</h1>
+            <h1 className="font-display text-2xl font-semibold text-[var(--fg)]">Check your email</h1>
             <p className="text-[var(--fg-muted)]">
               A password reset link has been sent to your email.
             </p>
@@ -73,18 +73,18 @@ export default function ForgotPassword() {
   }
 
   return (
-    <section className="min-h-screen bg-[var(--bg)] flex items-center justify-center px-6 py-8">
-      <div className="max-w-md w-full bg-[var(--surface)] rounded-[var(--radius)] shadow border border-[var(--border)]">
+    <section className="page-center">
+      <div className="max-w-md w-full surface-card">
         <div className="p-6 space-y-6">
           <header className="text-center">
             <NavLink
               to="/"
-              className="flex items-center justify-center mb-6 text-2xl font-semibold text-[var(--fg)]"
+              className="flex items-center justify-center mb-6 font-display text-2xl font-semibold text-[var(--fg)]"
             >
               <img className="w-16 h-16 mr-2" src={Logo} alt="CadastRAR" />
               CadastRAR
             </NavLink>
-            <h1 className="text-xl font-bold leading-tight tracking-tight text-[var(--fg)] md:text-2xl">
+            <h1 className="font-display text-2xl font-semibold leading-tight tracking-display text-[var(--fg)] md:text-2xl">
               Reset your password
             </h1>
           </header>
@@ -101,7 +101,7 @@ export default function ForgotPassword() {
                 name="email"
                 id="email"
                 autoComplete="email"
-                className="w-full bg-[var(--surface-alt)] border border-[var(--border)] text-[var(--fg)] sm:text-sm rounded-[var(--radius)] focus:ring-[var(--accent)] focus:border-[var(--accent)] block p-2.5"
+                className="input"
                 placeholder="name@company.com"
                 onChange={handleEmailChange}
                 value={email}
@@ -119,7 +119,7 @@ export default function ForgotPassword() {
 
             {error && (
               <div
-                className="p-3 text-sm text-[var(--accent)] bg-[var(--accent)]/10 border border-[var(--accent)]/20 rounded-[var(--radius)]"
+                className="rounded-[var(--radius)] border border-[var(--danger)] bg-[var(--danger-subtle)] p-3 text-sm text-[var(--danger)]"
                 role="alert"
               >
                 {error}

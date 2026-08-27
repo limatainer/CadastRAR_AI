@@ -1,171 +1,52 @@
-import { useState } from 'react';
-import { useInsertDocument } from '../hooks/useInsertDocument';
 import { useNavigate } from 'react-router-dom';
+import { motion } from 'motion/react';
+import { useInsertDocument } from '../hooks/useInsertDocument';
 import { useAuthValue } from '../contexts/useAuthValue';
-import { generateUserDescription, isGeminiConfigured } from '../services/gemini';
-import { SparklesIcon } from '@heroicons/react/24/outline';
+import RecordForm, { RecordValues } from '../components/RecordForm';
+import { fadeUp, stagger } from '../lib/motion';
 
 export default function Registration() {
-  const [title, setTitle] = useState('');
-  const [image, setImage] = useState('');
-  const [body, setBody] = useState('');
-  const [tags, setTags] = useState('');
-  const [formError, setFormError] = useState('');
-  const [isGenerating, setIsGenerating] = useState(false);
-
   const { user } = useAuthValue();
   const navigate = useNavigate();
   const { insertDocument, response } = useInsertDocument('posts');
 
-  const handleGenerateDescription = async () => {
-    if (!title || !tags) {
-      setFormError('Please enter a name and at least one tag before generating description');
-      return;
-    }
-
-    if (!isGeminiConfigured()) {
-      setFormError('AI feature not configured. Please add VITE_GEMINI_API_KEY to your .env file');
-      return;
-    }
-
-    setIsGenerating(true);
-    setFormError('');
-
-    try {
-      const tagsArray = tags.split(',').map((tag) => tag.trim());
-      const description = await generateUserDescription(title, tagsArray);
-      setBody(description);
-    } catch (error) {
-      setFormError(error instanceof Error ? error.message : 'Failed to generate description');
-    } finally {
-      setIsGenerating(false);
-    }
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setFormError('');
-
-    try {
-      new URL(image);
-    } catch (error) {
-      setFormError(`The image must be a valid URL. ${error}`);
-      return;
-    }
-
-    const tagsArray = tags.split(',').map((tag) => tag.trim().toLowerCase());
-
-    if (!title || !image || !tags || !body) {
-      setFormError('All fields are required');
-      return;
-    }
-
-    if (formError) return;
-
+  const handleSubmit = (values: RecordValues) => {
     insertDocument({
-      title,
-      image,
-      body,
-      tags: tagsArray,
+      ...values,
       uid: user?.uid,
       createdBy: user?.displayName,
     });
-
     navigate('/submissions');
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-[var(--surface-alt)] p-4">
-      <h2 className="mb-6 text-3xl font-extrabold tracking-tight leading-none text-[var(--fg)] md:text-4xl lg:text-5xl">
-        Register user
-      </h2>
-      <p className="mb-6 text-lg font-light text-[var(--fg-muted)]">User information</p>
-      <form
-        onSubmit={handleSubmit}
-        className="w-full max-w-lg bg-[var(--surface)] p-6 rounded-lg shadow-md"
+    <div className="section">
+      <motion.div
+        className="mx-auto max-w-2xl"
+        variants={stagger}
+        initial="hidden"
+        animate="visible"
       >
-        <div className="mb-4">
-          <label className="block mb-2 text-sm font-medium text-[var(--fg)]">Name:</label>
-          <input
-            type="text"
-            required
-            placeholder="User name"
-            onChange={(e) => setTitle(e.target.value)}
-            value={title}
-            className="w-full px-3 py-2 border rounded-md bg-[var(--surface-alt)] "
+        <motion.header className="mb-10" variants={fadeUp}>
+          <p className="eyebrow">New entry</p>
+          <h1 className="mt-2 font-display text-4xl font-semibold tracking-display text-[var(--fg)]">
+            Create a record
+          </h1>
+          <p className="measure mt-3 text-[var(--fg-muted)]">
+            Four fields. Export it as an ID card, certificate or profile sheet when you are done.
+          </p>
+        </motion.header>
+
+        <motion.div variants={fadeUp}>
+          <RecordForm
+            submitLabel="Create record"
+            submitting={Boolean(response.loading)}
+            submitError={response.error}
+            onSubmit={handleSubmit}
+            onCancel={() => navigate('/submissions')}
           />
-        </div>
-        <div className="mb-4">
-          <label className="block mb-2 text-sm font-medium text-[var(--fg)]">
-            Avatar Image URL:
-          </label>
-          <input
-            type="text"
-            required
-            placeholder="Add a image url"
-            onChange={(e) => setImage(e.target.value)}
-            value={image}
-            className="w-full px-3 py-2 border rounded-md bg-[var(--surface-alt)] "
-          />
-        </div>
-        <div className="mb-4">
-          <div className="flex justify-between items-center mb-2">
-            <label className="text-sm font-medium text-[var(--fg)]">Details:</label>
-            {isGeminiConfigured() && (
-              <button
-                type="button"
-                onClick={handleGenerateDescription}
-                disabled={isGenerating || !title || !tags}
-                className="inline-flex items-center px-3 py-1 text-xs font-medium text-white bg-[var(--accent)] hover:bg-[var(--accent-hover)] rounded-md disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-              >
-                <SparklesIcon className="w-4 h-4 mr-1" />
-                {isGenerating ? 'Generating...' : 'Generate with AI'}
-              </button>
-            )}
-          </div>
-          <textarea
-            required
-            placeholder="Person description (or use AI to generate)"
-            onChange={(e) => setBody(e.target.value)}
-            value={body}
-            rows={4}
-            className="w-full px-3 py-2 border rounded-md bg-[var(--surface-alt)] "
-          ></textarea>
-          {isGeminiConfigured() && (
-            <p className="mt-1 text-xs text-[var(--fg-muted)]">
-              Tip: Fill in name and tags, then click &ldquo;Generate with AI&rdquo; for an
-              auto-generated description
-            </p>
-          )}
-        </div>
-        <div className="mb-4">
-          <label className="block mb-2 text-sm font-medium text-[var(--fg)]">Tags:</label>
-          <input
-            type="text"
-            required
-            placeholder="Add key tags separated by comas"
-            onChange={(e) => setTags(e.target.value)}
-            value={tags}
-            className="w-full px-3 py-2 border rounded-md bg-[var(--surface-alt)] "
-          />
-        </div>
-        {!response.loading && (
-          <button className="inline-flex justify-center items-center py-2 px-4 m-2 text-base font-medium text-[var(--accent-fg)] rounded-[var(--radius)] bg-[var(--accent)] hover:bg-[var(--accent-hover)]">
-            Submit
-          </button>
-        )}
-        {response.loading && (
-          <button
-            className="inline-flex justify-center items-center py-2 px-4 m-2 text-base font-medium text-[var(--accent-fg)] rounded-[var(--radius)] bg-[var(--accent)]"
-            disabled
-          >
-            Loading...
-          </button>
-        )}
-        {(response.error || formError) && (
-          <p className="mt-4 text-[var(--accent)]">{response.error || formError}</p>
-        )}
-      </form>
+        </motion.div>
+      </motion.div>
     </div>
   );
 }

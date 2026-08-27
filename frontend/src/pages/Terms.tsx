@@ -3,7 +3,7 @@ import { ChevronLeftIcon } from '@heroicons/react/24/outline';
 
 export default function Terms() {
   return (
-    <div className="min-h-screen bg-[var(--bg)]">
+    <div className="bg-[var(--bg)]">
       <div className="max-w-4xl mx-auto px-4 py-12 sm:px-6 lg:px-8">
         <div className="bg-[var(--surface)] rounded-[var(--radius)] shadow border border-[var(--border)] p-8">
           <div className="mb-8">
@@ -14,7 +14,7 @@ export default function Terms() {
               <ChevronLeftIcon className="w-5 h-5" />
               Back to Home
             </NavLink>
-            <h1 className="text-4xl font-extrabold text-[var(--fg)] mb-2">Terms and Conditions</h1>
+            <h1 className="font-display text-4xl font-semibold tracking-display text-[var(--fg)] mb-2">Terms and Conditions</h1>
             <p className="text-[var(--fg-muted)] txtComments">
               Last updated: {new Date().toLocaleDateString()}
             </p>
@@ -22,7 +22,7 @@ export default function Terms() {
 
           <div className="space-y-6 text-[var(--fg-muted)]">
             <section>
-              <h2 className="text-2xl font-semibold text-[var(--fg)] mb-3">
+              <h2 className="font-display text-2xl font-semibold text-[var(--fg)] mb-3">
                 1. Acceptance of Terms
               </h2>
               <p>
@@ -33,7 +33,7 @@ export default function Terms() {
             </section>
 
             <section>
-              <h2 className="text-2xl font-semibold text-[var(--fg)] mb-3">2. User Accounts</h2>
+              <h2 className="font-display text-2xl font-semibold text-[var(--fg)] mb-3">2. User Accounts</h2>
               <p>
                 When you create an account with us, you are responsible for maintaining the security
                 of your account and are fully responsible for all activities that occur under the
@@ -42,7 +42,7 @@ export default function Terms() {
             </section>
 
             <section>
-              <h2 className="text-2xl font-semibold text-[var(--fg)] mb-3">3. Free Trial</h2>
+              <h2 className="font-display text-2xl font-semibold text-[var(--fg)] mb-3">3. Free Trial</h2>
               <p>
                 New users receive a 7-day free trial upon signup. No payment information is
                 collected during signup or the trial period. After the trial expires, full write
@@ -51,7 +51,7 @@ export default function Terms() {
             </section>
 
             <section>
-              <h2 className="text-2xl font-semibold text-[var(--fg)] mb-3">4. Payment Terms</h2>
+              <h2 className="font-display text-2xl font-semibold text-[var(--fg)] mb-3">4. Payment Terms</h2>
               <p>
                 The service is purchased via a one-time payment of &euro;50. This is not a
                 subscription. There are no recurring charges. After payment, your account receives
@@ -65,7 +65,7 @@ export default function Terms() {
             </section>
 
             <section>
-              <h2 className="text-2xl font-semibold text-[var(--fg)] mb-3">
+              <h2 className="font-display text-2xl font-semibold text-[var(--fg)] mb-3">
                 5. Right of Withdrawal (EU Consumers)
               </h2>
               <p>
@@ -89,7 +89,7 @@ export default function Terms() {
             </section>
 
             <section>
-              <h2 className="text-2xl font-semibold text-[var(--fg)] mb-3">6. VAT</h2>
+              <h2 className="font-display text-2xl font-semibold text-[var(--fg)] mb-3">6. VAT</h2>
               <p>
                 For EU consumers, VAT at the applicable rate will be added to the payment in
                 accordance with EU VAT regulations and the reverse charge mechanism where
@@ -98,7 +98,7 @@ export default function Terms() {
             </section>
 
             <section>
-              <h2 className="text-2xl font-semibold text-[var(--fg)] mb-3">7. Prohibited Uses</h2>
+              <h2 className="font-display text-2xl font-semibold text-[var(--fg)] mb-3">7. Prohibited Uses</h2>
               <p>
                 You may not use the service for illegal purposes or to store data that is unlawful,
                 harmful, defamatory, or that violates third-party rights.
@@ -106,7 +106,7 @@ export default function Terms() {
             </section>
 
             <section>
-              <h2 className="text-2xl font-semibold text-[var(--fg)] mb-3">8. Disclaimer</h2>
+              <h2 className="font-display text-2xl font-semibold text-[var(--fg)] mb-3">8. Disclaimer</h2>
               <p>
                 The service is provided on an &ldquo;as is&rdquo; and &ldquo;as available&rdquo;
                 basis. We do not warrant that the service will be uninterrupted or error-free.
@@ -114,7 +114,7 @@ export default function Terms() {
             </section>
 
             <section>
-              <h2 className="text-2xl font-semibold text-[var(--fg)] mb-3">
+              <h2 className="font-display text-2xl font-semibold text-[var(--fg)] mb-3">
                 9. Limitation of Liability
               </h2>
               <p>
@@ -124,7 +124,7 @@ export default function Terms() {
             </section>
 
             <section>
-              <h2 className="text-2xl font-semibold text-[var(--fg)] mb-3">10. Termination</h2>
+              <h2 className="font-display text-2xl font-semibold text-[var(--fg)] mb-3">10. Termination</h2>
               <p>
                 We may terminate or suspend your access immediately, without prior notice, for any
                 reason, including a breach of the terms.

@@ -64,9 +64,9 @@ export const useFetchDocuments = (
       return () => {
         unsubscribe();
       };
-    } catch (error: any) {
+    } catch (error) {
       console.error('Error in try-catch: ', error);
-      setError(error.message);
+      setError(error instanceof Error ? error.message : 'Could not load records.');
       setLoading(false);
     }
   }, [docCollection, search, uid]);

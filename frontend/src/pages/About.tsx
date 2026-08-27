@@ -3,7 +3,7 @@ import { ChevronLeftIcon } from '@heroicons/react/24/outline';
 
 export default function About() {
   return (
-    <div className="min-h-screen bg-[var(--bg)] text-[var(--fg)]">
+    <div className="bg-[var(--bg)] text-[var(--fg)]">
       <div className="max-w-4xl mx-auto px-4 py-12 sm:px-6 lg:px-8">
         <div className="bg-[var(--surface)] rounded-[var(--radius)] shadow border border-[var(--border)] p-8">
           <div className="mb-8">
@@ -14,13 +14,13 @@ export default function About() {
               <ChevronLeftIcon className="w-5 h-5" />
               Back to Home
             </NavLink>
-            <h1 className="text-4xl font-extrabold text-[var(--fg)] mb-2">About CadastRAR</h1>
+            <h1 className="font-display text-4xl font-semibold tracking-display text-[var(--fg)] mb-2">About CadastRAR</h1>
             <p className="text-[var(--fg-muted)]">Built by Mariana Lima in Lisbon.</p>
           </div>
 
           <div className="space-y-8 text-[var(--fg-muted)]">
             <section>
-              <h2 className="text-2xl font-semibold text-[var(--fg)] mb-4">What it is</h2>
+              <h2 className="font-display text-2xl font-semibold text-[var(--fg)] mb-4">What it is</h2>
               <p>
                 CadastRAR is a tool for recording people. A user registers other people as records
                 &mdash; name, avatar URL, description, tags &mdash; optionally with AI-assistance,
@@ -29,7 +29,7 @@ export default function About() {
             </section>
 
             <section>
-              <h2 className="text-2xl font-semibold text-[var(--fg)] mb-4">
+              <h2 className="font-display text-2xl font-semibold text-[var(--fg)] mb-4">
                 What it does, in facts
               </h2>
               <ul className="list-disc pl-6 space-y-2">
@@ -41,7 +41,7 @@ export default function About() {
             </section>
 
             <section>
-              <h2 className="text-2xl font-semibold text-[var(--fg)] mb-4">What it is not</h2>
+              <h2 className="font-display text-2xl font-semibold text-[var(--fg)] mb-4">What it is not</h2>
               <p>
                 CadastRAR is not a CRM, a marketing platform, or an enterprise product. It does not
                 auto-sync data, send emails, or integrate with third-party software. It is a focused
@@ -50,7 +50,7 @@ export default function About() {
             </section>
 
             <section>
-              <h2 className="text-2xl font-semibold text-[var(--fg)] mb-4">Why it exists</h2>
+              <h2 className="font-display text-2xl font-semibold text-[var(--fg)] mb-4">Why it exists</h2>
               <p>
                 Recording people for ID cards, certificates, or profile sheets is error-prone when
                 done manually. Spreadsheets lose formatting. Re-typing between templates wastes

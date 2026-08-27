@@ -1,368 +1,211 @@
+import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import { motion, useScroll, useTransform, useInView } from 'motion/react';
-import { useRef, useState } from 'react';
-import { FaArrowRightLong } from 'react-icons/fa6';
+import { motion } from 'motion/react';
 import { ChevronDownIcon } from '@heroicons/react/24/outline';
-import {
-  MdOutlineAppRegistration,
-  MdOutlineAddCircleOutline,
-  MdOutlinePictureAsPdf,
-} from 'react-icons/md';
-import AnimatedBackground from '@/components/AnimatedBackground';
+import DocumentPreview, { DOC_LABELS, DOC_SIZES, DocFormat } from '@/components/documents';
+import { fadeUp, stagger } from '@/lib/motion';
 
-const MotionNavLink = motion.create(NavLink);
+/** Sample record used for the marketing previews. */
+const SAMPLE = {
+  title: 'Ada Lovelace',
+  image: 'https://ui-avatars.com/api/?name=Ada+Lovelace&background=1f4d3f&color=fbf9f5&size=256',
+  body: 'Mathematician and writer, chiefly known for her work on the Analytical Engine. She published the first algorithm intended to be carried out by a machine.',
+  tags: ['mathematics', 'computing', 'london'],
+  createdBy: 'CadastRAR',
+  createdAt: { seconds: 1735689600 },
+};
+
+/**
+ * Fits a document inside a box without distorting it. The three formats have
+ * different aspect ratios, so scaling them to a common *width* would leave
+ * their captions on three different baselines.
+ */
+function ScaledDocument({
+  format,
+  width,
+  height,
+}: {
+  format: DocFormat;
+  width: number;
+  height?: number;
+}) {
+  const size = DOC_SIZES[format];
+  const scale = height
+    ? Math.min(width / size.width, height / size.height)
+    : width / size.width;
+  return (
+    <div
+      style={{
+        width,
+        height: height ?? size.height * scale,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        overflow: 'hidden',
+      }}
+    >
+      <div
+        style={{
+          width: size.width,
+          height: size.height,
+          transform: `scale(${scale})`,
+          flexShrink: 0,
+        }}
+      >
+        <DocumentPreview format={format} data={SAMPLE} />
+      </div>
+    </div>
+  );
+}
 
 function Hero() {
-  const ref = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end end'] });
-  const y = useTransform(scrollYProgress, [0, 1], [0, -30]);
-  const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
-
   return (
-    <section ref={ref} className="gradient-mesh section min-h-screen flex items-center">
-      <div className="vignette-frame" />
-      <div className="shell">
-        <motion.div
-          className="glass rounded-[var(--radius)] p-8 sm:p-12 max-w-3xl"
-          style={{ opacity, y }}
-        >
-          <motion.p
-            className="eyebrow mb-4"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-          >
-            Precision instrument &middot; 4 fields &middot; 3 document formats
+    <section className="paper-grain section">
+      <div className="shell-wide grid items-center gap-14 lg:grid-cols-[1.05fr_1fr]">
+        <motion.div variants={stagger} initial="hidden" animate="visible">
+          <motion.p className="eyebrow" variants={fadeUp}>
+            Records &amp; documents
           </motion.p>
-
           <motion.h1
-            className="text-5xl sm:text-6xl md:text-7xl font-black text-[var(--fg)] leading-tight mb-6"
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2, type: 'spring', stiffness: 120, damping: 25 }}
+            className="mt-4 font-display text-5xl font-semibold leading-[1.03] tracking-display text-[var(--fg)] md:text-6xl"
+            variants={fadeUp}
           >
-            <motion.span
-              className="block"
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.3 }}
-            >
-              Register people.
-            </motion.span>
-            <motion.span
-              className="block"
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.4 }}
-              style={{ color: 'var(--accent)' }}
-            >
-              Generate documents.
-            </motion.span>
-            <motion.span
-              className="block"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5 }}
-            >
-              No subscription.
-            </motion.span>
+            Register a person.
+            <br />
+            Print the document.
           </motion.h1>
-
-          <motion.p
-            className="text-lg text-[var(--fg-muted)] mb-8 max-w-2xl"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.6 }}
-          >
-            CadastRAR is a precision instrument for recording people &mdash; name, avatar,
-            description, tags &mdash; optionally with AI-assisted copy, then exporting to PDF in three
-            formats: ID card, certificate, or profile sheet. Free 7-day trial, then one payment of
-            €50. Ever.
+          <motion.p className="measure mt-6 text-lg text-[var(--fg-muted)]" variants={fadeUp}>
+            Four fields — name, avatar, description, tags — with an AI-drafted bio if you want
+            one. Export as an ID card, a certificate or a profile sheet. Free for seven days,
+            then €50 once.
           </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.7 }}
-            className="flex flex-wrap gap-4"
-          >
-            <MotionNavLink
-              to="/register"
-              className="btn-primary px-8 py-3 text-lg"
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-            >
+          <motion.div className="mt-9 flex flex-wrap items-center gap-4" variants={fadeUp}>
+            <NavLink to="/register" className="btn px-6 py-3">
               Start free trial
-              <FaArrowRightLong className="ml-2 h-5 w-5" />
-            </MotionNavLink>
-            <MotionNavLink
-              to="/about"
-              className="btn-ghost px-8 py-3 text-lg"
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              How it works
-            </MotionNavLink>
+            </NavLink>
+            <span className="text-sm text-[var(--fg-subtle)]">No card required</span>
           </motion.div>
         </motion.div>
-      </div>
-    </section>
-  );
-}
 
-function Problem() {
-  const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true, margin: '-50px' });
-
-  return (
-    <section ref={ref} className="section section-t">
-      <div className="shell">
-        <motion.p
-          className="eyebrow mb-3"
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-          transition={{ duration: 0.6 }}
+        <motion.div
+          className="hidden justify-self-center lg:block"
+          initial={{ opacity: 0, y: 24, rotate: -3 }}
+          animate={{ opacity: 1, y: 0, rotate: -2.5 }}
+          transition={{ type: 'spring', stiffness: 180, damping: 24, delay: 0.15 }}
         >
-          The problem
-        </motion.p>
-        <motion.h2
-          className="text-3xl font-bold text-[var(--fg)] mb-12"
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-          transition={{ duration: 0.6 }}
-        >
-          Manual record-keeping fails silently
-        </motion.h2>
-
-        <div className="grid md:grid-cols-2 gap-8">
-          <motion.div
-            className="space-y-4"
-            initial={{ opacity: 0, x: -30 }}
-            animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -30 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-          >
-            <h3 className="text-xl font-semibold text-[var(--fg)]">Spreadsheets don&apos;t scale</h3>
-            <p className="text-[var(--fg-muted)]">
-              Every new entry is a row of fragile data. Avatars as URLs break. Tags are
-              comma-separated strings that nobody searches consistently. Copying between sheets
-              loses formatting.
-            </p>
-          </motion.div>
-
-          <motion.div
-            className="space-y-4"
-            initial={{ opacity: 0, x: 30 }}
-            animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 30 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          >
-            <h3 className="text-xl font-semibold text-[var(--fg)]">Exporting is manual labor</h3>
-            <p className="text-[var(--fg-muted)]">
-              Formatting a card or certificate by hand means starting over every time. A single
-              template change means re-layout across every file. The work compounds.
-            </p>
-          </motion.div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function HowItWorks() {
-  return (
-    <section className="section section-t">
-      <div className="shell">
-        <motion.h2
-          className="text-3xl font-bold text-[var(--fg)] mb-12 text-center"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-50px' }}
-          transition={{ duration: 0.6 }}
-        >
-          Three steps
-        </motion.h2>
-
-        <div className="space-y-4">
-          <motion.div
-            className="surface-card p-6 md:p-8"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-50px' }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-          >
-            <div className="flex items-center mb-4">
-              <MdOutlineAddCircleOutline className="text-4xl text-[var(--accent)] mr-4 flex-shrink-0" />
-              <h3 className="text-xl font-semibold text-[var(--fg)]">001 &mdash; Enter</h3>
-            </div>
-            <p className="text-[var(--fg-muted)]">
-              Fill four fields: a name, an avatar URL, a description, and tags. Toggle AI to write
-              the 2&ndash;3 sentence bio from a single Gemini call.
-            </p>
-          </motion.div>
-
-          <motion.div
-            className="surface-card p-6 md:p-8"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-50px' }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-          >
-            <div className="flex items-center mb-4">
-              <MdOutlineAppRegistration className="text-4xl text-[var(--accent)] mr-4 flex-shrink-0" />
-              <h3 className="text-xl font-semibold text-[var(--fg)]">002 &mdash; AI writes</h3>
-            </div>
-            <p className="text-[var(--fg-muted)]">
-              One Gemini prompt. A professional 2&ndash;3 sentence bio in third person, 50&ndash;100
-              words. No claims, no fluff.
-            </p>
-          </motion.div>
-
-          <motion.div
-            className="surface-card p-6 md:p-8"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-50px' }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-          >
-            <div className="flex items-center mb-4">
-              <MdOutlinePictureAsPdf className="text-4xl text-[var(--accent)] mr-4 flex-shrink-0" />
-              <h3 className="text-xl font-semibold text-[var(--fg)]">003 &mdash; Export</h3>
-            </div>
-            <p className="text-[var(--fg-muted)]">
-              One click generates a PDF: ID card, certificate, or profile sheet. Each format is
-              purpose-built, not a re-styled template.
-            </p>
-          </motion.div>
-        </div>
+          <div className="rounded-[var(--radius)] border border-[var(--border-hairline)] shadow-[var(--shadow-elevated)]">
+            <ScaledDocument format="id" width={460} />
+          </div>
+        </motion.div>
       </div>
     </section>
   );
 }
 
 function Documents() {
-  const cards = [
-    {
-      title: 'ID Card',
-      description: 'A compact record with photo, name, and key fields — printed or digital.',
-      from: 'var(--accent)',
-      to: 'var(--accent-2)',
-    },
-    {
-      title: 'Certificate',
-      description: 'A formal bordered document suitable for printing on A4 or letter.',
-      from: 'var(--accent-2)',
-      to: 'var(--accent)',
-    },
-    {
-      title: 'Profile Sheet',
-      description: 'A detailed layout with avatar, tags, description, and metadata.',
-      from: 'var(--accent)',
-      to: 'var(--accent-2)',
-    },
-  ];
-
+  const formats: DocFormat[] = ['id', 'certificate', 'profile'];
   return (
-    <section className="section section-t">
-      <div className="shell">
-        <motion.h2
-          className="text-3xl font-bold text-[var(--fg)] mb-4 text-center"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-50px' }}
-          transition={{ duration: 0.6 }}
-        >
-          Three document formats
-        </motion.h2>
-        <motion.p
-          className="text-[var(--fg-muted)] text-center mb-12"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true, margin: '-50px' }}
-          transition={{ duration: 0.6, delay: 0.1 }}
-        >
-          Export to PDF in any format, no reformatting needed.
-        </motion.p>
-
-        <div className="grid md:grid-cols-3 gap-6">
-          {cards.map((card, i) => (
-            <motion.div
-              key={card.title}
-              className="surface-card p-6 transition-transform duration-200 hover:-translate-y-1"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-50px' }}
-              transition={{ duration: 0.5, delay: i * 0.1 }}
-            >
-              <div
-                className="w-full h-32 rounded-[var(--radius)] mb-4"
-                style={{ background: `linear-gradient(135deg, ${card.from}, ${card.to})` }}
-              />
-              <h3 className="text-xl font-semibold text-[var(--fg)] mb-2">{card.title}</h3>
-              <p className="text-sm text-[var(--fg-muted)]">{card.description}</p>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function FactsStrip() {
-  const facts = [
-    { label: 'Fields per record', value: '4' },
-    { label: 'Document formats', value: '3' },
-    { label: 'Payment', value: '€50 one-time' },
-    { label: 'Subscription', value: 'None' },
-  ];
-
-  return (
-    <section className="py-12 px-4 section-t">
-      <div className="shell">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-          {facts.map((fact) => (
-            <div key={fact.label}>
-              <div className="text-3xl font-bold text-[var(--accent)] mb-1">{fact.value}</div>
-              <div className="text-sm text-[var(--fg-muted)]">{fact.label}</div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function FreeTrial() {
-  return (
-    <section className="section section-t text-center">
-      <div className="max-w-3xl mx-auto">
-        <motion.h2
-          className="text-3xl font-bold text-[var(--fg)] mb-4"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-50px' }}
-          transition={{ duration: 0.6 }}
-        >
-          Seven days, no card required
-        </motion.h2>
-        <motion.p
-          className="text-[var(--fg-muted)] mb-8"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true, margin: '-50px' }}
-          transition={{ duration: 0.6, delay: 0.1 }}
-        >
-          Sign up with just an email. No payment information collected until you decide to pay.
-        </motion.p>
+    <section className="section" style={{ background: 'var(--surface-alt)' }}>
+      <div className="shell-wide">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-50px' }}
-          transition={{ duration: 0.6, delay: 0.2 }}
+          className="measure"
+          variants={stagger}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: '-80px' }}
         >
-          <MotionNavLink to="/register" className="btn-primary px-8 py-3 text-lg">
-            Start free trial
-            <FaArrowRightLong className="ml-2 h-5 w-5" />
-          </MotionNavLink>
+          <motion.p className="eyebrow" variants={fadeUp}>
+            Three formats
+          </motion.p>
+          <motion.h2
+            className="mt-3 font-display text-4xl font-semibold tracking-display text-[var(--fg)]"
+            variants={fadeUp}
+          >
+            Every record is already a document
+          </motion.h2>
+          <motion.p className="mt-4 text-[var(--fg-muted)]" variants={fadeUp}>
+            Not a re-styled template three times over. Each format is laid out for what it is.
+          </motion.p>
         </motion.div>
+
+        <motion.div
+          className="mt-14 grid gap-10 md:grid-cols-3"
+          variants={stagger}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: '-80px' }}
+        >
+          {formats.map((format) => (
+            <motion.figure key={format} variants={fadeUp}>
+              <div className="overflow-hidden rounded-[var(--radius)] border border-[var(--border-hairline)] bg-[var(--surface)] p-4">
+                <ScaledDocument format={format} width={300} height={360} />
+              </div>
+              <figcaption className="mt-4 font-mono text-xs uppercase tracking-[0.18em] text-[var(--fg-subtle)]">
+                {DOC_LABELS[format]}
+              </figcaption>
+            </motion.figure>
+          ))}
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
+const STEPS = [
+  {
+    n: '001',
+    title: 'Enter',
+    body: 'Four fields: a name, an avatar URL, a description and tags.',
+  },
+  {
+    n: '002',
+    title: 'AI writes',
+    body: 'One Gemini call drafts a 2–3 sentence bio in third person. Optional, and editable.',
+  },
+  {
+    n: '003',
+    title: 'Export',
+    body: 'One click builds the PDF. What you see on screen is exactly what is printed.',
+  },
+];
+
+function HowItWorks() {
+  return (
+    <section className="section">
+      <div className="shell">
+        <motion.h2
+          className="font-display text-4xl font-semibold tracking-display text-[var(--fg)]"
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-80px' }}
+          transition={{ duration: 0.5 }}
+        >
+          How it works
+        </motion.h2>
+
+        <motion.ol
+          className="mt-12 grid gap-10 md:grid-cols-3"
+          variants={stagger}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: '-80px' }}
+        >
+          {STEPS.map((step) => (
+            <motion.li
+              key={step.n}
+              className="border-t border-[var(--border)] pt-5"
+              variants={fadeUp}
+            >
+              <span className="font-mono text-xs tracking-[0.18em] text-[var(--accent)]">
+                {step.n}
+              </span>
+              <h3 className="mt-3 font-display text-2xl font-semibold text-[var(--fg)]">
+                {step.title}
+              </h3>
+              <p className="mt-2 text-[var(--fg-muted)]">{step.body}</p>
+            </motion.li>
+          ))}
+        </motion.ol>
       </div>
     </section>
   );
@@ -370,178 +213,101 @@ function FreeTrial() {
 
 function Pricing() {
   return (
-    <section className="section section-t">
-      <div className="max-w-4xl mx-auto text-center">
-        <motion.h2
-          className="text-3xl font-bold text-[var(--fg)] mb-4"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-50px' }}
-          transition={{ duration: 0.6 }}
-        >
-          One price. Forever.
-        </motion.h2>
-        <motion.p
-          className="text-[var(--fg-muted)] mb-8"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true, margin: '-50px' }}
-          transition={{ duration: 0.6, delay: 0.1 }}
-        >
-          No recurring fees. No monthly billing. No subscriptions.
-        </motion.p>
+    <section className="section" style={{ background: 'var(--surface-alt)' }}>
+      <motion.div
+        className="shell grid items-center gap-12 md:grid-cols-2"
+        variants={stagger}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: '-80px' }}
+      >
+        <motion.div variants={fadeUp}>
+          <p className="eyebrow">Pricing</p>
+          <h2 className="mt-3 font-display text-4xl font-semibold tracking-display text-[var(--fg)]">
+            One price. Forever.
+          </h2>
+          <p className="mt-4 text-[var(--fg-muted)]">
+            Seven days free, no card. Then a single payment of €50 for unlimited records, all
+            three formats and AI-drafted bios. It does not recur.
+          </p>
+        </motion.div>
 
         <motion.div
-          className="surface-elevated border-2 p-8 md:p-12 mb-6 border-[var(--accent)]"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-50px' }}
-          transition={{ duration: 0.6, delay: 0.2 }}
+          className="surface-card p-9"
+          style={{ borderColor: 'var(--accent)' }}
+          variants={fadeUp}
         >
-          <p className="text-xs font-bold text-[var(--accent-fg)] bg-[var(--accent)] inline-block px-3 py-1 rounded-full mb-4 uppercase tracking-wider">
+          <p className="eyebrow" style={{ color: 'var(--accent)' }}>
             One-time
           </p>
-          <div className="text-5xl font-black text-[var(--fg)] mb-2">€50</div>
-          <p className="text-[var(--fg-muted)] mb-6">
-            Lifetime access. Pay once, never billed again.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <span className="text-xs text-[var(--fg-muted)] bg-[var(--surface-alt)] px-3 py-1 rounded-full">
-              No subscription
-            </span>
-            <span className="text-xs text-[var(--fg-muted)] bg-[var(--surface-alt)] px-3 py-1 rounded-full">
-              No monthly fee
-            </span>
-            <span className="text-xs text-[var(--fg-muted)] bg-[var(--surface-alt)] px-3 py-1 rounded-full">
-              Pay once
-            </span>
+          <div className="mt-3 font-display text-6xl font-semibold tracking-display text-[var(--fg)]">
+            €50
           </div>
+          <p className="mt-3 text-[var(--fg-muted)]">Lifetime access. Never billed again.</p>
+          <NavLink to="/register" className="btn mt-7 w-full px-6 py-3">
+            Start free trial
+          </NavLink>
         </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-50px' }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-        >
-          <MotionNavLink to="/register" className="btn-primary px-8 py-3 text-lg">
-            Get lifetime access
-            <FaArrowRightLong className="ml-2 h-5 w-5" />
-          </MotionNavLink>
-        </motion.div>
-      </div>
+      </motion.div>
     </section>
   );
 }
 
-function AiPlaceholder() {
-  return (
-    <section className="section section-t">
-      <div className="shell text-center">
-        <motion.h2
-          className="text-3xl font-bold text-[var(--fg)] mb-4"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-50px' }}
-          transition={{ duration: 0.6 }}
-        >
-          AI assistance
-        </motion.h2>
-        <motion.p
-          className="text-[var(--fg-muted)]"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true, margin: '-50px' }}
-          transition={{ duration: 0.6, delay: 0.1 }}
-        >
-          Currently: one Gemini call writes your 2&ndash;3 sentence bio. More capabilities &mdash;
-          TBD.
-        </motion.p>
-      </div>
-    </section>
-  );
-}
+const FAQS = [
+  {
+    question: 'Is this a subscription?',
+    answer:
+      'No. CadastRAR is a one-time payment of €50. You pay once and own lifetime access.',
+  },
+  {
+    question: 'What is included in the €50?',
+    answer:
+      'Unlimited records, all three PDF formats (ID card, certificate, profile sheet), AI-written bios, and lifetime updates.',
+  },
+  {
+    question: "What happens if I don't pay?",
+    answer:
+      "After 7 days your trial expires. You can still view and search existing records, but you can't create or edit new ones. Pay €50 once to restore full access.",
+  },
+  {
+    question: 'Do I need a credit card for the trial?',
+    answer:
+      'No. The 7-day trial requires only an email address. No payment information is collected until you choose to pay.',
+  },
+];
 
 function FAQItem({ question, answer }: { question: string; answer: string }) {
   const [open, setOpen] = useState(false);
-
   return (
-    <motion.div
-      className="border-b border-[var(--border-hairline)] pb-4"
-      initial={{ opacity: 0, y: 10 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-50px' }}
-      transition={{ duration: 0.4 }}
-    >
+    <div className="border-b border-[var(--border-hairline)]">
       <button
-        onClick={() => setOpen(!open)}
-        className="w-full flex justify-between items-center text-left py-4 rounded-md cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+        onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
+        className="focus-ring flex w-full items-center justify-between gap-4 py-5 text-left"
       >
-        <span className="text-lg font-medium text-[var(--fg)]">{question}</span>
-        <motion.span
-          animate={{ rotate: open ? 180 : 0 }}
-          transition={{ duration: 0.2 }}
-          className="text-[var(--fg-muted)]"
-        >
-          <ChevronDownIcon className="w-5 h-5" />
-        </motion.span>
+        <span className="font-display text-lg font-medium text-[var(--fg)]">{question}</span>
+        <ChevronDownIcon
+          className={`h-4 w-4 flex-shrink-0 text-[var(--fg-muted)] transition-transform duration-200 ${
+            open ? 'rotate-180' : ''
+          }`}
+          aria-hidden="true"
+        />
       </button>
-      <motion.div
-        initial={{ height: 0, opacity: 0 }}
-        animate={open ? { height: 'auto', opacity: 1 } : { height: 0, opacity: 0 }}
-        transition={{ duration: 0.3, ease: 'easeOut' }}
-        className="overflow-hidden"
-      >
-        <p className="text-[var(--fg-muted)] pb-2">{answer}</p>
-      </motion.div>
-    </motion.div>
+      {open ? <p className="measure pb-5 text-[var(--fg-muted)]">{answer}</p> : null}
+    </div>
   );
 }
 
 function FAQ() {
-  const items = [
-    {
-      question: 'Is this a subscription?',
-      answer: 'No. CadastRAR is a one-time payment of €50. You pay once and own lifetime access.',
-    },
-    {
-      question: 'What is included in the €50?',
-      answer:
-        'Unlimited records, all three PDF formats (ID card, certificate, profile sheet), AI-written bios, and lifetime updates.',
-    },
-    {
-      question: "What happens if I don't pay?",
-      answer:
-        "After 7 days your trial expires. You can still view and search existing records, but you can't create or edit new ones. Pay €50 once to restore full access.",
-    },
-    {
-      question: 'Can I cancel?',
-      answer: 'There is nothing to cancel. You made one payment. It does not recur.',
-    },
-    {
-      question: 'Do I need a credit card for the trial?',
-      answer:
-        'No. The 7-day trial requires only an email address. No payment information is collected until you choose to pay.',
-    },
-  ];
-
   return (
-    <section className="section section-t">
-      <div className="max-w-3xl mx-auto">
-        <motion.h2
-          className="text-3xl font-bold text-[var(--fg)] mb-8 text-center"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-50px' }}
-          transition={{ duration: 0.6 }}
-        >
+    <section className="section">
+      <div className="shell">
+        <h2 className="font-display text-4xl font-semibold tracking-display text-[var(--fg)]">
           Questions
-        </motion.h2>
-
-        <div className="space-y-2">
-          {items.map((item) => (
-            <FAQItem key={item.question} question={item.question} answer={item.answer} />
+        </h2>
+        <div className="mt-10">
+          {FAQS.map((item) => (
+            <FAQItem key={item.question} {...item} />
           ))}
         </div>
       </div>
@@ -549,39 +315,19 @@ function FAQ() {
   );
 }
 
-function FinalCTA() {
+function ClosingCTA() {
   return (
-    <section className="section section-t text-center">
-      <div className="max-w-3xl mx-auto">
-        <motion.h2
-          className="text-3xl font-bold text-[var(--fg)] mb-4"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-50px' }}
-          transition={{ duration: 0.6 }}
-        >
-          Ready to get organized?
-        </motion.h2>
-        <motion.p
-          className="text-[var(--fg-muted)] mb-8"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true, margin: '-50px' }}
-          transition={{ duration: 0.6, delay: 0.1 }}
-        >
-          Start your free 7-day trial. No card required. Pay €50 once if you want to keep going.
-        </motion.p>
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-50px' }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-        >
-          <MotionNavLink to="/register" className="btn-primary px-8 py-3 text-lg">
-            Start free trial
-            <FaArrowRightLong className="ml-2 h-5 w-5" />
-          </MotionNavLink>
-        </motion.div>
+    <section className="section section-t">
+      <div className="shell text-center">
+        <h2 className="font-display text-4xl font-semibold tracking-display text-[var(--fg)]">
+          Start with one record
+        </h2>
+        <p className="measure mx-auto mt-4 text-[var(--fg-muted)]">
+          Seven days, no card, no commitment.
+        </p>
+        <NavLink to="/register" className="btn mt-8 px-8 py-3">
+          Create your first record
+        </NavLink>
       </div>
     </section>
   );
@@ -589,18 +335,13 @@ function FinalCTA() {
 
 export default function Home() {
   return (
-    <div className="noise-overlay relative text-[var(--fg)]">
-      <AnimatedBackground />
+    <div className="text-[var(--fg)]">
       <Hero />
-      <Problem />
-      <HowItWorks />
       <Documents />
-      <FactsStrip />
-      <FreeTrial />
+      <HowItWorks />
       <Pricing />
-      <AiPlaceholder />
       <FAQ />
-      <FinalCTA />
+      <ClosingCTA />
     </div>
   );
 }

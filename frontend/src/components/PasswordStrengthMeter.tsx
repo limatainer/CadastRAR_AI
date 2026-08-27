@@ -30,12 +30,10 @@ export default function PasswordStrengthMeter({
         <div
           className={`h-2 rounded-full transition-all duration-300 ${
             strength.score <= 1
-              ? 'bg-[var(--accent)]'
-              : strength.score <= 2
-                ? 'bg-orange-500'
-                : strength.score <= 3
-                  ? 'bg-yellow-500'
-                  : 'bg-[var(--accent-hover)]'
+              ? 'bg-[var(--danger)]'
+              : strength.score <= 3
+                ? 'bg-[var(--warning-icon)]'
+                : 'bg-[var(--success)]'
           }`}
           style={{ width: `${strengthPercentage}%` }}
         />

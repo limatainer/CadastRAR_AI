@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import { useAuthenticationSimple } from '@/hooks/useAuthenticationSimple';
@@ -46,8 +46,22 @@ export default function Navbar({ entitlement }: { entitlement: Entitlement }) {
   const { user } = useAuthValue();
   const { theme, toggle } = useThemeValue();
   const [open, setOpen] = useState(false);
+  const toggleRef = useRef<HTMLButtonElement>(null);
 
   const close = () => setOpen(false);
+
+  // Escape closes the mobile menu and returns focus to the toggle, so
+  // keyboard users are never stranded inside an open panel.
+  useEffect(() => {
+    if (!open) return;
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key !== 'Escape') return;
+      setOpen(false);
+      toggleRef.current?.focus();
+    };
+    document.addEventListener('keydown', onKeyDown);
+    return () => document.removeEventListener('keydown', onKeyDown);
+  }, [open]);
 
   return (
     <nav className="glass sticky top-0 z-50 border-b border-[var(--glass-border)]">
@@ -55,14 +69,19 @@ export default function Navbar({ entitlement }: { entitlement: Entitlement }) {
         <div className="flex justify-between items-center h-16">
           <NavLink className="flex items-center space-x-2 focus-ring rounded-md" to="/">
             <motion.img
-              className="w-10 h-10"
+              className="h-9 w-9"
               src={Logo}
-              alt="CadastRAR Logo"
+              width={36}
+              height={36}
+              alt=""
+              aria-hidden="true"
               whileHover={{ rotate: 8, scale: 1.08 }}
               whileTap={{ scale: 0.92 }}
               transition={{ type: 'spring', stiffness: 400, damping: 32 }}
             />
-            <span className="font-bold text-xl text-[var(--fg)]">CadastRAR</span>
+            <span className="font-display text-xl font-semibold tracking-display text-[var(--fg)]">
+              CadastRAR
+            </span>
           </NavLink>
 
           <div className="flex items-center space-x-1">
@@ -104,9 +123,10 @@ export default function Navbar({ entitlement }: { entitlement: Entitlement }) {
               </button>
             )}
             <button
+              ref={toggleRef}
               onClick={() => setOpen((v) => !v)}
               className="sm:hidden p-2 rounded-md hover:bg-[var(--surface-2)] transition-colors cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
-              aria-label="Open menu"
+              aria-label={open ? 'Close menu' : 'Open menu'}
               aria-expanded={open}
             >
               {open ? (

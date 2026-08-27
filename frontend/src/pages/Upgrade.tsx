@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
+import { useAuthValue } from '@/contexts/useAuthValue';
 import { motion } from 'motion/react';
 import { fadeUp, stagger } from '@/lib/motion';
 import { Entitlement } from '@/hooks/useEntitlement';
@@ -10,6 +11,7 @@ const paymentLink = import.meta.env.VITE_STRIPE_PAYMENT_LINK || '';
 export default function Upgrade({ entitlement }: { entitlement: Entitlement }) {
   const navigate = useNavigate();
   const location = useLocation();
+  const { user } = useAuthValue();
   const paid = location.search.includes('paid=1');
 
   useEffect(() => {
@@ -20,7 +22,7 @@ export default function Upgrade({ entitlement }: { entitlement: Entitlement }) {
 
   if (paid) {
     return (
-      <div className="min-h-screen bg-[var(--bg)] flex items-center justify-center px-4 py-12">
+      <div className="page-center">
         <motion.div
           className="max-w-md w-full text-center"
           variants={stagger}
@@ -49,7 +51,7 @@ export default function Upgrade({ entitlement }: { entitlement: Entitlement }) {
   }
 
   return (
-    <div className="min-h-screen bg-[var(--bg)] py-12 px-4">
+    <div className="bg-[var(--bg)] py-12 px-4">
       <div className="max-w-3xl mx-auto">
         <motion.div
           className="bg-[var(--surface)] rounded-[var(--radius)] border border-[var(--border)] p-8 md:p-12 shadow-xl"
@@ -96,8 +98,12 @@ export default function Upgrade({ entitlement }: { entitlement: Entitlement }) {
           <motion.div className="text-center" variants={fadeUp}>
             <button
               onClick={() => {
-                if (paymentLink) {
-                  window.location.href = paymentLink;
+                if (paymentLink && user) {
+                  window.location.href =
+                    paymentLink +
+                    (paymentLink.includes('?') ? '&' : '?') +
+                    'client_reference_id=' +
+                    encodeURIComponent(user.uid);
                 }
               }}
               className="btn w-full md:w-auto px-8 py-3 text-lg"

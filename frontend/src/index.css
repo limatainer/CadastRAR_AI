@@ -2,137 +2,120 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  html {
-    scroll-behavior: smooth;
-  }
-}
+/* ─────────────────────────────────────────────────────────────
+   Palette — editorial / document-first.
+   Warm paper ground, ledger-green accent, oxblood + ochre.
+   Every pair below meets WCAG AA (text 4.5:1, controls 3:1).
+   ───────────────────────────────────────────────────────────── */
 
 :root {
-  /* Light — corporate trust, warm indigo */
-  --bg: #f7f7f5;
+  /* Grounds — warm uncoated stock */
+  --bg: #fbf9f5;
   --surface: #ffffff;
-  --surface-alt: #f1f1ef;
-  --surface-2: #e9e9e6;
+  --surface-alt: #f4f1ea;
+  --surface-2: #ede9e0;
 
-  --border-hairline: #e7e7e3;
-  --border: #d8d8d2;
+  /* Rules. --border-hairline is decorative; --border is for
+     control edges and must stay >= 3:1 (WCAG 1.4.11). */
+  --border-hairline: #eae4da;
+  --border: #918c83;
 
-  --fg: #17171a;
-  --fg-muted: #55555d;
-  --fg-subtle: #777780;
+  /* Ink */
+  --fg: #1a1714;
+  --fg-muted: #5c554c;
+  --fg-subtle: #767067;
 
-  /* Brand */
-  --accent: #5b5ce2;
-  --accent-fg: #ffffff;
-  --accent-hover: #4c4dcc;
-  --accent-subtle: #eeeeff;
-  --accent-2: #7c5cff;
+  /* Brand — ledger green */
+  --accent: #1f4d3f;
+  --accent-fg: #fbf9f5;
+  --accent-hover: #163830;
+  --accent-subtle: #eaf1ee;
 
-  /* Semantic */
-  --success: #15966a;
-  --success-fg: #ffffff;
+  /* Semantic. Success reuses the accent: success states here are
+     rare, and a fourth hue would only add noise. */
+  --success: var(--accent);
+  --success-fg: var(--accent-fg);
 
-  --warning-bg: #fff8df;
-  --warning-fg: #795b00;
-  --warning-border: #ead27a;
-  --warning-icon: #c79b18;
+  --danger: #a02b2b;
+  --danger-fg: #fbf9f5;
+  --danger-subtle: #f8ecec;
 
-  /* Cinematic atmosphere */
-  --orb-1: rgb(91 92 226 / 0.11);
-  --orb-2: rgb(124 92 255 / 0.08);
-  --orb-3: rgb(45 140 255 / 0.06);
+  --warning-bg: #fbf3e3;
+  --warning-fg: #8a5a1b;
+  --warning-border: #e4cfa6;
+  --warning-icon: #8a5a1b;
 
-  --vignette-color: rgb(247 247 245 / 0.72);
+  /* Glass — navbar only */
+  --glass-bg: rgb(251 249 245 / 0.82);
+  --glass-border: rgb(26 23 20 / 0.08);
+  --glass-blur: 14px;
 
-  /* Glass */
-  --glass-bg: rgb(255 255 255 / 0.68);
-  --glass-border: rgb(23 23 26 / 0.08);
-  --glass-blur: 18px;
+  /* Print keeps its own fixed palette so exported PDFs never
+     follow the app theme. Used by src/components/documents/. */
+  --doc-paper: #ffffff;
+  --doc-ink: #1a1714;
+  --doc-ink-muted: #5c554c;
+  --doc-rule: #d8d0c3;
+  --doc-accent: #1f4d3f;
 
-  /* Shadows */
-  --shadow-card: 0 1px 2px rgb(17 17 20 / 0.04), 0 12px 40px -20px rgb(17 17 20 / 0.18);
-
-  --shadow-elevated: 0 20px 60px -20px rgb(17 17 20 / 0.22);
-
-  /* Cinematic ambient grid */
-  --hud-line: rgb(91 92 226 / 0.12);
-  --hud-glow: rgb(91 92 226 / 0.45);
-  --hud-scan: rgb(91 92 226 / 0.045);
-  --hud-node: rgb(124 92 255 / 0.55);
+  /* Cards get no shadow — edges come from rules and ground
+     changes, the way print does. Elevation is for overlays. */
+  --shadow-elevated: 0 18px 48px -24px rgb(26 23 20 / 0.28);
 
   --ring: var(--accent);
+  --radius: 0.375rem;
 
-  --radius: 0.625rem;
+  --font-display: 'Newsreader', Georgia, 'Times New Roman', serif;
+  --font-body: 'Geist', system-ui, sans-serif;
+  --font-mono: 'GeistMono', ui-monospace, monospace;
 }
 
 .dark {
-  /* Dark — deep slate indigo */
-  --bg: #09090b;
-  --surface: #111114;
-  --surface-alt: #16161a;
-  --surface-2: #1b1b20;
+  /* A document read at night — warm charcoal, not inverted paper */
+  --bg: #14120f;
+  --surface: #1c1916;
+  --surface-alt: #221e1a;
+  --surface-2: #2a2621;
 
-  --border-hairline: rgb(255 255 255 / 0.055);
-  --border: rgb(255 255 255 / 0.1);
+  --border-hairline: #2a2621;
+  --border: #716759;
 
-  --fg: #f4f4f5;
-  --fg-muted: #a1a1aa;
-  --fg-subtle: #71717a;
+  --fg: #f2ede5;
+  --fg-muted: #a69e92;
+  --fg-subtle: #8c8377;
 
-  /* Brand */
-  --accent: #8b8cf6;
-  --accent-fg: #0b0b0f;
-  --accent-hover: #a5a6ff;
-  --accent-subtle: rgb(139 140 246 / 0.11);
-  --accent-2: #a78bfa;
+  --accent: #7fb49e;
+  --accent-fg: #14120f;
+  --accent-hover: #9bc7b3;
+  --accent-subtle: rgb(127 180 158 / 0.12);
 
-  /* Semantic */
-  --success: #34d399;
-  --success-fg: #052e20;
+  --success: var(--accent);
+  --success-fg: var(--accent-fg);
 
-  --warning-bg: rgb(234 179 8 / 0.09);
-  --warning-fg: #f5d76e;
-  --warning-border: rgb(234 179 8 / 0.28);
-  --warning-icon: #eab308;
+  --danger: #e08a83;
+  --danger-fg: #14120f;
+  --danger-subtle: rgb(224 138 131 / 0.12);
 
-  /* Cinematic ambient light */
-  --orb-1: rgb(99 102 241 / 0.14);
-  --orb-2: rgb(139 92 246 / 0.1);
-  --orb-3: rgb(59 130 246 / 0.07);
+  --warning-bg: rgb(217 164 65 / 0.1);
+  --warning-fg: #d9a441;
+  --warning-border: rgb(217 164 65 / 0.3);
+  --warning-icon: #d9a441;
 
-  --vignette-color: rgb(9 9 11 / 0.78);
+  --glass-bg: rgb(20 18 15 / 0.82);
+  --glass-border: rgb(242 237 229 / 0.08);
 
-  /* Glass */
-  --glass-bg: rgb(17 17 20 / 0.68);
-  --glass-border: rgb(255 255 255 / 0.09);
-  --glass-blur: 20px;
-
-  /* Shadows */
-  --shadow-card: 0 1px 2px rgb(0 0 0 / 0.35), 0 16px 50px -24px rgb(0 0 0 / 0.65);
-
-  --shadow-elevated: 0 24px 70px -24px rgb(0 0 0 / 0.78);
-
-  /* Cinematic ambient grid */
-  --hud-line: rgb(139 140 246 / 0.11);
-  --hud-glow: rgb(139 140 246 / 0.42);
-  --hud-scan: rgb(139 140 246 / 0.035);
-  --hud-node: rgb(167 139 250 / 0.55);
-
-  --ring: var(--accent);
-
-  --radius: 0.625rem;
+  --shadow-elevated: 0 20px 56px -24px rgb(0 0 0 / 0.7);
 }
 
-@layer base {
-  body {
-    @apply bg-[var(--bg)] text-[var(--fg)] antialiased;
-    line-height: 1.5;
-    font-family: 'Geist', system-ui, sans-serif;
-  }
+/* ── Font faces — self-hosted, font-display swap ───────────── */
+
+@font-face {
+  font-family: 'Newsreader';
+  src: url('/fonts/Newsreader-Variable.woff2') format('woff2');
+  font-weight: 200 800;
+  font-display: swap;
 }
 
-/* Font faces — self-hosted, font-display swap */
 @font-face {
   font-family: 'Geist';
   src: url('/fonts/Geist-Variable.woff2') format('woff2');
@@ -147,234 +130,90 @@
   font-display: swap;
 }
 
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-[var(--bg)] text-[var(--fg)] antialiased;
+    font-family: var(--font-body);
+    font-size: 1.0625rem;
+    line-height: 1.7;
+  }
+
+  /* Newsreader carries an optical-size axis. Without this a 4.5rem
+     headline renders as a scaled-up body serif. */
+  h1,
+  h2,
+  h3,
+  .font-display {
+    font-optical-sizing: auto;
+  }
+}
+
 @layer components {
+  /* ── Buttons ─────────────────────────────────────────────── */
+
   .btn {
-    @apply inline-flex justify-center items-center font-medium text-center rounded-[var(--radius)] transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 cursor-pointer;
+    @apply inline-flex cursor-pointer items-center justify-center rounded-[var(--radius)] text-center text-base font-medium transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2;
     background-color: var(--accent);
     color: var(--accent-fg);
     border: 1px solid transparent;
     --tw-ring-color: var(--ring);
+    --tw-ring-offset-color: var(--bg);
   }
   .btn:hover {
     background-color: var(--accent-hover);
   }
+  .btn:active {
+    transform: translateY(1px);
+  }
+  .btn:disabled {
+    @apply cursor-not-allowed opacity-50;
+    transform: none;
+  }
+
+  /* Alias kept so existing markup stays valid; identical to .btn. */
+  .btn-primary {
+    @apply btn;
+  }
+
   .btn-ghost {
-    @apply inline-flex justify-center items-center font-medium text-center rounded-[var(--radius)] border border-[var(--border)] transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 cursor-pointer;
+    @apply inline-flex cursor-pointer items-center justify-center rounded-[var(--radius)] text-center text-base font-medium transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2;
     color: var(--fg);
     background: transparent;
+    border: 1px solid var(--border);
     --tw-ring-color: var(--ring);
+    --tw-ring-offset-color: var(--bg);
   }
   .btn-ghost:hover {
-    background-color: color-mix(in srgb, var(--fg) 8%, transparent);
+    background-color: var(--surface-alt);
   }
-  .btn-outline {
-    @apply inline-flex justify-center items-center font-medium text-center rounded-[var(--radius)] border transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2;
-    border-color: var(--accent);
-    color: var(--accent-fg);
-    background-color: transparent;
-  }
-  .btn-outline:hover {
-    background-color: var(--accent);
-    color: var(--accent-fg);
+  .btn-ghost:disabled {
+    @apply cursor-not-allowed opacity-50;
   }
 
-  .txtComments {
-    @apply mb-6 font-light text-[var(--fg-muted)] md:text-lg;
+  .btn-danger {
+    @apply inline-flex cursor-pointer items-center justify-center rounded-[var(--radius)] text-center text-base font-medium transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2;
+    color: var(--danger);
+    background: transparent;
+    border: 1px solid var(--danger);
+    --tw-ring-color: var(--danger);
+    --tw-ring-offset-color: var(--bg);
   }
-  .icons {
-    @apply text-5xl mr-5 mb-5 lg:mb-0 transition-colors duration-200;
-    color: var(--fg-muted);
+  .btn-danger:hover {
+    background-color: var(--danger-subtle);
   }
-  .icons:hover {
-    color: var(--accent);
-  }
-  .hero-pattern {
-    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-    background-size: 60px 60px;
-  }
-}
 
-/* Cinematic gradient mesh — works in both light and dark */
-.gradient-mesh {
-  position: relative;
-  overflow: hidden;
-}
-.gradient-mesh::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(ellipse 70% 50% at 15% 50%, var(--orb-1) 0%, transparent 60%),
-    radial-gradient(ellipse 60% 60% at 85% 30%, var(--orb-2) 0%, transparent 55%),
-    radial-gradient(ellipse 50% 40% at 50% 90%, var(--orb-3) 0%, transparent 50%);
-  pointer-events: none;
-  z-index: 0;
-}
-.gradient-mesh > * {
-  position: relative;
-  z-index: 1;
-}
+  /* ── Surfaces ────────────────────────────────────────────── */
 
-/* Noise grain overlay — cinematic texture */
-.noise-overlay::after {
-  content: '';
-  position: fixed;
-  inset: 0;
-  opacity: 0.035;
-  pointer-events: none;
-  z-index: 9999;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-  background-repeat: repeat;
-  background-size: 200px 200px;
-}
-
-/* Vignette — draws eye to center (use as child div) */
-.vignette-frame {
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(ellipse at center, transparent 50%, var(--vignette-color) 100%);
-  pointer-events: none;
-  z-index: 0;
-}
-
-/* Animated landing backdrop — HUD / Sci-Fi FUI: fine 1px wireframe, scan sweep, node pulse */
-.animated-bg {
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  overflow: hidden;
-  pointer-events: none;
-}
-/* Perspective wireframe grid */
-.animated-bg__grid {
-  position: absolute;
-  inset: -4% -4% 0 -4%;
-  background-image:
-    linear-gradient(to right, var(--hud-line) 1px, transparent 1px),
-    linear-gradient(to bottom, var(--hud-line) 1px, transparent 1px);
-  background-size: 64px 64px;
-  -webkit-mask-image: linear-gradient(to bottom, #000 0%, transparent 78%);
-  mask-image: linear-gradient(to bottom, #000 0%, transparent 78%);
-  will-change: transform;
-}
-/* Horizontal scan sweep */
-.animated-bg__scan {
-  position: absolute;
-  left: 0;
-  right: 0;
-  height: 220px;
-  background: linear-gradient(to bottom, transparent, var(--hud-scan), transparent);
-  filter: blur(2px);
-  will-change: transform;
-  animation: bg-scan 7s linear infinite;
-}
-/* Corner tech brackets */
-.animated-bg__bracket {
-  position: absolute;
-  width: 64px;
-  height: 64px;
-  border: 1px solid var(--hud-line);
-}
-.animated-bg__bracket--tl {
-  top: 24px;
-  left: 24px;
-  border-right: 0;
-  border-bottom: 0;
-}
-.animated-bg__bracket--tr {
-  top: 24px;
-  right: 24px;
-  border-left: 0;
-  border-bottom: 0;
-}
-.animated-bg__bracket--bl {
-  bottom: 24px;
-  left: 24px;
-  border-right: 0;
-  border-top: 0;
-}
-.animated-bg__bracket--br {
-  bottom: 24px;
-  right: 24px;
-  border-left: 0;
-  border-top: 0;
-}
-/* Glowing axis dots */
-.animated-bg__node {
-  position: absolute;
-  width: 5px;
-  height: 5px;
-  border-radius: 9999px;
-  background: var(--hud-node);
-  box-shadow: 0 0 5px 0 var(--hud-glow);
-  opacity: 0.7;
-  animation: bg-node 3.2s ease-in-out infinite;
-}
-@media (prefers-reduced-motion: reduce) {
-  .animated-bg__grid,
-  .animated-bg__scan,
-  .animated-bg__node {
-    animation: none !important;
-    transform: none !important;
-  }
-}
-
-@keyframes bg-scan {
-  0% {
-    transform: translateY(-240px);
-  }
-  100% {
-    transform: translateY(100vh);
-  }
-}
-@keyframes bg-node {
-  0%,
-  100% {
-    opacity: 0.35;
-    transform: scale(0.85);
-  }
-  50% {
-    opacity: 1;
-    transform: scale(1.15);
-  }
-}
-
-/* Hairline dividers */
-.border-hairline {
-  border-color: var(--border-hairline);
-  border-width: 1px;
-}
-.border-hairline-t {
-  border-top-color: var(--border-hairline);
-  border-top-width: 1px;
-}
-.border-hairline-b {
-  border-bottom-color: var(--border-hairline);
-  border-bottom-width: 1px;
-}
-.border-hairline-x {
-  border-left-color: var(--border-hairline);
-  border-right-color: var(--border-hairline);
-  border-left-width: 1px;
-  border-right-width: 1px;
-}
-.border-hairline-y {
-  border-top-color: var(--border-hairline);
-  border-bottom-color: var(--border-hairline);
-  border-top-width: 1px;
-  border-bottom-width: 1px;
-}
-
-/* ── Redesign system: elevation, glass, section rhythm, a11y ── */
-
-@layer components {
-  /* Layered elevation scale — one shadow language for cards/sheets/modals */
   .surface-card {
     background-color: var(--surface);
     border: 1px solid var(--border-hairline);
     border-radius: var(--radius);
-    box-shadow: var(--shadow-card);
   }
+
   .surface-elevated {
     background-color: var(--surface);
     border: 1px solid var(--border-hairline);
@@ -382,61 +221,116 @@
     box-shadow: var(--shadow-elevated);
   }
 
-  /* Frosted glass surface — themed, respects reduced data cost */
   .glass {
     background-color: var(--glass-bg);
-    border: 1px solid var(--glass-border);
-    border-radius: var(--radius);
-    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(140%);
-    backdrop-filter: blur(var(--glass-blur)) saturate(140%);
+    border-bottom: 1px solid var(--glass-border);
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(150%);
+    backdrop-filter: blur(var(--glass-blur)) saturate(150%);
   }
 
-  /* Section vertical rhythm — consistent 4/8pt tiers */
+  /* ── Rhythm ──────────────────────────────────────────────── */
+
   .section {
-    @apply py-16 px-4 sm:py-20;
+    @apply px-6 py-20 sm:py-28;
   }
   .section-t {
     @apply border-t border-[var(--border-hairline)];
   }
   .shell {
-    @apply max-w-5xl mx-auto;
+    @apply mx-auto max-w-5xl;
+  }
+  .shell-wide {
+    @apply mx-auto max-w-6xl;
+  }
+  .measure {
+    max-width: 68ch;
   }
 
-  /* Accent eyebrow / kicker label */
   .eyebrow {
-    @apply text-xs font-semibold uppercase tracking-[0.2em];
-    color: var(--accent);
+    @apply font-mono text-xs font-medium uppercase tracking-[0.18em];
+    color: var(--fg-muted);
   }
 
-  /* Primary CTA — one shared shape, used once per screen (skill: primary-action) */
-  .btn-primary {
-    @apply inline-flex justify-center items-center font-semibold text-center rounded-[var(--radius)] transition-all duration-200 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2;
-    background-color: var(--accent);
-    color: var(--accent-fg);
-    box-shadow: var(--shadow-card);
-  }
-  .btn-primary:hover {
-    background-color: var(--accent-hover);
-    box-shadow: var(--shadow-elevated);
-  }
-  .btn-primary:active {
-    transform: translateY(1px);
+  /* Vertically-centred page body (auth screens, loading and error
+     states). The shell in App.tsx owns full viewport height; pages
+     never set min-h-screen themselves or the page always overflows. */
+  .page-center {
+    @apply flex min-h-[70vh] flex-col items-center justify-center px-6 py-16;
   }
 
-  .btn-success {
-    @apply inline-flex justify-center items-center font-semibold text-center rounded-[var(--radius)] transition-colors duration-200 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2;
-    background-color: var(--success);
-    color: var(--success-fg);
+  /* ── Forms ───────────────────────────────────────────────── */
+
+  .input {
+    @apply w-full rounded-[var(--radius)] px-3 py-2.5 transition-colors duration-150 focus:outline-none;
+    background-color: var(--surface);
+    color: var(--fg);
+    border: 1px solid var(--border);
+    font-size: 1rem;
+    min-height: 44px;
+  }
+  .input::placeholder {
+    color: var(--fg-subtle);
+  }
+  .input:focus-visible {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px var(--accent-subtle);
+  }
+  .input[aria-invalid='true'] {
+    border-color: var(--danger);
   }
 
-  /* Focus ring uses the theme ring token (skill: focus-states) */
+  .label {
+    @apply mb-1.5 block text-sm font-medium;
+    color: var(--fg);
+  }
+
+  /* ── Utilities ───────────────────────────────────────────── */
+
   .focus-ring {
     @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2;
     --tw-ring-color: var(--ring);
+    --tw-ring-offset-color: var(--bg);
+  }
+
+  .border-hairline {
+    border-color: var(--border-hairline);
+    border-width: 1px;
+  }
+  .border-hairline-t {
+    border-top-color: var(--border-hairline);
+    border-top-width: 1px;
+  }
+  .border-hairline-b {
+    border-bottom-color: var(--border-hairline);
+    border-bottom-width: 1px;
+  }
+
+  .txtComments {
+    @apply measure mb-6 font-light text-[var(--fg-muted)];
   }
 }
 
-/* Skip link — keyboard users jump to content (skill: skip-links) */
+/* Paper grain — replaces the old animated HUD backdrop.
+   Static, no scroll listeners, no layout cost. */
+.paper-grain {
+  position: relative;
+}
+.paper-grain::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0.4;
+  pointer-events: none;
+  z-index: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 240 240' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+  background-size: 180px 180px;
+}
+.paper-grain > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Skip link — keyboard users jump to content */
 .skip-link {
   position: absolute;
   left: 1rem;

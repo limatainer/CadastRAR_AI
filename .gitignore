@@ -15,6 +15,7 @@ dist-ssr
 .DS_Store
 .claude
 claude
+CLAUDE.md
 .crush
 .README.md
 
