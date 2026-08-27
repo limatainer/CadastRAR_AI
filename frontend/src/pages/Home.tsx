@@ -9,35 +9,9 @@ import {
   MdOutlineAddCircleOutline,
   MdOutlinePictureAsPdf,
 } from 'react-icons/md';
+import AnimatedBackground from '@/components/AnimatedBackground';
 
 const MotionNavLink = motion.create(NavLink);
-
-function ScrollGradient() {
-  const { scrollYProgress } = useScroll();
-  const y1 = useTransform(scrollYProgress, [0, 1], ['0%', '-50%']);
-  const y2 = useTransform(scrollYProgress, [0, 1], ['10%', '-30%']);
-
-  return (
-    <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-      {/* Primary orb — indigo */}
-      <motion.div
-        className="absolute w-[70vw] h-[70vw] max-w-[800px] max-h-[800px] -top-[20%] -left-[15%] rounded-full blur-[140px]"
-        style={{
-          y: y1,
-          background: 'var(--orb-1)',
-        }}
-      />
-      {/* Secondary orb — violet */}
-      <motion.div
-        className="absolute w-[55vw] h-[55vw] max-w-[650px] max-h-[650px] top-[20%] -right-[10%] rounded-full blur-[120px]"
-        style={{
-          y: y2,
-          background: 'var(--orb-2)',
-        }}
-      />
-    </div>
-  );
-}
 
 function Hero() {
   const ref = useRef<HTMLDivElement>(null);
@@ -597,8 +571,8 @@ function FinalCTA() {
 
 export default function Home() {
   return (
-    <div className="noise-overlay bg-[var(--bg)] text-[var(--fg)]">
-      <ScrollGradient />
+    <div className="noise-overlay relative text-[var(--fg)]">
+      <AnimatedBackground />
       <Hero />
       <Problem />
       <HowItWorks />

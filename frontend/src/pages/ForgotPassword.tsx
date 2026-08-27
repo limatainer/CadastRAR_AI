@@ -57,9 +57,7 @@ export default function ForgotPassword() {
         <div className="max-w-md w-full bg-[var(--surface)] rounded-[var(--radius)] shadow border border-[var(--border)]">
           <div className="p-6 space-y-6 text-center">
             <div className="w-16 h-16 rounded-full bg-[var(--accent)]/20 flex items-center justify-center mx-auto">
-              <EnvelopeIcon
-                className="w-8 h-8 text-[var(--accent)]"
-              />
+              <EnvelopeIcon className="w-8 h-8 text-[var(--accent)]" />
             </div>
             <h1 className="text-2xl font-bold text-[var(--fg)]">Check your email</h1>
             <p className="text-[var(--fg-muted)]">

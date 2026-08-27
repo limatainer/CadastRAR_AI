@@ -15,6 +15,7 @@ dist-ssr
 .DS_Store
 .claude
 claude
+.crush
 
 # Editor directories and files
 .vscode/*
