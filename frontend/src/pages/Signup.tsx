@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback, useRef } from 'react';
 import { useAuthenticationSimple } from '@/hooks/useAuthenticationSimple';
-import { useAuthValue } from '@/contexts/AuthContext';
+import { useAuthValue } from '@/contexts/useAuthValue';
 import { NavLink, useNavigate } from 'react-router-dom';
 import Logo from '/logo.png';
 import PasswordStrengthMeter from '@/components/PasswordStrengthMeter';

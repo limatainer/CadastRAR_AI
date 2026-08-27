@@ -1,4 +1,3 @@
-/* eslint-disable react/no-unescaped-entities */
 import { NavLink } from 'react-router-dom';
 import { motion, useScroll, useTransform, useInView } from 'motion/react';
 import { useRef, useState } from 'react';
@@ -129,7 +128,7 @@ function Problem() {
             animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -30 }}
             transition={{ duration: 0.6, delay: 0.1 }}
           >
-            <h3 className="text-xl font-semibold text-[var(--fg)]">Spreadsheets don't scale</h3>
+            <h3 className="text-xl font-semibold text-[var(--fg)]">Spreadsheets don&apos;t scale</h3>
             <p className="text-[var(--fg-muted)]">
               Every new entry is a row of fragile data. Avatars as URLs break. Tags are
               comma-separated strings that nobody searches consistently. Copying between sheets

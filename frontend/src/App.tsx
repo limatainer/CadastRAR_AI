@@ -1,8 +1,8 @@
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { AnimatePresence, MotionConfig, motion } from 'motion/react';
 import { useAuthenticationSimple } from './hooks/useAuthenticationSimple';
-import { AuthProvider } from './contexts/AuthContext';
 import { useEntitlement } from './hooks/useEntitlement';
+import { AuthProvider } from './contexts/AuthContext';
 import { page } from './lib/motion';
 
 import Footer from './components/Footer';

@@ -1,8 +1,8 @@
 import { NavLink } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { useAuthenticationSimple } from '@/hooks/useAuthenticationSimple';
-import { useAuthValue } from '@/contexts/AuthContext';
-import { useThemeValue } from '@/contexts/ThemeContext';
+import { useAuthValue } from '@/contexts/useAuthValue';
+import { useThemeValue } from '@/contexts/useThemeValue';
 import { Entitlement } from '@/hooks/useEntitlement';
 import { SunIcon, MoonIcon, ArrowLeftEndOnRectangleIcon } from '@heroicons/react/24/outline';
 import Logo from '/logo.png';

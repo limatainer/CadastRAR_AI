@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import { useFetchDocument } from '../hooks/useFetchDocument';
 import { useUpdateDocument } from '../hooks/useUpdateDocument';
-import { useAuthValue } from '../contexts/AuthContext';
+import { useAuthValue } from '../contexts/useAuthValue';
 import {
   ArrowLeftIcon,
   PhotoIcon,
