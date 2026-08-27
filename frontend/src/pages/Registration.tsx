@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useInsertDocument } from '../hooks/useInsertDocument';
 import { useNavigate } from 'react-router-dom';
-import { useAuthValue } from '../contexts/AuthContext';
+import { useAuthValue } from '../contexts/useAuthValue';
 import { generateUserDescription, isGeminiConfigured } from '../services/gemini';
 import { SparklesIcon } from '@heroicons/react/24/outline';
 

@@ -13,10 +13,10 @@ import {
   DocumentTextIcon,
   InformationCircleIcon,
 } from '@heroicons/react/24/outline';
-import { useAuthValue } from '../contexts/AuthContext';
+import { useAuthValue } from '../contexts/useAuthValue';
 import { useDeleteDocument } from '../hooks/useDeleteDocument';
 
-import { generateIDCard, generateCertificate, generateProfileSheet } from '../utils/pdfGenerator';
+import { generateIDCard, generateCertificate, generateProfileSheet, UserData } from '../utils/pdfGenerator';
 
 export default function Details() {
   const { id } = useParams();
@@ -37,18 +37,19 @@ export default function Details() {
     }
   };
 
-  const handleGeneratePDF = async (type: 'id' | 'certificate' | 'profile') => {
+  const pdfGenerators = {
+    id: generateIDCard,
+    certificate: generateCertificate,
+    profile: generateProfileSheet,
+  };
+
+  const handleGeneratePDF = async (type: keyof typeof pdfGenerators) => {
     if (!post) return;
 
+    const userData = post as unknown as UserData;
     setGeneratingPDF(type);
     try {
-      if (type === 'id') {
-        await generateIDCard(post as any);
-      } else if (type === 'certificate') {
-        await generateCertificate(post as any);
-      } else {
-        await generateProfileSheet(post as any);
-      }
+      await pdfGenerators[type](userData);
     } catch (error) {
       console.error('Error generating PDF:', error);
       alert('Failed to generate PDF. Please try again.');
@@ -143,7 +144,7 @@ export default function Details() {
                 </Link>
                 <button
                   onClick={handleDelete}
-                  className="inline-flex items-center px-3 py-1.5 border border-[var(--accent)]/20 rounded-md text-sm font-medium text-[var(--accent-fg)] text-[var(--accent-fg)] bg-[var(--surface)] hover:bg-[var(--accent)]/10 transition-colors duration-200"
+                  className="inline-flex items-center px-3 py-1.5 border border-[var(--accent)]/20 rounded-md text-sm font-medium text-[var(--accent-fg)] bg-[var(--surface)] hover:bg-[var(--accent)]/10 transition-colors duration-200"
                 >
                   <TrashIcon className="h-4 w-4 mr-1.5" />
                   Delete
@@ -302,7 +303,7 @@ export default function Details() {
                   </Link>
                   <button
                     onClick={handleDelete}
-                    className="flex-1 inline-flex justify-center items-center px-4 py-2 border border-[var(--accent)]/20 rounded-md text-sm font-medium text-[var(--accent-fg)] text-[var(--accent-fg)] bg-[var(--surface)] hover:bg-[var(--accent)]/10"
+                    className="flex-1 inline-flex justify-center items-center px-4 py-2 border border-[var(--accent)]/20 rounded-md text-sm font-medium text-[var(--accent-fg)] bg-[var(--surface)] hover:bg-[var(--accent)]/10"
                   >
                     <TrashIcon className="h-4 w-4 mr-2" />
                     Delete User

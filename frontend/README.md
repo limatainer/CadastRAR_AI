@@ -24,13 +24,24 @@ CadastRAR is a tool for recording people. A user enters four fields &mdash; name
 - Gemini API (single call for AI bio generation)
 - Stripe Checkout (payment link & webhook)
 
+## Folder
+
+Use ALWAYS Feature-based
+-organize by what the code does
+
+## RULE
+
+- Always write code using YAGNI
+- Always answer as /caveman ultra
+- Never Hardcode any color or style always use tailwind tokes .css variables
+
 ## Local dev
 
 ```bash
 cd frontend
 
 # Install dependencies
-npm install
+pnpm install
 
 # Copy env example
 cp .env.example .env.local
@@ -38,22 +49,22 @@ cp .env.example .env.local
 # For the webhook server, set STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, FIREBASE_SERVICE_ACCOUNT
 
 # Start the dev server
-npm run dev
+pnpm run dev
 
 # Type check
-npx tsc --noEmit
+pnpm tsc --noEmit
 
 # Lint
-npm run lint
+pnpm run lint
 
 # Build
-npm run build
+pnpm run build
 ```
 
 ### Firestore security rules test
 
 ```bash
-npm install -g firebase-tools
+pnpm install -g firebase-tools
 firebase emulators:start --only firestore &
 node test/rules.test.mjs
 ```
