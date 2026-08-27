@@ -245,7 +245,7 @@ export default function Signup() {
 
               {authError && (
                 <div
-                  className="p-3 text-sm text-[var(--accent-fg)] bg-[var(--accent)]/10 border border-[var(--accent)]/20 rounded-[var(--radius)]"
+                  className="p-3 text-sm text-[var(--accent)] bg-[var(--accent)]/10 border border-[var(--accent)]/20 rounded-[var(--radius)]"
                   role="alert"
                 >
                   {authError}
@@ -259,7 +259,7 @@ export default function Signup() {
 
               {validationError && (
                 <div
-                  className="p-3 text-sm text-[var(--accent-fg)] bg-[var(--accent)]/10 border border-[var(--accent)]/20 rounded-[var(--radius)]"
+                  className="p-3 text-sm text-[var(--accent)] bg-[var(--accent)]/10 border border-[var(--accent)]/20 rounded-[var(--radius)]"
                   role="alert"
                 >
                   {validationError}

@@ -73,7 +73,7 @@ export default function Upgrade({ entitlement }: { entitlement: Entitlement }) {
                 <span className="text-3xl font-bold text-[var(--accent)]">€50</span>
                 <span className="text-[var(--fg-muted)] ml-2">one-time payment</span>
               </div>
-              <span className="px-3 py-1 bg-[var(--accent)]/20 text-[var(--accent-fg)] text-xs font-medium rounded-full">
+              <span className="px-3 py-1 bg-[var(--accent)]/20 text-[var(--accent)] text-xs font-medium rounded-full">
                 No subscription
               </span>
             </div>

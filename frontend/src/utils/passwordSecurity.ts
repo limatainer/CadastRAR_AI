@@ -56,10 +56,10 @@ export const getPasswordStrengthLabel = (score: number): string => {
 };
 
 export const getPasswordStrengthColor = (score: number): string => {
-  if (score <= 1) return 'text-[var(--accent-fg)]';
+  if (score <= 1) return 'text-[var(--accent)]';
   if (score <= 2) return 'text-orange-500';
   if (score <= 3) return 'text-yellow-500';
-  return 'text-[var(--accent-fg)]';
+  return 'text-[var(--success)]';
 };
 
 export const clearPasswordFromMemory = (passwordRef: React.MutableRefObject<string>) => {

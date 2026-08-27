@@ -19,86 +19,91 @@ function Hero() {
   const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
 
   return (
-    <section ref={ref} className="gradient-mesh pt-20 pb-16 px-4 min-h-screen flex items-center">
+    <section ref={ref} className="gradient-mesh section min-h-screen flex items-center">
       <div className="vignette-frame" />
-      <div className="max-w-5xl mx-auto">
-        <motion.p
-          className="text-sm text-[var(--fg-muted)] uppercase tracking-wider mb-4"
+      <div className="shell">
+        <motion.div
+          className="glass rounded-[var(--radius)] p-8 sm:p-12 max-w-3xl"
           style={{ opacity, y }}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
         >
-          Precision instrument &middot; 4 fields &middot; 3 document formats
-        </motion.p>
-
-        <motion.h1
-          className="text-5xl sm:text-6xl md:text-7xl font-black text-[var(--fg)] leading-tight mb-6"
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2, type: 'spring', stiffness: 120, damping: 25 }}
-        >
-          <motion.span
-            className="block"
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.3 }}
-          >
-            Register people.
-          </motion.span>
-          <motion.span
-            className="block"
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.4 }}
-            style={{ color: 'var(--accent)' }}
-          >
-            Generate documents.
-          </motion.span>
-          <motion.span
-            className="block"
+          <motion.p
+            className="eyebrow mb-4"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5 }}
+            transition={{ delay: 0.1 }}
           >
-            No subscription.
-          </motion.span>
-        </motion.h1>
+            Precision instrument &middot; 4 fields &middot; 3 document formats
+          </motion.p>
 
-        <motion.p
-          className="text-lg text-[var(--fg-muted)] mb-8 max-w-2xl"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.6 }}
-        >
-          CadastRAR is a precision instrument for recording people &mdash; name, avatar,
-          description, tags &mdash; optionally with AI-assisted copy, then exporting to PDF in three
-          formats: ID card, certificate, or profile sheet. Free 7-day trial, then one payment of
-          €50. Ever.
-        </motion.p>
+          <motion.h1
+            className="text-5xl sm:text-6xl md:text-7xl font-black text-[var(--fg)] leading-tight mb-6"
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2, type: 'spring', stiffness: 120, damping: 25 }}
+          >
+            <motion.span
+              className="block"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.3 }}
+            >
+              Register people.
+            </motion.span>
+            <motion.span
+              className="block"
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.4 }}
+              style={{ color: 'var(--accent)' }}
+            >
+              Generate documents.
+            </motion.span>
+            <motion.span
+              className="block"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5 }}
+            >
+              No subscription.
+            </motion.span>
+          </motion.h1>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.7 }}
-        >
-          <MotionNavLink
-            to="/register"
-            className="btn px-8 py-3 text-lg mr-4"
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
+          <motion.p
+            className="text-lg text-[var(--fg-muted)] mb-8 max-w-2xl"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.6 }}
           >
-            Start free trial
-            <FaArrowRightLong className="ml-2 h-5 w-5" />
-          </MotionNavLink>
-          <MotionNavLink
-            to="/about"
-            className="btn-ghost px-8 py-3 text-lg"
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
+            CadastRAR is a precision instrument for recording people &mdash; name, avatar,
+            description, tags &mdash; optionally with AI-assisted copy, then exporting to PDF in three
+            formats: ID card, certificate, or profile sheet. Free 7-day trial, then one payment of
+            €50. Ever.
+          </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.7 }}
+            className="flex flex-wrap gap-4"
           >
-            How it works
-          </MotionNavLink>
+            <MotionNavLink
+              to="/register"
+              className="btn-primary px-8 py-3 text-lg"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              Start free trial
+              <FaArrowRightLong className="ml-2 h-5 w-5" />
+            </MotionNavLink>
+            <MotionNavLink
+              to="/about"
+              className="btn-ghost px-8 py-3 text-lg"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              How it works
+            </MotionNavLink>
+          </motion.div>
         </motion.div>
       </div>
     </section>
@@ -110,8 +115,16 @@ function Problem() {
   const isInView = useInView(ref, { once: true, margin: '-50px' });
 
   return (
-    <section ref={ref} className="py-20 px-4 border-t border-[var(--border-hairline)]">
-      <div className="max-w-5xl mx-auto">
+    <section ref={ref} className="section section-t">
+      <div className="shell">
+        <motion.p
+          className="eyebrow mb-3"
+          initial={{ opacity: 0, y: 20 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+          transition={{ duration: 0.6 }}
+        >
+          The problem
+        </motion.p>
         <motion.h2
           className="text-3xl font-bold text-[var(--fg)] mb-12"
           initial={{ opacity: 0, y: 20 }}
@@ -156,8 +169,8 @@ function Problem() {
 
 function HowItWorks() {
   return (
-    <section className="py-20 px-4 border-t border-[var(--border-hairline)]">
-      <div className="max-w-5xl mx-auto">
+    <section className="section section-t">
+      <div className="shell">
         <motion.h2
           className="text-3xl font-bold text-[var(--fg)] mb-12 text-center"
           initial={{ opacity: 0, y: 20 }}
@@ -170,7 +183,7 @@ function HowItWorks() {
 
         <div className="space-y-4">
           <motion.div
-            className="bg-[var(--surface)] border border-[var(--border)] rounded-[var(--radius)] p-6 md:p-8"
+            className="surface-card p-6 md:p-8"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-50px' }}
@@ -187,7 +200,7 @@ function HowItWorks() {
           </motion.div>
 
           <motion.div
-            className="bg-[var(--surface)] border border-[var(--border)] rounded-[var(--radius)] p-6 md:p-8"
+            className="surface-card p-6 md:p-8"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-50px' }}
@@ -204,7 +217,7 @@ function HowItWorks() {
           </motion.div>
 
           <motion.div
-            className="bg-[var(--surface)] border border-[var(--border)] rounded-[var(--radius)] p-6 md:p-8"
+            className="surface-card p-6 md:p-8"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-50px' }}
@@ -230,23 +243,26 @@ function Documents() {
     {
       title: 'ID Card',
       description: 'A compact record with photo, name, and key fields — printed or digital.',
-      color: 'bg-[var(--accent)]',
+      from: 'var(--accent)',
+      to: 'var(--accent-2)',
     },
     {
       title: 'Certificate',
       description: 'A formal bordered document suitable for printing on A4 or letter.',
-      color: 'bg-[var(--accent)]',
+      from: 'var(--accent-2)',
+      to: 'var(--accent)',
     },
     {
       title: 'Profile Sheet',
       description: 'A detailed layout with avatar, tags, description, and metadata.',
-      color: 'bg-[var(--accent)]',
+      from: 'var(--accent)',
+      to: 'var(--accent-2)',
     },
   ];
 
   return (
-    <section className="py-20 px-4 border-t border-[var(--border-hairline)]">
-      <div className="max-w-5xl mx-auto">
+    <section className="section section-t">
+      <div className="shell">
         <motion.h2
           className="text-3xl font-bold text-[var(--fg)] mb-4 text-center"
           initial={{ opacity: 0, y: 20 }}
@@ -270,13 +286,16 @@ function Documents() {
           {cards.map((card, i) => (
             <motion.div
               key={card.title}
-              className="bg-[var(--surface)] border border-[var(--border)] rounded-[var(--radius)] p-6"
+              className="surface-card p-6 transition-transform duration-200 hover:-translate-y-1"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-50px' }}
               transition={{ duration: 0.5, delay: i * 0.1 }}
             >
-              <div className={`w-full h-32 rounded-[var(--radius)] mb-4 ${card.color}`} />
+              <div
+                className="w-full h-32 rounded-[var(--radius)] mb-4"
+                style={{ background: `linear-gradient(135deg, ${card.from}, ${card.to})` }}
+              />
               <h3 className="text-xl font-semibold text-[var(--fg)] mb-2">{card.title}</h3>
               <p className="text-sm text-[var(--fg-muted)]">{card.description}</p>
             </motion.div>
@@ -296,8 +315,8 @@ function FactsStrip() {
   ];
 
   return (
-    <section className="py-12 px-4 border-t border-[var(--border-hairline)]">
-      <div className="max-w-5xl mx-auto">
+    <section className="py-12 px-4 section-t">
+      <div className="shell">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
           {facts.map((fact) => (
             <div key={fact.label}>
@@ -313,7 +332,7 @@ function FactsStrip() {
 
 function FreeTrial() {
   return (
-    <section className="py-20 px-4 border-t border-[var(--border-hairline)] text-center">
+    <section className="section section-t text-center">
       <div className="max-w-3xl mx-auto">
         <motion.h2
           className="text-3xl font-bold text-[var(--fg)] mb-4"
@@ -339,7 +358,7 @@ function FreeTrial() {
           viewport={{ once: true, margin: '-50px' }}
           transition={{ duration: 0.6, delay: 0.2 }}
         >
-          <MotionNavLink to="/register" className="btn px-8 py-3 text-lg">
+          <MotionNavLink to="/register" className="btn-primary px-8 py-3 text-lg">
             Start free trial
             <FaArrowRightLong className="ml-2 h-5 w-5" />
           </MotionNavLink>
@@ -351,7 +370,7 @@ function FreeTrial() {
 
 function Pricing() {
   return (
-    <section className="py-20 px-4 border-t border-[var(--border-hairline)]">
+    <section className="section section-t">
       <div className="max-w-4xl mx-auto text-center">
         <motion.h2
           className="text-3xl font-bold text-[var(--fg)] mb-4"
@@ -373,7 +392,7 @@ function Pricing() {
         </motion.p>
 
         <motion.div
-          className="bg-[var(--surface)] border-2 border-[var(--accent)] rounded-[var(--radius)] p-8 md:p-12 mb-6"
+          className="surface-elevated border-2 p-8 md:p-12 mb-6 border-[var(--accent)]"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-50px' }}
@@ -405,7 +424,7 @@ function Pricing() {
           viewport={{ once: true, margin: '-50px' }}
           transition={{ duration: 0.6, delay: 0.3 }}
         >
-          <MotionNavLink to="/register" className="btn px-8 py-3 text-lg">
+          <MotionNavLink to="/register" className="btn-primary px-8 py-3 text-lg">
             Get lifetime access
             <FaArrowRightLong className="ml-2 h-5 w-5" />
           </MotionNavLink>
@@ -417,8 +436,8 @@ function Pricing() {
 
 function AiPlaceholder() {
   return (
-    <section className="py-20 px-4 border-t border-[var(--border-hairline)]">
-      <div className="max-w-5xl mx-auto text-center">
+    <section className="section section-t">
+      <div className="shell text-center">
         <motion.h2
           className="text-3xl font-bold text-[var(--fg)] mb-4"
           initial={{ opacity: 0, y: 20 }}
@@ -456,7 +475,7 @@ function FAQItem({ question, answer }: { question: string; answer: string }) {
     >
       <button
         onClick={() => setOpen(!open)}
-        className="w-full flex justify-between items-center text-left py-4"
+        className="w-full flex justify-between items-center text-left py-4 rounded-md cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
         aria-expanded={open}
       >
         <span className="text-lg font-medium text-[var(--fg)]">{question}</span>
@@ -508,7 +527,7 @@ function FAQ() {
   ];
 
   return (
-    <section className="py-20 px-4 border-t border-[var(--border-hairline)]">
+    <section className="section section-t">
       <div className="max-w-3xl mx-auto">
         <motion.h2
           className="text-3xl font-bold text-[var(--fg)] mb-8 text-center"
@@ -532,7 +551,7 @@ function FAQ() {
 
 function FinalCTA() {
   return (
-    <section className="py-20 px-4 border-t border-[var(--border-hairline)] text-center">
+    <section className="section section-t text-center">
       <div className="max-w-3xl mx-auto">
         <motion.h2
           className="text-3xl font-bold text-[var(--fg)] mb-4"
@@ -558,7 +577,7 @@ function FinalCTA() {
           viewport={{ once: true, margin: '-50px' }}
           transition={{ duration: 0.6, delay: 0.2 }}
         >
-          <MotionNavLink to="/register" className="btn px-8 py-3 text-lg">
+          <MotionNavLink to="/register" className="btn-primary px-8 py-3 text-lg">
             Start free trial
             <FaArrowRightLong className="ml-2 h-5 w-5" />
           </MotionNavLink>

@@ -176,7 +176,7 @@ export default function Edit() {
     return (
       <div className="min-h-screen bg-[var(--bg)] flex items-center justify-center">
         <div className="text-center">
-          <ExclamationTriangleIcon className="h-24 w-24 text-[var(--accent-fg)] mx-auto" />
+          <ExclamationTriangleIcon className="h-24 w-24 text-[var(--fg-subtle)] mx-auto" />
           <h3 className="mt-4 text-lg font-medium text-[var(--fg)]">{error || 'User not found'}</h3>
           <p className="mt-2 text-sm text-[var(--fg-muted)]">
             The user you are trying to edit does not exist or you do not have permission to edit it.
@@ -255,7 +255,7 @@ export default function Edit() {
                 }`}
               />
               {fieldErrors.title && (
-                <p className="mt-1 text-sm text-[var(--accent-fg)] flex items-center">
+                <p className="mt-1 text-sm text-[var(--accent)] flex items-center">
                   <ExclamationTriangleIcon className="h-4 w-4 mr-1" />
                   {fieldErrors.title}
                 </p>
@@ -282,7 +282,7 @@ export default function Edit() {
                 }`}
               />
               {fieldErrors.image && (
-                <p className="mt-1 text-sm text-[var(--accent-fg)] flex items-center">
+                <p className="mt-1 text-sm text-[var(--accent)] flex items-center">
                   <ExclamationTriangleIcon className="h-4 w-4 mr-1" />
                   {fieldErrors.image}
                 </p>
@@ -337,7 +337,7 @@ export default function Edit() {
                 }`}
               />
               {fieldErrors.body && (
-                <p className="mt-1 text-sm text-[var(--accent-fg)] flex items-center">
+                <p className="mt-1 text-sm text-[var(--accent)] flex items-center">
                   <ExclamationTriangleIcon className="h-4 w-4 mr-1" />
                   {fieldErrors.body}
                 </p>
@@ -367,7 +367,7 @@ export default function Edit() {
                 }`}
               />
               {fieldErrors.tags && (
-                <p className="mt-1 text-sm text-[var(--accent-fg)] flex items-center">
+                <p className="mt-1 text-sm text-[var(--accent)] flex items-center">
                   <ExclamationTriangleIcon className="h-4 w-4 mr-1" />
                   {fieldErrors.tags}
                 </p>
@@ -381,8 +381,8 @@ export default function Edit() {
             {(response.error || formError) && (
               <div className="bg-[var(--accent)]/10 border border-red-200  rounded-md p-4">
                 <div className="flex items-center">
-                  <ExclamationTriangleIcon className="h-5 w-5 text-[var(--accent-fg)] mr-2" />
-                  <p className="text-sm text-[var(--accent-fg)]">{response.error || formError}</p>
+                  <ExclamationTriangleIcon className="h-5 w-5 text-red-600 mr-2" />
+                  <p className="text-sm text-[var(--fg)]">{response.error || formError}</p>
                 </div>
               </div>
             )}
@@ -391,8 +391,8 @@ export default function Edit() {
             {response.loading === false && !response.error && !formError && (
               <div className="bg-[var(--accent)]/10 border border-[var(--accent)]/20 rounded-md p-4">
                 <div className="flex items-center">
-                  <CheckCircleIcon className="h-5 w-5 text-[var(--accent-fg)] mr-2" />
-                  <p className="text-sm text-[var(--accent-fg)]">User updated successfully!</p>
+                  <CheckCircleIcon className="h-5 w-5 text-[var(--success)] mr-2" />
+                  <p className="text-sm text-[var(--success)]">User updated successfully!</p>
                 </div>
               </div>
             )}

@@ -10,62 +10,118 @@
 
 :root {
   /* Light — corporate trust, warm indigo */
-  --bg: #f9fafb;
+  --bg: #f7f7f5;
   --surface: #ffffff;
-  --surface-alt: #f3f4f6;
-  --border-hairline: #e5e7eb;
-  --border: #d1d5db;
-  --fg: #111827;
-  --fg-muted: #374151;
-  --fg-subtle: #6b7280;
-  --accent: #4f46e5;
+  --surface-alt: #f1f1ef;
+  --surface-2: #e9e9e6;
+
+  --border-hairline: #e7e7e3;
+  --border: #d8d8d2;
+
+  --fg: #17171a;
+  --fg-muted: #55555d;
+  --fg-subtle: #777780;
+
+  /* Brand */
+  --accent: #5b5ce2;
   --accent-fg: #ffffff;
-  --accent-hover: #4338ca;
-  --accent-subtle: #eef2ff;
-  --warning-bg: #fefce8;
-  --warning-fg: #854d0e;
-  --warning-border: #facc15;
-  --warning-icon: #eab308;
-  --orb-1: rgba(79, 70, 229, 0.12);
-  --orb-2: rgba(139, 92, 246, 0.1);
-  --orb-3: rgba(99, 102, 241, 0.08);
-  --vignette-color: rgba(249, 250, 251, 0.6);
-  --radius: 0.5rem;
-  /* HUD landing backdrop — classic sci-fi cyan/blue neon */
-  --hud-line: rgba(14, 165, 233, 0.14);
-  --hud-glow: rgba(14, 165, 233, 0.6);
-  --hud-scan: rgba(14, 165, 233, 0.06);
-  --hud-node: rgba(34, 211, 238, 0.55);
+  --accent-hover: #4c4dcc;
+  --accent-subtle: #eeeeff;
+  --accent-2: #7c5cff;
+
+  /* Semantic */
+  --success: #15966a;
+  --success-fg: #ffffff;
+
+  --warning-bg: #fff8df;
+  --warning-fg: #795b00;
+  --warning-border: #ead27a;
+  --warning-icon: #c79b18;
+
+  /* Cinematic atmosphere */
+  --orb-1: rgb(91 92 226 / 0.11);
+  --orb-2: rgb(124 92 255 / 0.08);
+  --orb-3: rgb(45 140 255 / 0.06);
+
+  --vignette-color: rgb(247 247 245 / 0.72);
+
+  /* Glass */
+  --glass-bg: rgb(255 255 255 / 0.68);
+  --glass-border: rgb(23 23 26 / 0.08);
+  --glass-blur: 18px;
+
+  /* Shadows */
+  --shadow-card: 0 1px 2px rgb(17 17 20 / 0.04), 0 12px 40px -20px rgb(17 17 20 / 0.18);
+
+  --shadow-elevated: 0 20px 60px -20px rgb(17 17 20 / 0.22);
+
+  /* Cinematic ambient grid */
+  --hud-line: rgb(91 92 226 / 0.12);
+  --hud-glow: rgb(91 92 226 / 0.45);
+  --hud-scan: rgb(91 92 226 / 0.045);
+  --hud-node: rgb(124 92 255 / 0.55);
+
+  --ring: var(--accent);
+
+  --radius: 0.625rem;
 }
 
 .dark {
   /* Dark — deep slate indigo */
-  --bg: #0f172a;
-  --surface: #1e293b;
-  --surface-alt: #334155;
-  --border-hairline: #334155;
-  --border: #475569;
-  --fg: #f1f5f9;
-  --fg-muted: #94a3b8;
-  --fg-subtle: #64748b;
-  --accent: #818cf8;
-  --accent-fg: #ffffff;
-  --accent-hover: #6366f1;
-  --accent-subtle: rgba(129, 140, 248, 0.1);
-  --warning-bg: #2a2105;
-  --warning-fg: #fde68a;
-  --warning-border: #a16207;
+  --bg: #09090b;
+  --surface: #111114;
+  --surface-alt: #16161a;
+  --surface-2: #1b1b20;
+
+  --border-hairline: rgb(255 255 255 / 0.055);
+  --border: rgb(255 255 255 / 0.1);
+
+  --fg: #f4f4f5;
+  --fg-muted: #a1a1aa;
+  --fg-subtle: #71717a;
+
+  /* Brand */
+  --accent: #8b8cf6;
+  --accent-fg: #0b0b0f;
+  --accent-hover: #a5a6ff;
+  --accent-subtle: rgb(139 140 246 / 0.11);
+  --accent-2: #a78bfa;
+
+  /* Semantic */
+  --success: #34d399;
+  --success-fg: #052e20;
+
+  --warning-bg: rgb(234 179 8 / 0.09);
+  --warning-fg: #f5d76e;
+  --warning-border: rgb(234 179 8 / 0.28);
   --warning-icon: #eab308;
-  --orb-1: rgba(99, 102, 241, 0.15);
-  --orb-2: rgba(139, 92, 246, 0.12);
-  --orb-3: rgba(79, 70, 229, 0.1);
-  --vignette-color: rgba(15, 23, 42, 0.7);
-  --radius: 0.5rem;
-  /* HUD landing backdrop — classic sci-fi cyan/blue neon */
-  --hud-line: rgba(56, 189, 248, 0.16);
-  --hud-glow: rgba(34, 211, 238, 0.65);
-  --hud-scan: rgba(56, 189, 248, 0.08);
-  --hud-node: rgba(34, 211, 238, 0.6);
+
+  /* Cinematic ambient light */
+  --orb-1: rgb(99 102 241 / 0.14);
+  --orb-2: rgb(139 92 246 / 0.1);
+  --orb-3: rgb(59 130 246 / 0.07);
+
+  --vignette-color: rgb(9 9 11 / 0.78);
+
+  /* Glass */
+  --glass-bg: rgb(17 17 20 / 0.68);
+  --glass-border: rgb(255 255 255 / 0.09);
+  --glass-blur: 20px;
+
+  /* Shadows */
+  --shadow-card: 0 1px 2px rgb(0 0 0 / 0.35), 0 16px 50px -24px rgb(0 0 0 / 0.65);
+
+  --shadow-elevated: 0 24px 70px -24px rgb(0 0 0 / 0.78);
+
+  /* Cinematic ambient grid */
+  --hud-line: rgb(139 140 246 / 0.11);
+  --hud-glow: rgb(139 140 246 / 0.42);
+  --hud-scan: rgb(139 140 246 / 0.035);
+  --hud-node: rgb(167 139 250 / 0.55);
+
+  --ring: var(--accent);
+
+  --radius: 0.625rem;
 }
 
 @layer base {
@@ -93,18 +149,20 @@
 
 @layer components {
   .btn {
-    @apply inline-flex justify-center items-center font-medium text-center rounded-[var(--radius)] transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2;
+    @apply inline-flex justify-center items-center font-medium text-center rounded-[var(--radius)] transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 cursor-pointer;
     background-color: var(--accent);
     color: var(--accent-fg);
     border: 1px solid transparent;
+    --tw-ring-color: var(--ring);
   }
   .btn:hover {
     background-color: var(--accent-hover);
   }
   .btn-ghost {
-    @apply inline-flex justify-center items-center font-medium text-center rounded-[var(--radius)] border border-[var(--border)] transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2;
+    @apply inline-flex justify-center items-center font-medium text-center rounded-[var(--radius)] border border-[var(--border)] transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 cursor-pointer;
     color: var(--fg);
     background: transparent;
+    --tw-ring-color: var(--ring);
   }
   .btn-ghost:hover {
     background-color: color-mix(in srgb, var(--fg) 8%, transparent);
@@ -217,10 +275,30 @@
   height: 64px;
   border: 1px solid var(--hud-line);
 }
-.animated-bg__bracket--tl { top: 24px; left: 24px; border-right: 0; border-bottom: 0; }
-.animated-bg__bracket--tr { top: 24px; right: 24px; border-left: 0; border-bottom: 0; }
-.animated-bg__bracket--bl { bottom: 24px; left: 24px; border-right: 0; border-top: 0; }
-.animated-bg__bracket--br { bottom: 24px; right: 24px; border-left: 0; border-top: 0; }
+.animated-bg__bracket--tl {
+  top: 24px;
+  left: 24px;
+  border-right: 0;
+  border-bottom: 0;
+}
+.animated-bg__bracket--tr {
+  top: 24px;
+  right: 24px;
+  border-left: 0;
+  border-bottom: 0;
+}
+.animated-bg__bracket--bl {
+  bottom: 24px;
+  left: 24px;
+  border-right: 0;
+  border-top: 0;
+}
+.animated-bg__bracket--br {
+  bottom: 24px;
+  right: 24px;
+  border-left: 0;
+  border-top: 0;
+}
 /* Glowing axis dots */
 .animated-bg__node {
   position: absolute;
@@ -242,12 +320,23 @@
 }
 
 @keyframes bg-scan {
-  0% { transform: translateY(-240px); }
-  100% { transform: translateY(100vh); }
+  0% {
+    transform: translateY(-240px);
+  }
+  100% {
+    transform: translateY(100vh);
+  }
 }
 @keyframes bg-node {
-  0%, 100% { opacity: 0.35; transform: scale(0.85); }
-  50% { opacity: 1; transform: scale(1.15); }
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: scale(0.85);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.15);
+  }
 }
 
 /* Hairline dividers */
@@ -274,4 +363,105 @@
   border-bottom-color: var(--border-hairline);
   border-top-width: 1px;
   border-bottom-width: 1px;
+}
+
+/* ── Redesign system: elevation, glass, section rhythm, a11y ── */
+
+@layer components {
+  /* Layered elevation scale — one shadow language for cards/sheets/modals */
+  .surface-card {
+    background-color: var(--surface);
+    border: 1px solid var(--border-hairline);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-card);
+  }
+  .surface-elevated {
+    background-color: var(--surface);
+    border: 1px solid var(--border-hairline);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-elevated);
+  }
+
+  /* Frosted glass surface — themed, respects reduced data cost */
+  .glass {
+    background-color: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius);
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(140%);
+    backdrop-filter: blur(var(--glass-blur)) saturate(140%);
+  }
+
+  /* Section vertical rhythm — consistent 4/8pt tiers */
+  .section {
+    @apply py-16 px-4 sm:py-20;
+  }
+  .section-t {
+    @apply border-t border-[var(--border-hairline)];
+  }
+  .shell {
+    @apply max-w-5xl mx-auto;
+  }
+
+  /* Accent eyebrow / kicker label */
+  .eyebrow {
+    @apply text-xs font-semibold uppercase tracking-[0.2em];
+    color: var(--accent);
+  }
+
+  /* Primary CTA — one shared shape, used once per screen (skill: primary-action) */
+  .btn-primary {
+    @apply inline-flex justify-center items-center font-semibold text-center rounded-[var(--radius)] transition-all duration-200 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2;
+    background-color: var(--accent);
+    color: var(--accent-fg);
+    box-shadow: var(--shadow-card);
+  }
+  .btn-primary:hover {
+    background-color: var(--accent-hover);
+    box-shadow: var(--shadow-elevated);
+  }
+  .btn-primary:active {
+    transform: translateY(1px);
+  }
+
+  .btn-success {
+    @apply inline-flex justify-center items-center font-semibold text-center rounded-[var(--radius)] transition-colors duration-200 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2;
+    background-color: var(--success);
+    color: var(--success-fg);
+  }
+
+  /* Focus ring uses the theme ring token (skill: focus-states) */
+  .focus-ring {
+    @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2;
+    --tw-ring-color: var(--ring);
+  }
+}
+
+/* Skip link — keyboard users jump to content (skill: skip-links) */
+.skip-link {
+  position: absolute;
+  left: 1rem;
+  top: -3rem;
+  z-index: 100;
+  padding: 0.5rem 0.875rem;
+  border-radius: var(--radius);
+  background: var(--accent);
+  color: var(--accent-fg);
+  font-weight: 600;
+  transition: top 0.18s ease-out;
+}
+.skip-link:focus {
+  top: 1rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
 }

@@ -75,8 +75,8 @@ export default function Details() {
     return (
       <div className="min-h-screen bg-[var(--bg)] flex items-center justify-center">
         <div className="text-center">
-          <div className="mx-auto h-24 w-24 text-[var(--accent-fg)]">
-            <ExclamationTriangleIcon className="h-full w-full" />
+          <div className="mx-auto h-24 w-24 text-[var(--fg-subtle)]">
+          <ExclamationTriangleIcon className="h-full w-full" />
           </div>
           <h3 className="mt-4 text-lg font-medium text-[var(--fg)]">Error loading user</h3>
           <p className="mt-2 text-sm text-[var(--fg-muted)]">{error}</p>
@@ -144,7 +144,7 @@ export default function Details() {
                 </Link>
                 <button
                   onClick={handleDelete}
-                  className="inline-flex items-center px-3 py-1.5 border border-[var(--accent)]/20 rounded-md text-sm font-medium text-[var(--accent-fg)] bg-[var(--surface)] hover:bg-[var(--accent)]/10 transition-colors duration-200"
+                  className="inline-flex items-center px-3 py-1.5 border border-[var(--accent)]/20 rounded-md text-sm font-medium text-[var(--accent)] bg-[var(--surface)] hover:bg-[var(--accent)]/10 transition-colors duration-200"
                 >
                   <TrashIcon className="h-4 w-4 mr-1.5" />
                   Delete
@@ -278,7 +278,7 @@ export default function Details() {
                   {post.tags.map((tag, index) => (
                     <span
                       key={index}
-                      className="inline-flex items-center px-3 py-1.5 rounded-full text-sm font-medium bg-[var(--accent)]/20 text-[var(--accent-fg)] border border-[var(--accent)]/30"
+                      className="inline-flex items-center px-3 py-1.5 rounded-full text-sm font-medium bg-[var(--accent)]/12 text-[var(--accent)] border border-[var(--accent)]/30"
                     >
                       <span className="mr-1">#</span>
                       {tag}
@@ -303,7 +303,7 @@ export default function Details() {
                   </Link>
                   <button
                     onClick={handleDelete}
-                    className="flex-1 inline-flex justify-center items-center px-4 py-2 border border-[var(--accent)]/20 rounded-md text-sm font-medium text-[var(--accent-fg)] bg-[var(--surface)] hover:bg-[var(--accent)]/10"
+                    className="flex-1 inline-flex justify-center items-center px-4 py-2 border border-[var(--accent)]/20 rounded-md text-sm font-medium text-[var(--accent)] bg-[var(--surface)] hover:bg-[var(--accent)]/10"
                   >
                     <TrashIcon className="h-4 w-4 mr-2" />
                     Delete User
@@ -321,7 +321,7 @@ export default function Details() {
               <InformationCircleIcon className="h-5 w-5 text-[var(--accent)]" />
             </div>
             <div className="ml-3">
-              <p className="text-sm text-[var(--accent-fg)]">
+              <p className="text-sm text-[var(--fg-muted)]">
                 This user profile was created through the CadastRAR system. All information is
                 managed securely and can be updated by the user owner.
               </p>
