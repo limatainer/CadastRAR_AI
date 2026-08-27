@@ -29,9 +29,7 @@ export default function Upgrade({ entitlement }: { entitlement: Entitlement }) {
         >
           <motion.div variants={fadeUp}>
             <div className="w-16 h-16 rounded-full bg-[var(--accent)] flex items-center justify-center mx-auto mb-6">
-              <CheckCircleIcon
-                className="w-8 h-8 text-[var(--accent-fg)]"
-              />
+              <CheckCircleIcon className="w-8 h-8 text-[var(--accent-fg)]" />
             </div>
           </motion.div>
           <motion.h1 className="text-3xl font-bold text-[var(--fg)] mb-4" variants={fadeUp}>
@@ -81,21 +79,15 @@ export default function Upgrade({ entitlement }: { entitlement: Entitlement }) {
             </div>
             <ul className="mt-4 space-y-2 text-sm text-[var(--fg-muted)]">
               <li className="flex items-center">
-                <CheckCircleIcon
-                  className="w-5 h-5 text-[var(--accent)] mr-2 flex-shrink-0"
-                />
+                <CheckCircleIcon className="w-5 h-5 text-[var(--accent)] mr-2 flex-shrink-0" />
                 Unlimited records while trial is active
               </li>
               <li className="flex items-center">
-                <CheckCircleIcon
-                  className="w-5 h-5 text-[var(--accent)] mr-2 flex-shrink-0"
-                />
+                <CheckCircleIcon className="w-5 h-5 text-[var(--accent)] mr-2 flex-shrink-0" />
                 Export to PDF (ID card, certificate, profile sheet)
               </li>
               <li className="flex items-center">
-                <CheckCircleIcon
-                  className="w-5 h-5 text-[var(--accent)] mr-2 flex-shrink-0"
-                />
+                <CheckCircleIcon className="w-5 h-5 text-[var(--accent)] mr-2 flex-shrink-0" />
                 One payment — never billed again
               </li>
             </ul>

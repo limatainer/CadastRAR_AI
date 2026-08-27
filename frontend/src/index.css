@@ -16,17 +16,22 @@
   --border-hairline: #e5e7eb;
   --border: #d1d5db;
   --fg: #111827;
-  --fg-muted: #6b7280;
-  --fg-subtle: #9ca3af;
+  --fg-muted: #374151;
+  --fg-subtle: #6b7280;
   --accent: #4f46e5;
   --accent-fg: #ffffff;
   --accent-hover: #4338ca;
   --accent-subtle: #eef2ff;
   --orb-1: rgba(79, 70, 229, 0.12);
-  --orb-2: rgba(139, 92, 246, 0.10);
+  --orb-2: rgba(139, 92, 246, 0.1);
   --orb-3: rgba(99, 102, 241, 0.08);
   --vignette-color: rgba(249, 250, 251, 0.6);
   --radius: 0.5rem;
+  /* HUD landing backdrop — classic sci-fi cyan/blue neon */
+  --hud-line: rgba(14, 165, 233, 0.14);
+  --hud-glow: rgba(14, 165, 233, 0.6);
+  --hud-scan: rgba(14, 165, 233, 0.06);
+  --hud-node: rgba(34, 211, 238, 0.55);
 }
 
 .dark {
@@ -45,9 +50,14 @@
   --accent-subtle: rgba(129, 140, 248, 0.1);
   --orb-1: rgba(99, 102, 241, 0.15);
   --orb-2: rgba(139, 92, 246, 0.12);
-  --orb-3: rgba(79, 70, 229, 0.10);
+  --orb-3: rgba(79, 70, 229, 0.1);
   --vignette-color: rgba(15, 23, 42, 0.7);
   --radius: 0.5rem;
+  /* HUD landing backdrop — classic sci-fi cyan/blue neon */
+  --hud-line: rgba(56, 189, 248, 0.16);
+  --hud-glow: rgba(34, 211, 238, 0.65);
+  --hud-scan: rgba(56, 189, 248, 0.08);
+  --hud-node: rgba(34, 211, 238, 0.6);
 }
 
 @layer base {
@@ -159,6 +169,77 @@
   background: radial-gradient(ellipse at center, transparent 50%, var(--vignette-color) 100%);
   pointer-events: none;
   z-index: 0;
+}
+
+/* Animated landing backdrop — HUD / Sci-Fi FUI: fine 1px wireframe, scan sweep, node pulse */
+.animated-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+/* Perspective wireframe grid */
+.animated-bg__grid {
+  position: absolute;
+  inset: -4% -4% 0 -4%;
+  background-image:
+    linear-gradient(to right, var(--hud-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--hud-line) 1px, transparent 1px);
+  background-size: 64px 64px;
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, transparent 78%);
+  mask-image: linear-gradient(to bottom, #000 0%, transparent 78%);
+  will-change: transform;
+}
+/* Horizontal scan sweep */
+.animated-bg__scan {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 220px;
+  background: linear-gradient(to bottom, transparent, var(--hud-scan), transparent);
+  filter: blur(2px);
+  will-change: transform;
+  animation: bg-scan 7s linear infinite;
+}
+/* Corner tech brackets */
+.animated-bg__bracket {
+  position: absolute;
+  width: 64px;
+  height: 64px;
+  border: 1px solid var(--hud-line);
+}
+.animated-bg__bracket--tl { top: 24px; left: 24px; border-right: 0; border-bottom: 0; }
+.animated-bg__bracket--tr { top: 24px; right: 24px; border-left: 0; border-bottom: 0; }
+.animated-bg__bracket--bl { bottom: 24px; left: 24px; border-right: 0; border-top: 0; }
+.animated-bg__bracket--br { bottom: 24px; right: 24px; border-left: 0; border-top: 0; }
+/* Glowing axis dots */
+.animated-bg__node {
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  border-radius: 9999px;
+  background: var(--hud-node);
+  box-shadow: 0 0 5px 0 var(--hud-glow);
+  opacity: 0.7;
+  animation: bg-node 3.2s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .animated-bg__grid,
+  .animated-bg__scan,
+  .animated-bg__node {
+    animation: none !important;
+    transform: none !important;
+  }
+}
+
+@keyframes bg-scan {
+  0% { transform: translateY(-240px); }
+  100% { transform: translateY(100vh); }
+}
+@keyframes bg-node {
+  0%, 100% { opacity: 0.35; transform: scale(0.85); }
+  50% { opacity: 1; transform: scale(1.15); }
 }
 
 /* Hairline dividers */

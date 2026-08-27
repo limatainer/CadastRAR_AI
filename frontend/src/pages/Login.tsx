@@ -149,8 +149,9 @@ export default function Login() {
             </div>
             <button
               type="submit"
-              className={`btn w-full py-2.5 text-sm font-medium ${isFormDisabled ? 'opacity-50 cursor-not-allowed' : ''
-                }`}
+              className={`btn w-full py-2.5 text-sm font-medium ${
+                isFormDisabled ? 'opacity-50 cursor-not-allowed' : ''
+              }`}
               disabled={isFormDisabled}
             >
               {isFormDisabled ? 'Signing in...' : 'Sign in'}

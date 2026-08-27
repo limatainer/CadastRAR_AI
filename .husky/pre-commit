@@ -1,4 +1,0 @@
-cd frontend
-npx lint-staged
-# Keep codegraph index fresh (no-ops if .codegraph/ doesn't exist yet)
-npx codegraph sync -q || true

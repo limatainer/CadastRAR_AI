@@ -4,7 +4,7 @@ import { useAuthenticationSimple } from '@/hooks/useAuthenticationSimple';
 import { useAuthValue } from '@/contexts/AuthContext';
 import { useThemeValue } from '@/contexts/ThemeContext';
 import { Entitlement } from '@/hooks/useEntitlement';
-import { SunIcon, MoonIcon, ArrowRightOnRectangleIcon } from '@heroicons/react/24/outline';
+import { SunIcon, MoonIcon, ArrowLeftEndOnRectangleIcon } from '@heroicons/react/24/outline';
 import Logo from '/logo.png';
 
 const linkBase = 'relative px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200';
@@ -87,7 +87,7 @@ export default function Navbar({ entitlement }: { entitlement: Entitlement }) {
                 aria-label="Logout"
                 title="Logout"
               >
-                <ArrowRightOnRectangleIcon className="w-5 h-5" />
+                <ArrowLeftEndOnRectangleIcon className="w-5 h-5" />
               </button>
             )}
           </div>
